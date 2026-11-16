@@ -1,6 +1,6 @@
 services:
   qdrant_29n:
-    image: qdrant/qdrant:v1.12.1
+    image: qdrant/qdrant:latest
     container_name: qdrant_29n
     restart: unless-stopped
     environment:
@@ -14,11 +14,6 @@ services:
     networks:
       - net_29n
     mem_limit: 1024m
-    healthcheck:
-      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/127.0.0.1/${QDRANT_PORT}'"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   backend_29n:
     build:
@@ -31,8 +26,7 @@ services:
     ports:
       - "127.0.0.1:${APP_PORT}:${APP_PORT}"
     depends_on:
-      qdrant_29n:
-        condition: service_healthy
+      - qdrant_29n
     networks:
       - net_29n
       - odoo-ai-network
