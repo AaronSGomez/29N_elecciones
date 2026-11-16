@@ -128,6 +128,46 @@
   line-height: 1.45;
 }
 
+/* --- PERFIL CIUDADANO --- */
+.profile-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.profile-select {
+  width: 100%;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-strong);
+  padding: 0.35rem 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-primary);
+}
+
+.profile-select.full-width {
+  grid-column: 1 / -1;
+}
+
+.profile-analyze-btn {
+  grid-column: 1 / -1;
+  background: var(--ink-primary);
+  color: var(--ink-inverse);
+  border: 2px solid var(--border-strong);
+  padding: 0.45rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.25rem;
+  transition: background var(--transition-fast);
+}
+
+.profile-analyze-btn:hover {
+  background: var(--accent-vermilion);
+  color: #FFFFFF;
+}
+
 /* --- ÁREA PRINCIPAL DEL CHAT --- */
 .chat-workspace {
   background: var(--bg-surface);

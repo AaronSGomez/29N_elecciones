@@ -37,6 +37,53 @@ class QdrantRAGService:
             "qdrant_points": info.points_count,
         }
 
+    async def search_balanced(
+        self,
+        query: str,
+        party_ids: list[str],
+        per_party: int = 2,
+        topic: str | None = None,
+    ) -> list[dict[str, Any]]:
+        """Recuperación equilibrada por partido para comparativas imparciales."""
+        vector = await self.embed_query(query)
+        tasks = []
+        for pid in party_ids:
+            must_conditions: list[models.Condition] = [
+                models.FieldCondition(key="party_id", match=models.MatchValue(value=pid))
+            ]
+            if topic:
+                must_conditions.append(
+                    models.FieldCondition(key="topic", match=models.MatchValue(value=topic))
+                )
+            tasks.append(
+                self.client.query_points(
+                    collection_name=self.settings.QDRANT_COLLECTION,
+                    query=vector,
+                    query_filter=models.Filter(must=must_conditions),
+                    limit=per_party,
+                    score_threshold=self.settings.QDRANT_SCORE_THRESHOLD,
+                    with_payload=True,
+                )
+            )
+        results_list = await asyncio.gather(*tasks)
+        hits: list[dict[str, Any]] = []
+        for res in results_list:
+            for pt in res.points:
+                payload = pt.payload or {}
+                hits.append({
+                    "score": round(float(pt.score), 4),
+                    "party_id": payload.get("party_id", ""),
+                    "party_name": payload.get("party_name", ""),
+                    "topic": payload.get("topic", ""),
+                    "subtopic": payload.get("subtopic", ""),
+                    "title": payload.get("title", ""),
+                    "quote": payload.get("quote", ""),
+                    "explanation": payload.get("explanation", ""),
+                    "source_ref": payload.get("source_ref", ""),
+                    "text": payload.get("text", ""),
+                })
+        return hits
+
     async def search(
         self,
         query: str,

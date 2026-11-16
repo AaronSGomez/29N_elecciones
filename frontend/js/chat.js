@@ -89,6 +89,14 @@
     const { card: assistantCard, body: assistantBody } = createMessageCard("assistant", "Consultando programas en Qdrant...");
 
     try {
+      const profile = {
+        sex: document.getElementById("prof-sex")?.value || "",
+        salary_range: document.getElementById("prof-salary")?.value || "",
+        has_children: document.getElementById("prof-children")?.value || "",
+        employment_status: document.getElementById("prof-employment")?.value || "",
+        immigration_status: document.getElementById("prof-immigration")?.value || "",
+      };
+
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -96,6 +104,7 @@
           query,
           parties: selectedParties,
           topic: selectedTopic || null,
+          profile,
         }),
       });
 
@@ -182,6 +191,13 @@
       }
       updateScopeBadge();
     });
+  });
+
+  // Botón de análisis imparcial por perfil ciudadano
+  document.getElementById("profile-analyze-btn")?.addEventListener("click", () => {
+    sendQuestion(
+      "Analiza de forma imparcial qué medidas concretas de los programas del 29N me benefician o afectan según mi perfil (empleo, salario, familia/hijos e inmigración si aplica), comparando los partidos con citas exactas."
+    );
   });
 
   // Preguntas sugeridas

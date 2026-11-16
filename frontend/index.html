@@ -75,6 +75,47 @@
         </div>
       </div>
 
+      <div>
+        <div class="filter-group-title">03. Perfil Ciudadano (Opcional)</div>
+        <div class="profile-form">
+          <select id="prof-sex" class="profile-select" aria-label="Sexo">
+            <option value="">Sexo (No indicar)</option>
+            <option value="mujer">Mujer</option>
+            <option value="hombre">Hombre</option>
+            <option value="otro">Otro</option>
+          </select>
+          <select id="prof-salary" class="profile-select" aria-label="Tramo salarial">
+            <option value="">Salario (No indicar)</option>
+            <option value="<15k">&lt; 15.000 €/año</option>
+            <option value="15k-28k">15k - 28k €/año</option>
+            <option value="28k-50k">28k - 50k €/año</option>
+            <option value=">50k">&gt; 50.000 €/año</option>
+          </select>
+          <select id="prof-children" class="profile-select" aria-label="Hijos">
+            <option value="">Hijos (No indicar)</option>
+            <option value="si">Con hijos a cargo</option>
+            <option value="no">Sin hijos</option>
+          </select>
+          <select id="prof-employment" class="profile-select" aria-label="Situación laboral">
+            <option value="">Situación laboral</option>
+            <option value="trabajador">Cuenta ajena</option>
+            <option value="autonomo">Autónomo</option>
+            <option value="desempleado">Desempleado</option>
+            <option value="estudiante">Estudiante</option>
+            <option value="jubilado">Jubilado</option>
+          </select>
+          <select id="prof-immigration" class="profile-select full-width" aria-label="Situación residencia">
+            <option value="">Residencia / Inmigración (No indicar)</option>
+            <option value="nacional">Nacionalidad española</option>
+            <option value="residente_legal">Inmigrante residente legal</option>
+            <option value="en_regularizacion">Inmigrante en regularización</option>
+          </select>
+          <button type="button" id="profile-analyze-btn" class="profile-analyze-btn">
+            ANALIZAR MEDIDAS PARA MI PERFIL // ⚖️
+          </button>
+        </div>
+      </div>
+
       <div class="security-notice">
         <strong>MODO ESTRICTO ACTIVO:</strong> El asistente solo responde con información verificada de los programas cargados en Qdrant y cita la página exacta. Consultas fuera de ámbito son bloqueadas automáticamente.
       </div>

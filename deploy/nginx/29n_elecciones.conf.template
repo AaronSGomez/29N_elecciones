@@ -36,6 +36,9 @@ server {
     ssl_session_cache shared:SSL:10m;
     ssl_session_timeout 1d;
 
+    # Whitelist temporal de IPs
+    ${NGINX_ALLOW_RULES}
+
     # Bloqueo de bots y escáneres comunes
     if ($http_user_agent ~* (curl|wget|python-requests|nikto|sqlmap|nmap|masscan|zgrab|gobuster|dirbuster|scrapy|semrush|ahrefs|mj12bot)) {
         return 403;
