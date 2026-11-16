@@ -29,7 +29,7 @@
   border: 3px solid var(--border-strong);
   border-radius: 14px;
   padding: 0.95rem 1.05rem;
-  font-size: 0.84rem;
+  font-size: 0.95rem;
   line-height: 1.45;
   display: flex;
   flex-direction: column;
@@ -45,7 +45,7 @@
 .hero-step-box strong {
   display: block;
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.96rem;
   color: var(--accent-vermilion);
 }
 
@@ -85,7 +85,7 @@
 
 .home-stat-label {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.95rem;
   color: var(--ink-secondary);
   margin-top: 0.2rem;
 }
@@ -105,7 +105,7 @@
 .home-rule-card ul {
   padding-left: 1.2rem;
   margin-top: 0.5rem;
-  font-size: 0.86rem;
+  font-size: 0.96rem;
   color: var(--ink-secondary);
 }
 
@@ -118,7 +118,7 @@
 }
 
 .ideology-q-help {
-  font-size: 0.78rem;
+  font-size: 1rem;
   color: var(--ink-secondary);
   background: var(--bg-surface);
   border-left: 3px solid var(--accent-vermilion);
@@ -147,7 +147,7 @@
   border: 2px solid var(--border-strong);
   padding: 0.48rem 1rem;
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.96rem;
   font-weight: 700;
   cursor: pointer;
   box-shadow: var(--shadow-flat);
@@ -194,7 +194,7 @@
 
 .matrix-col-header {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.95rem;
   font-weight: 800;
   padding-bottom: 0.35rem;
   border-bottom: 3px solid var(--border-strong);
@@ -207,7 +207,7 @@
 .matrix-col-header.salf { border-bottom-color: #111111; }
 
 .matrix-empty-state {
-  font-size: 0.76rem;
+  font-size: 0.96rem;
   color: var(--ink-muted);
   font-style: italic;
 }
@@ -249,7 +249,7 @@
 
 .panel-header-tag {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -266,14 +266,14 @@
 }
 
 .hero-subtitle {
-  font-size: 0.88rem;
+  font-size: 0.98rem;
   color: var(--ink-secondary);
   margin-top: 0.4rem;
 }
 
 .filter-group-title {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.95rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -294,7 +294,7 @@
   border: 2px solid var(--border-strong);
   padding: 0.5rem 0.6rem;
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.96rem;
   font-weight: 700;
   cursor: pointer;
   text-align: left;
@@ -330,7 +330,7 @@
   border: 1px solid var(--border-strong);
   padding: 0.25rem 0.55rem;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast);
@@ -347,7 +347,7 @@
   border-left: 4px solid var(--accent-vermilion);
   padding: 0.65rem 0.75rem;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.95rem;
   color: var(--ink-secondary);
   line-height: 1.45;
 }
@@ -365,7 +365,7 @@
   border: 1px solid var(--border-strong);
   padding: 0.35rem 0.45rem;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.95rem;
   color: var(--ink-primary);
 }
 
@@ -380,7 +380,7 @@
   border: 2px solid var(--border-strong);
   padding: 0.45rem 0.6rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
   margin-top: 0.25rem;
@@ -416,13 +416,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.72rem;
   font-weight: 800;
   color: #FFFFFF;
-  border: 1.5px solid #111111;
+  border: 2px solid #17161C;
+  border-radius: 6px;
   flex-shrink: 0;
 }
 
@@ -461,7 +462,7 @@
 
 .profile-field label {
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 0.96rem;
   font-weight: 700;
   text-transform: uppercase;
   color: var(--ink-secondary);
@@ -472,7 +473,7 @@
   border: 2px solid var(--border-strong);
   padding: 0.55rem 0.65rem;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.94rem;
 }
 
 .chat-toolbar {
@@ -487,7 +488,7 @@
 
 .chat-scope-badge {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.96rem;
   font-weight: 700;
 }
 
@@ -496,7 +497,7 @@
   border: 1px solid var(--border-strong);
   padding: 0.3rem 0.65rem;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
 }
@@ -537,7 +538,7 @@
 
 .msg-meta {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 1.05rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -586,7 +587,7 @@
   justify-content: space-between;
   align-items: center;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 1.05rem;
   font-weight: 800;
   text-transform: uppercase;
   color: var(--ink-secondary);
@@ -594,14 +595,14 @@
 
 .proposal-title {
   font-family: var(--font-display);
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--ink-primary);
   line-height: 1.25;
 }
 
 .proposal-quote {
-  font-size: 0.8rem;
+  font-size: 0.94rem;
   color: var(--ink-secondary);
   line-height: 1.45;
   border-left: 3px solid var(--border-subtle);
@@ -612,7 +613,7 @@
   margin-top: auto;
   padding-top: 0.35rem;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--accent-vermilion);
   text-decoration: underline;
@@ -646,7 +647,7 @@
 
 .footer-col-title {
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 0.96rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -668,7 +669,7 @@
   align-items: center;
   gap: 0.45rem;
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 0.96rem;
   font-weight: 700;
   background: var(--bg-secondary);
   border: 2px solid var(--border-strong);
@@ -697,7 +698,7 @@
   align-items: center;
   gap: 0.4rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.95rem;
   font-weight: 700;
   background: var(--bg-primary);
   border: 2px solid var(--border-strong);
@@ -713,7 +714,7 @@
 .footer-prog-link.salf { border-left-color: #111111; }
 
 .footer-privacy-text {
-  font-size: 0.8rem;
+  font-size: 0.94rem;
   color: var(--ink-secondary);
   line-height: 1.5;
   margin-bottom: 0.75rem;
@@ -750,7 +751,7 @@
 
 .privacy-modal-card p,
 .privacy-modal-card li {
-  font-size: 0.88rem;
+  font-size: 0.98rem;
   color: var(--ink-secondary);
   line-height: 1.55;
   margin-bottom: 0.6rem;
@@ -780,7 +781,7 @@
   border: 1px solid var(--border-strong);
   padding: 0.35rem 0.65rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: transform var(--transition-fast);
 }
@@ -817,7 +818,7 @@
   border: 2px solid var(--border-strong);
   padding: 0.75rem 1.4rem;
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 1.05rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   cursor: pointer;
@@ -863,7 +864,7 @@
   border: 3px solid var(--border-strong);
   border-radius: 14px;
   padding: 0.95rem 1.05rem;
-  font-size: 0.84rem;
+  font-size: 0.95rem;
   line-height: 1.45;
   display: flex;
   flex-direction: column;
@@ -879,7 +880,7 @@
 .hero-step-box strong {
   display: block;
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.96rem;
   color: var(--accent-vermilion);
 }
 
@@ -919,7 +920,7 @@
 
 .home-stat-label {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.95rem;
   color: var(--ink-secondary);
   margin-top: 0.2rem;
 }
@@ -939,7 +940,7 @@
 .home-rule-card ul {
   padding-left: 1.2rem;
   margin-top: 0.5rem;
-  font-size: 0.86rem;
+  font-size: 0.96rem;
   color: var(--ink-secondary);
 }
 
@@ -952,7 +953,7 @@
 }
 
 .ideology-q-help {
-  font-size: 0.78rem;
+  font-size: 1rem;
   color: var(--ink-secondary);
   background: var(--bg-surface);
   border-left: 3px solid var(--accent-vermilion);
@@ -981,7 +982,7 @@
   border: 2px solid var(--border-strong);
   padding: 0.48rem 1rem;
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.96rem;
   font-weight: 700;
   cursor: pointer;
   box-shadow: var(--shadow-flat);
@@ -1028,7 +1029,7 @@
 
 .matrix-col-header {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.95rem;
   font-weight: 800;
   padding-bottom: 0.35rem;
   border-bottom: 3px solid var(--border-strong);
@@ -1041,7 +1042,7 @@
 .matrix-col-header.salf { border-bottom-color: #111111; }
 
 .matrix-empty-state {
-  font-size: 0.76rem;
+  font-size: 0.96rem;
   color: var(--ink-muted);
   font-style: italic;
 }
