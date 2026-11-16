@@ -2,6 +2,43 @@
    29N ELECCIONES — CHAT ELECTORAL RAG (PRINT//CORE 5)
    ============================================================================= */
 
+/* --- PORTADA / GUÍA DE USO --- */
+.hero-intro-band {
+  max-width: 1320px;
+  margin: 1.25rem auto 0;
+  padding: 0 2rem;
+}
+
+.hero-intro-card {
+  background: var(--bg-surface);
+  border: 2px solid var(--border-strong);
+  box-shadow: var(--shadow-card);
+  padding: 1.25rem 1.5rem;
+}
+
+.hero-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.hero-step-box {
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border-strong);
+  padding: 0.65rem 0.8rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.hero-step-box strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent-vermilion);
+  margin-bottom: 0.2rem;
+}
+
 .app-shell {
   max-width: 1320px;
   margin: 0 auto;
@@ -400,60 +437,143 @@
   display: none !important;
 }
 
-/* --- FOOTER AUTOR & CONTACTO --- */
+/* --- FOOTER 3 COLUMNAS (RRSS IZQUIERDA · PROGRAMAS CENTRO · PRIVACIDAD DERECHA) --- */
 .site-footer {
   background: var(--bg-surface);
   border-top: 3px solid var(--border-strong);
-  padding: 1.5rem 2rem;
-  margin-top: 1rem;
+  padding: 1.75rem 2rem;
+  margin-top: 1.5rem;
 }
 
-.footer-inner {
+.footer-grid {
   max-width: 1320px;
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
 }
 
-.footer-meta {
+.footer-col-title {
   font-family: var(--font-mono);
   font-size: 0.74rem;
-  color: var(--ink-secondary);
-}
-
-.footer-meta strong {
-  color: var(--ink-primary);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--border-strong);
+  padding-bottom: 0.35rem;
+  margin-bottom: 0.75rem;
 }
 
 .footer-link-list {
   list-style: none;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.footer-link-list a {
+.footer-link-list a,
+.footer-privacy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-strong);
+  padding: 0.38rem 0.7rem;
+  box-shadow: var(--shadow-flat);
+  cursor: pointer;
+  width: fit-content;
+  transition: transform var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+}
+
+.footer-link-list a:hover,
+.footer-privacy-btn:hover {
+  transform: translate(-1px, -1px);
+  background: var(--accent-vermilion);
+  color: #FFFFFF;
+}
+
+.footer-programs-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.footer-prog-link {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   border: 2px solid var(--border-strong);
-  padding: 0.4rem 0.75rem;
+  border-left-width: 6px;
+  padding: 0.35rem 0.65rem;
   box-shadow: var(--shadow-flat);
-  transition: transform var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
 }
 
-.footer-link-list a:hover {
-  transform: translate(-1px, -1px);
-  background: var(--accent-vermilion);
-  color: #FFFFFF;
+.footer-prog-link.pp { border-left-color: #1D4ED8; }
+.footer-prog-link.psoe { border-left-color: #D92B2B; }
+.footer-prog-link.vox { border-left-color: #16A34A; }
+.footer-prog-link.fa { border-left-color: #7C3AED; }
+.footer-prog-link.salf { border-left-color: #111111; }
+
+.footer-privacy-text {
+  font-size: 0.8rem;
+  color: var(--ink-secondary);
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+/* --- MODAL POLÍTICA DE PRIVACIDAD --- */
+.privacy-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 17, 17, 0.7);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.privacy-modal-card {
+  background: var(--bg-surface);
+  border: 3px solid var(--border-strong);
+  box-shadow: var(--shadow-card);
+  max-width: 680px;
+  width: 100%;
+  padding: 1.75rem;
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.privacy-modal-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.privacy-modal-card p,
+.privacy-modal-card li {
+  font-size: 0.88rem;
+  color: var(--ink-secondary);
+  line-height: 1.55;
+  margin-bottom: 0.6rem;
+}
+
+.privacy-modal-card ul {
+  padding-left: 1.25rem;
+  margin-bottom: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .hero-intro-band { padding: 0 1rem; }
+  .footer-grid { grid-template-columns: 1fr; }
 }
 
 .suggestions-row {
@@ -526,7 +646,44 @@
 }
 
 @media (max-width: 960px) {
-  .app-shell {
+  /* --- PORTADA / GUÍA DE USO --- */
+.hero-intro-band {
+  max-width: 1320px;
+  margin: 1.25rem auto 0;
+  padding: 0 2rem;
+}
+
+.hero-intro-card {
+  background: var(--bg-surface);
+  border: 2px solid var(--border-strong);
+  box-shadow: var(--shadow-card);
+  padding: 1.25rem 1.5rem;
+}
+
+.hero-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.hero-step-box {
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border-strong);
+  padding: 0.65rem 0.8rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.hero-step-box strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent-vermilion);
+  margin-bottom: 0.2rem;
+}
+
+.app-shell {
     grid-template-columns: 1fr;
     padding: 1rem;
   }

@@ -24,14 +24,42 @@
     </div>
 
     <nav class="masthead-nav" aria-label="Menú principal">
-      <button type="button" class="nav-tab-btn active" id="tab-chat-btn">CHAT</button>
-      <button type="button" class="nav-tab-btn" id="tab-profile-btn">PERFIL (6 BLOQUES)</button>
-      <button type="button" class="nav-tab-btn" id="tab-ideology-btn">TEST (12 EJES)</button>
-      <button type="button" class="nav-tab-btn" id="tab-results-btn">RESULTADOS</button>
-      <button type="button" class="nav-tab-btn" id="tab-comparator-btn">COMPARADOR</button>
+      <button type="button" class="nav-tab-btn active" id="tab-chat-btn">1. CHAT ELECTORAL</button>
+      <button type="button" class="nav-tab-btn" id="tab-comparator-btn">2. COMPARADOR</button>
+      <button type="button" class="nav-tab-btn" id="tab-profile-btn">3. MI PERFIL (6 BLOQUES)</button>
+      <button type="button" class="nav-tab-btn" id="tab-ideology-btn">4. TEST (12 EJES)</button>
+      <button type="button" class="nav-tab-btn" id="tab-results-btn">5. RESULTADOS</button>
       <span class="nav-privacy-note">NOTA: NO RECABAMOS DATOS</span>
     </nav>
   </header>
+
+  <!-- PORTADA EXPLICATIVA Y GUÍA DE USO -->
+  <section class="hero-intro-band" aria-label="Qué es y cómo usar la plataforma">
+    <div class="hero-intro-card">
+      <div class="panel-header-tag">HERRAMIENTA CÍVICA INDEPENDIENTE · ELECCIONES GENERALES 29N</div>
+      <p class="hero-subtitle" style="margin-top: 0;">
+        <strong>Qué hacemos y cómo:</strong> Reunimos los programas electorales oficiales íntegros (<strong>PP, PSOE, VOX, Frente Amplio y SALF</strong>) en PostgreSQL y Qdrant para que consultes medidas reales con cita textual y enlace directo a cada página. <strong>No recomendamos el voto</strong> ni asignamos partidos: tú decides con datos verificables.
+      </p>
+      <div class="hero-steps-grid">
+        <div class="hero-step-box">
+          <strong>01 · CHAT ELECTORAL</strong>
+          Pregunta sobre cualquier tema arriba y consulta debajo los bloques por partido con su color y enlace al PDF oficial.
+        </div>
+        <div class="hero-step-box">
+          <strong>02 · COMPARADOR DIRECTO</strong>
+          Explora las 21 materias en igualdad de condiciones entre partidos, sin necesidad de rellenar ningún perfil.
+        </div>
+        <div class="hero-step-box">
+          <strong>03 · PERFIL LOCAL-FIRST</strong>
+          Define opcionalmente tu situación en 6 bloques. Todo se guarda solo en tu navegador (nunca en el servidor).
+        </div>
+        <div class="hero-step-box">
+          <strong>04 · TEST (12 EJES)</strong>
+          Evalúa tus prioridades y matices en 12 ejes independientes para visualizar tu mapa de preferencias.
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- VISTA 1: SOLO CHAT -->
   <main class="app-shell" id="view-chat">
@@ -128,32 +156,77 @@
   <section class="wizard-shell hidden-panel" id="view-wizard" aria-label="Exploración ciudadana 29N"></section>
 
   <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-meta">
-        <strong>A quién votar estas elecciones 29N</strong> · Arquitectura RAG (Qdrant + PostgreSQL + FastAPI) · Nota: no recabamos datos.
+    <div class="footer-grid">
+      <!-- IZQUIERDA: RRSS CON TUS DATOS -->
+      <div>
+        <h4 class="footer-col-title">Autor &amp; Redes Sociales</h4>
+        <ul class="footer-link-list">
+          <li>
+            <a href="https://aaronsgomez.es" target="_blank" rel="noopener noreferrer">
+              <span>🏴‍☠️</span>
+              <span>aaronsgomez.es &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/aaronsgomez/" target="_blank" rel="noopener noreferrer">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9h2.79v8.37H6.46v-8.37M7.86 6.54a1.63 1.63 0 1 0 0 3.26 1.63 1.63 0 0 0 0-3.26z"/></svg>
+              <span>LinkedIn · Aaron S. Gómez &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/AaronSGomez" target="_blank" rel="noopener noreferrer">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              <span>GitHub @AaronSGomez &rarr;</span>
+            </a>
+          </li>
+        </ul>
       </div>
-      <ul class="footer-link-list">
-        <li>
-          <a href="https://aaronsgomez.es" target="_blank" rel="noopener">
-            <span>🏴‍☠️</span>
-            <span>aaronsgomez.es &rarr;</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://www.linkedin.com/in/aaronsgomez/" target="_blank" rel="noopener">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9h2.79v8.37H6.46v-8.37M7.86 6.54a1.63 1.63 0 1 0 0 3.26 1.63 1.63 0 0 0 0-3.26z"/></svg>
-            <span>LinkedIn Perfil &rarr;</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/AaronSGomez" target="_blank" rel="noopener">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-            <span>GitHub @AaronSGomez &rarr;</span>
-          </a>
-        </li>
-      </ul>
+
+      <!-- CENTRO: ENLACES DIRECTOS A LOS PROGRAMAS OFICIALES -->
+      <div>
+        <h4 class="footer-col-title">Programas Electorales Oficiales (PDF)</h4>
+        <div class="footer-programs-wrap">
+          <a class="footer-prog-link pp" href="https://www.pp.es/wp-content/uploads/2026/11/LA-RECONSTRUCCION-NACIONAL.pdf" target="_blank" rel="noopener noreferrer">PP (82 págs.) &nearr;</a>
+          <a class="footer-prog-link psoe" href="https://www.democrata.es/uploads/s1/35/40/05/6/programapsoe29n26.pdf" target="_blank" rel="noopener noreferrer">PSOE (114 págs.) &nearr;</a>
+          <a class="footer-prog-link vox" href="https://www.democrata.es/uploads/s1/35/26/90/2/programa-elecct-vox.pdf" target="_blank" rel="noopener noreferrer">VOX (55 págs.) &nearr;</a>
+          <a class="footer-prog-link fa" href="https://frenteamplio.info/pdf/ProgramaFrenteAmplio.pdf" target="_blank" rel="noopener noreferrer">Frente Amplio (151 págs.) &nearr;</a>
+          <a class="footer-prog-link salf" href="https://theobjective.com/wp-content/uploads/2026/11/salf.pdf" target="_blank" rel="noopener noreferrer">SALF (42 págs.) &nearr;</a>
+        </div>
+      </div>
+
+      <!-- DERECHA: POLÍTICA DE PRIVACIDAD 100% TRANSPARENTE -->
+      <div>
+        <h4 class="footer-col-title">Política de Privacidad (0 % Datos)</h4>
+        <p class="footer-privacy-text">
+          No recabamos datos personales ni usamos cookies de seguimiento. Tu perfil y respuestas del test permanecen exclusivamente en tu navegador.
+        </p>
+        <button type="button" class="footer-privacy-btn" id="open-privacy-btn">
+          VER POLÍTICA DE PRIVACIDAD COMPLETA &rarr;
+        </button>
+      </div>
     </div>
   </footer>
+
+  <!-- MODAL POLÍTICA DE PRIVACIDAD 100% TRANSPARENTE -->
+  <div class="privacy-modal-backdrop hidden-panel" id="privacy-modal" role="dialog" aria-modal="true" aria-label="Política de privacidad">
+    <div class="privacy-modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+        <span class="panel-header-tag" style="margin:0;">TRANSPARENCIA TOTAL · ARQUITECTURA LOCAL-FIRST</span>
+        <button type="button" class="clear-chat-btn" id="close-privacy-btn">[ CERRAR ✕ ]</button>
+      </div>
+      <h3>Política de Privacidad — Cero Recolección de Datos</h3>
+      <p>Esta herramienta cívica está diseñada bajo el principio estricto de <strong>privacidad local-first</strong>:</p>
+      <ul>
+        <li><strong>Sin cuentas ni cookies de seguimiento:</strong> No existe registro de usuarios, ni identificadores persistentes, ni herramientas de analítica o <em>session replay</em>.</li>
+        <li><strong>Perfil y Test 100 % en tu navegador:</strong> Los 6 bloques del perfil ciudadano, las respuestas del test de 12 ejes, las preguntas de control y tus prioridades se almacenan únicamente en el <code>localStorage</code> de tu dispositivo (o en memoria temporal si está deshabilitado). Nunca se envían al servidor ni a PostgreSQL/Qdrant.</li>
+        <li><strong>Control total:</strong> Puedes exportar tus datos en JSON, importarlos o borrarlos por completo en cualquier momento.</li>
+        <li><strong>Transparencia sobre el Chat RAG:</strong> El chat es independiente del perfil. Cuando escribes libremente una pregunta en el chat, ese texto viaja al backend FastAPI y al proveedor LLM para generar la respuesta con citas, por lo que te recomendamos no incluir datos personales en tus preguntas.</li>
+      </ul>
+      <p style="font-family:var(--font-mono); font-size:0.74rem; color:var(--ink-muted);">
+        Proyecto de código abierto · Arquitectura: FastAPI + PostgreSQL + Qdrant + FastEmbed.
+      </p>
+    </div>
+  </div>
 
   <script src="/js/profile_store.js"></script>
   <script src="/js/profile_wizard.js"></script>

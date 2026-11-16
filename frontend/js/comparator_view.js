@@ -99,13 +99,14 @@
         }
 
         proposals.forEach((p) => {
+          const partyId = (p.party_id || "").toLowerCase();
           const block = document.createElement("article");
-          block.className = "proposal-block";
+          block.className = `proposal-block party-${partyId}`;
 
           const header = document.createElement("div");
           header.className = "proposal-header";
           const s1 = document.createElement("span");
-          s1.textContent = p.party_name || p.party_id.toUpperCase();
+          s1.textContent = p.party_name || partyId.toUpperCase();
           const s2 = document.createElement("span");
           s2.textContent = p.subtopic || p.topic;
           header.append(s1, s2);

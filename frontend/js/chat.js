@@ -208,7 +208,19 @@
           document.querySelector('.party-chip[data-party="all"]')?.classList.add("active");
         }
       }
-      updateScopeBadge();
+      // Modal Política de Privacidad
+  const privacyModal = document.getElementById("privacy-modal");
+  document.getElementById("open-privacy-btn")?.addEventListener("click", () => {
+    privacyModal?.classList.remove("hidden-panel");
+  });
+  document.getElementById("close-privacy-btn")?.addEventListener("click", () => {
+    privacyModal?.classList.add("hidden-panel");
+  });
+  privacyModal?.addEventListener("click", (e) => {
+    if (e.target === privacyModal) privacyModal.classList.add("hidden-panel");
+  });
+
+  updateScopeBadge();
     });
   });
 
@@ -224,7 +236,19 @@
         selectedTopic = topic;
         pill.classList.add("active");
       }
-      updateScopeBadge();
+      // Modal Política de Privacidad
+  const privacyModal = document.getElementById("privacy-modal");
+  document.getElementById("open-privacy-btn")?.addEventListener("click", () => {
+    privacyModal?.classList.remove("hidden-panel");
+  });
+  document.getElementById("close-privacy-btn")?.addEventListener("click", () => {
+    privacyModal?.classList.add("hidden-panel");
+  });
+  privacyModal?.addEventListener("click", (e) => {
+    if (e.target === privacyModal) privacyModal.classList.add("hidden-panel");
+  });
+
+  updateScopeBadge();
     });
   });
 
@@ -279,6 +303,18 @@
       "assistant",
       "Sesión reiniciada. Pregunta sobre cualquier tema de los programas electorales del 29N (PP, PSOE, VOX, Frente Amplio)."
     );
+  });
+
+  // Modal Política de Privacidad
+  const privacyModal = document.getElementById("privacy-modal");
+  document.getElementById("open-privacy-btn")?.addEventListener("click", () => {
+    privacyModal?.classList.remove("hidden-panel");
+  });
+  document.getElementById("close-privacy-btn")?.addEventListener("click", () => {
+    privacyModal?.classList.add("hidden-panel");
+  });
+  privacyModal?.addEventListener("click", (e) => {
+    if (e.target === privacyModal) privacyModal.classList.add("hidden-panel");
   });
 
   updateScopeBadge();
