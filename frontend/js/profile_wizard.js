@@ -266,10 +266,18 @@
     },
   ];
 
+  function isBlockAnswered(profile, block) {
+    return block.fields.some((f) => {
+      const v = profile[f.section]?.[f.key];
+      return Array.isArray(v) ? v.length > 0 : Boolean(v && v !== "");
+    });
+  }
+
   function renderProfileWizard(container, onNavigate) {
     let profile = global.ProfileStore29N.loadProfile();
     let activeScreen = "intro"; // intro | block
     let blockIndex = 0;
+    let weightMode = (profile.priorities?.selectedTopics || []).length > 0 ? "weighted" : "equal";
 
     function render() {
       container.textContent = "";
@@ -286,6 +294,83 @@
         const p = document.createElement("p");
         p.className = "hero-subtitle";
         p.textContent = "Explora las políticas públicas que pueden afectar a tu situación, conoce tus propias prioridades y compara las propuestas de los partidos. Tus respuestas permanecen exclusivamente en tu navegador.";
+
+        // Resumen visual con check verde de pruebas contestadas
+        const checklistTitle = document.createElement("div");
+        checklistTitle.className = "filter-group-title";
+        checklistTitle.style.marginTop = "1.1rem";
+        checklistTitle.textContent = "Estado de tus pruebas y bloques completados";
+
+        const checklist = document.createElement("div");
+        checklist.className = "status-checklist-grid";
+
+        BLOCKS.forEach((b, idx) => {
+          const done = isBlockAnswered(profile, b);
+          const item = document.createElement("button");
+          item.type = "button";
+          item.className = `status-check-item ${done ? "done" : ""}`;
+          const lbl = document.createElement("span");
+          lbl.textContent = `${b.code}: ${b.title.split(" ")[0]}`;
+          const badge = document.createElement("span");
+          badge.className = done ? "check-badge-ok" : "check-badge-pending";
+          badge.textContent = done ? "✓" : "○";
+          item.append(lbl, badge);
+          item.addEventListener("click", () => {
+            blockIndex = idx;
+            activeScreen = "block";
+            render();
+          });
+          checklist.appendChild(item);
+        });
+
+        // Check verde del Test de 12 Ejes
+        const axisRes = global.IdeologyTest29N ? global.IdeologyTest29N.computeAxisResults(profile.ideology?.answers || {}) : [];
+        const answeredAxesCount = axisRes.filter((a) => a.score !== null).length;
+        const testDone = answeredAxesCount > 0;
+        const testItem = document.createElement("button");
+        testItem.type = "button";
+        testItem.className = `status-check-item ${testDone ? "done" : ""}`;
+        const tLbl = document.createElement("span");
+        tLbl.textContent = `TEST (${answeredAxesCount}/12 ejes)`;
+        const tBadge = document.createElement("span");
+        tBadge.className = testDone ? "check-badge-ok" : "check-badge-pending";
+        tBadge.textContent = testDone ? "✓" : "○";
+        testItem.append(tLbl, tBadge);
+        testItem.addEventListener("click", () => onNavigate("ideology"));
+        checklist.appendChild(testItem);
+
+        // Check verde de Preferencias de temas
+        const selectedTopics = profile.priorities?.selectedTopics || [];
+        const prioDone = selectedTopics.length > 0;
+        const prioItem = document.createElement("button");
+        prioItem.type = "button";
+        prioItem.className = `status-check-item ${prioDone ? "done" : ""}`;
+        const pLbl = document.createElement("span");
+        pLbl.textContent = `TEMAS (${selectedTopics.length}/5)`;
+        const pBadge = document.createElement("span");
+        pBadge.className = prioDone ? "check-badge-ok" : "check-badge-pending";
+        pBadge.textContent = prioDone ? "✓" : "○";
+        prioItem.append(pLbl, pBadge);
+        prioItem.addEventListener("click", () => onNavigate("results"));
+        checklist.appendChild(prioItem);
+
+        // Mostrar temas prioritarios elegidos si existen
+        const prioSummary = document.createElement("div");
+        if (selectedTopics.length > 0) {
+          prioSummary.className = "w-checkbox-group";
+          prioSummary.style.marginTop = "0.75rem";
+          const sTitle = document.createElement("span");
+          sTitle.className = "w-field-title";
+          sTitle.style.marginRight = "0.4rem";
+          sTitle.textContent = "Tus temas prioritarios:";
+          prioSummary.appendChild(sTitle);
+          selectedTopics.forEach((t) => {
+            const pill = document.createElement("span");
+            pill.className = "w-check-chip";
+            pill.textContent = `✓ ${t}`;
+            prioSummary.appendChild(pill);
+          });
+        }
 
         const actions = document.createElement("div");
         actions.className = "w-actions-bar";
@@ -358,7 +443,18 @@
 
         rightBtns.append(expBtn, impBtn, impInput, delBtn);
         actions.append(leftBtns, rightBtns);
-        card.append(tag, h2, p, actions);
+        card.append(tag, h2, p, checklistTitle, checklist);
+        if (selectedTopics.length > 0) card.appendChild(prioSummary);
+
+        // Diagrama de barras "Uno a uno" directamente visible al cargar Mi espacio
+        if (global.ResultsView29N && typeof global.ResultsView29N.renderUnoAUnoWidget === "function") {
+          global.ResultsView29N.renderUnoAUnoWidget(card, profile, weightMode, (newMode) => {
+            weightMode = newMode;
+            render();
+          });
+        }
+
+        card.appendChild(actions);
         container.appendChild(card);
         return;
       }

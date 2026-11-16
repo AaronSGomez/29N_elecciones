@@ -203,6 +203,100 @@
     return tensions;
   }
 
+  function renderUnoAUnoWidget(parentEl, profile, weightMode, onModeChange) {
+    const results = global.IdeologyTest29N.computeAxisResults(profile.ideology?.answers || {});
+    const selectedTopics = profile.priorities?.selectedTopics || [];
+    const activeMode = selectedTopics.length === 0 && weightMode !== "equal" ? "equal" : weightMode;
+    const matchData = computePartyMatches(results, selectedTopics, activeMode);
+
+    const matchSection = document.createElement("div");
+    matchSection.style.marginTop = "1.25rem";
+    const matchTitle = document.createElement("div");
+    matchTitle.className = "filter-group-title";
+    matchTitle.textContent = "Uno a uno · Aproximación según tus prioridades y respuestas (solo en tu navegador)";
+    matchSection.appendChild(matchTitle);
+
+    const modeRow = document.createElement("div");
+    modeRow.className = "w-btn-group";
+    modeRow.style.margin = "0.5rem 0 0.75rem";
+    [
+      ["weighted", "PONDERADO POR PRIORIDADES (3x)"],
+      ["only_priorities", "SOLO MIS PRIORIDADES"],
+      ["equal", "TODOS LOS EJES POR IGUAL"],
+    ].forEach(([mKey, mLabel]) => {
+      const mBtn = document.createElement("button");
+      mBtn.type = "button";
+      mBtn.className = `step-pill ${activeMode === mKey ? "active" : ""}`;
+      mBtn.textContent = mLabel;
+      mBtn.disabled = mKey !== "equal" && selectedTopics.length === 0;
+      mBtn.addEventListener("click", () => onModeChange(mKey));
+      modeRow.appendChild(mBtn);
+    });
+    matchSection.appendChild(modeRow);
+
+    if (matchData.answeredCount === 0) {
+      const emptyMatch = document.createElement("div");
+      emptyMatch.className = "security-notice";
+      emptyMatch.textContent = "Aún no has respondido preguntas en 'B. Mis ideas (Test 12 ejes)'. Contesta al menos un eje para ver el diagrama comparativo.";
+      matchSection.appendChild(emptyMatch);
+    } else if (matchData.usedAxesCount === 0) {
+      const emptyPrio = document.createElement("div");
+      emptyPrio.className = "security-notice";
+      emptyPrio.textContent = "No has respondido todavía en el test a los ejes correspondientes a tus prioridades seleccionadas. Responde esos ejes o cambia a 'Todos los ejes por igual'.";
+      matchSection.appendChild(emptyPrio);
+    } else {
+      const top = matchData.ranking[0];
+      const modeDesc =
+        activeMode === "only_priorities"
+          ? `usando únicamente tus ${matchData.usedAxesCount} ejes prioritarios`
+          : activeMode === "weighted" && selectedTopics.length > 0
+            ? `ponderando 3x tus prioridades sobre ${matchData.usedAxesCount} ejes respondidos`
+            : `con igual peso en ${matchData.usedAxesCount} ejes respondidos`;
+      const leadText = document.createElement("p");
+      leadText.className = "hero-subtitle";
+      leadText.textContent = `Calculado ${modeDesc}: tus respuestas se aproximan más a ${top.name} (${top.pct}% · ${top.closeAxes} de ${top.totalAnsweredAxes} ejes coincidentes).`;
+      matchSection.appendChild(leadText);
+
+      const list = document.createElement("div");
+      list.className = "uno-a-uno-list";
+      matchData.ranking.forEach((p) => {
+        const row = document.createElement("div");
+        row.className = "party-match-row";
+
+        const logo = document.createElement("div");
+        logo.className = `party-match-logo ${p.id}`;
+        logo.textContent = p.short;
+
+        const mid = document.createElement("div");
+        mid.className = "party-match-mid";
+        const name = document.createElement("div");
+        name.className = "party-match-name";
+        name.textContent = p.name;
+        const track = document.createElement("div");
+        track.className = "party-match-track";
+        const fill = document.createElement("div");
+        fill.className = `party-match-fill ${p.id}`;
+        fill.style.width = `${p.pct}%`;
+        track.appendChild(fill);
+        mid.append(name, track);
+
+        const score = document.createElement("div");
+        score.className = "party-match-score";
+        score.textContent = `${p.pct}%`;
+        const sub = document.createElement("small");
+        sub.textContent = `${p.closeAxes} de ${p.totalAnsweredAxes} ejes`;
+        score.appendChild(sub);
+
+        row.append(logo, mid, score);
+        list.appendChild(row);
+      });
+      matchSection.appendChild(list);
+    }
+
+    parentEl.appendChild(matchSection);
+    return results;
+  }
+
   function renderResultsView(container, onNavigate) {
     const profile = global.ProfileStore29N.loadProfile();
     let weightMode = (profile.priorities?.selectedTopics || []).length > 0 ? "weighted" : "equal";
@@ -271,101 +365,11 @@
       });
       prioBox.appendChild(topicWrap);
 
-      // 2. Diagrama de barras "Uno a uno" (aproximación ponderada por prioridades)
-      const results = global.IdeologyTest29N.computeAxisResults(profile.ideology?.answers || {});
-      const selectedTopics = profile.priorities.selectedTopics || [];
-      if (selectedTopics.length === 0 && weightMode !== "equal") {
-        weightMode = "equal";
-      }
-      const matchData = computePartyMatches(results, selectedTopics, weightMode);
-
-      const matchSection = document.createElement("div");
-      matchSection.style.marginTop = "1.5rem";
-      const matchTitle = document.createElement("div");
-      matchTitle.className = "filter-group-title";
-      matchTitle.textContent = "Uno a uno · Aproximación según tus prioridades y respuestas (solo en tu navegador)";
-      matchSection.appendChild(matchTitle);
-
-      // Selector de ponderación
-      const modeRow = document.createElement("div");
-      modeRow.className = "w-btn-group";
-      modeRow.style.margin = "0.5rem 0 0.75rem";
-      [
-        ["weighted", "PONDERADO POR PRIORIDADES (3x)"],
-        ["only_priorities", "SOLO MIS PRIORIDADES"],
-        ["equal", "TODOS LOS EJES POR IGUAL"],
-      ].forEach(([mKey, mLabel]) => {
-        const mBtn = document.createElement("button");
-        mBtn.type = "button";
-        mBtn.className = `step-pill ${weightMode === mKey ? "active" : ""}`;
-        mBtn.textContent = mLabel;
-        mBtn.disabled = mKey !== "equal" && selectedTopics.length === 0;
-        mBtn.addEventListener("click", () => {
-          weightMode = mKey;
-          render();
-        });
-        modeRow.appendChild(mBtn);
+      // 2. Diagrama de barras "Uno a uno" (reutilizando helper compartido)
+      const results = renderUnoAUnoWidget(card, profile, weightMode, (newMode) => {
+        weightMode = newMode;
+        render();
       });
-      matchSection.appendChild(modeRow);
-
-      if (matchData.answeredCount === 0) {
-        const emptyMatch = document.createElement("div");
-        emptyMatch.className = "security-notice";
-        emptyMatch.textContent = "Aún no has respondido preguntas en 'B. Mis ideas (Test 12 ejes)'. Contesta al menos un eje para ver el diagrama comparativo.";
-        matchSection.appendChild(emptyMatch);
-      } else if (matchData.usedAxesCount === 0) {
-        const emptyPrio = document.createElement("div");
-        emptyPrio.className = "security-notice";
-        emptyPrio.textContent = "No has respondido todavía en el test a los ejes correspondientes a tus prioridades seleccionadas. Responde esos ejes o cambia a 'Todos los ejes por igual'.";
-        matchSection.appendChild(emptyPrio);
-      } else {
-        const top = matchData.ranking[0];
-        const modeDesc =
-          weightMode === "only_priorities"
-            ? `usando únicamente tus ${matchData.usedAxesCount} ejes prioritarios`
-            : weightMode === "weighted" && selectedTopics.length > 0
-              ? `ponderando 3x tus prioridades sobre ${matchData.usedAxesCount} ejes respondidos`
-              : `con igual peso en ${matchData.usedAxesCount} ejes respondidos`;
-        const leadText = document.createElement("p");
-        leadText.className = "hero-subtitle";
-        leadText.textContent = `Calculado ${modeDesc}: tus respuestas se aproximan más a ${top.name} (${top.pct}% · ${top.closeAxes} de ${top.totalAnsweredAxes} ejes coincidentes). Compruébalo leyendo las medidas reales en Programas.`;
-        matchSection.appendChild(leadText);
-
-        const list = document.createElement("div");
-        list.className = "uno-a-uno-list";
-        matchData.ranking.forEach((p) => {
-          const row = document.createElement("div");
-          row.className = "party-match-row";
-
-          const logo = document.createElement("div");
-          logo.className = `party-match-logo ${p.id}`;
-          logo.textContent = p.short;
-
-          const mid = document.createElement("div");
-          mid.className = "party-match-mid";
-          const name = document.createElement("div");
-          name.className = "party-match-name";
-          name.textContent = p.name;
-          const track = document.createElement("div");
-          track.className = "party-match-track";
-          const fill = document.createElement("div");
-          fill.className = `party-match-fill ${p.id}`;
-          fill.style.width = `${p.pct}%`;
-          track.appendChild(fill);
-          mid.append(name, track);
-
-          const score = document.createElement("div");
-          score.className = "party-match-score";
-          score.textContent = `${p.pct}%`;
-          const sub = document.createElement("small");
-          sub.textContent = `${p.closeAxes} de ${p.totalAnsweredAxes} ejes`;
-          score.appendChild(sub);
-
-          row.append(logo, mid, score);
-          list.appendChild(row);
-        });
-        matchSection.appendChild(list);
-      }
 
       // 3. Resultados de los 12 ejes con explicación específica
       const axesTitle = document.createElement("div");
@@ -454,7 +458,7 @@
       goComp.addEventListener("click", () => onNavigate("programs", "comparator"));
 
       actions.append(backTest, goComp);
-      card.append(tag, h2, methodNotice, prioBox, matchSection, axesTitle, axesContainer);
+      card.append(tag, h2, methodNotice, prioBox, axesTitle, axesContainer);
       if (tensions.length > 0) card.appendChild(tensionBox);
       card.appendChild(actions);
       container.appendChild(card);
@@ -463,5 +467,8 @@
     render();
   }
 
-  global.ResultsView29N = { render: renderResultsView };
+  global.ResultsView29N = {
+    render: renderResultsView,
+    renderUnoAUnoWidget,
+  };
 })(window);
