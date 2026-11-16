@@ -36,6 +36,25 @@ async def health(request: Request) -> dict[str, Any]:
     return {**q_info, "postgres_proposals": pg_count}
 
 
+@router.get("/topics")
+async def list_topics(request: Request) -> dict[str, Any]:
+    topics = await request.app.state.postgres.list_topics()
+    return {"topics": topics}
+
+
+@router.get("/proposals")
+async def list_proposals(
+    request: Request,
+    topic: str | None = None,
+    party_id: str | None = None,
+    limit: int = 60,
+) -> dict[str, Any]:
+    rows = await request.app.state.postgres.list_proposals(
+        topic=topic, party_id=party_id, limit=limit
+    )
+    return {"proposals": rows}
+
+
 @router.get("/proposals/{proposal_id}")
 async def get_proposal(proposal_id: str, request: Request) -> dict[str, Any]:
     from fastapi import HTTPException

@@ -228,36 +228,37 @@
     });
   });
 
-  // Pestañas menú superior: vista full-screen de Chat vs Perfil de votante
-  const tabChatBtn = document.getElementById("tab-chat-btn");
-  const tabProfileBtn = document.getElementById("tab-profile-btn");
+  // Navegación entre módulos (Chat / Perfil / Test 12 Ejes / Resultados / Comparador)
   const viewChat = document.getElementById("view-chat");
-  const viewProfile = document.getElementById("view-profile");
+  const viewWizard = document.getElementById("view-wizard");
+  const navButtons = {
+    chat: document.getElementById("tab-chat-btn"),
+    profile: document.getElementById("tab-profile-btn"),
+    ideology: document.getElementById("tab-ideology-btn"),
+    results: document.getElementById("tab-results-btn"),
+    comparator: document.getElementById("tab-comparator-btn"),
+  };
 
-  function showChatView() {
-    tabChatBtn?.classList.add("active");
-    tabProfileBtn?.classList.remove("active");
-    viewChat?.classList.remove("hidden-panel");
-    viewProfile?.classList.add("hidden-panel");
-  }
-
-  function showProfileView() {
-    tabProfileBtn?.classList.add("active");
-    tabChatBtn?.classList.remove("active");
-    viewProfile?.classList.remove("hidden-panel");
+  function navigateTo(view) {
+    Object.entries(navButtons).forEach(([k, btn]) => {
+      if (btn) btn.classList.toggle("active", k === view);
+    });
+    if (view === "chat") {
+      viewChat?.classList.remove("hidden-panel");
+      viewWizard?.classList.add("hidden-panel");
+      return;
+    }
     viewChat?.classList.add("hidden-panel");
+    viewWizard?.classList.remove("hidden-panel");
+
+    if (view === "profile") window.ProfileWizard29N?.render(viewWizard, navigateTo);
+    else if (view === "ideology") window.IdeologyTest29N?.render(viewWizard, navigateTo);
+    else if (view === "results") window.ResultsView29N?.render(viewWizard, navigateTo);
+    else if (view === "comparator") window.ComparatorView29N?.render(viewWizard);
   }
 
-  tabChatBtn?.addEventListener("click", showChatView);
-  tabProfileBtn?.addEventListener("click", showProfileView);
-  document.getElementById("profile-back-btn")?.addEventListener("click", showChatView);
-
-  // Botón de análisis imparcial por perfil ciudadano
-  document.getElementById("profile-analyze-btn")?.addEventListener("click", () => {
-    showChatView();
-    sendQuestion(
-      "Analiza de forma imparcial qué medidas concretas de los programas del 29N me benefician o afectan según mi perfil, comparando los partidos con citas exactas."
-    );
+  Object.entries(navButtons).forEach(([view, btn]) => {
+    btn?.addEventListener("click", () => navigateTo(view));
   });
 
   // Preguntas sugeridas

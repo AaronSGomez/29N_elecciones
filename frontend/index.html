@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="/Style/base.css">
   <link rel="stylesheet" href="/Style/navbar.css">
   <link rel="stylesheet" href="/Style/chat.css">
+  <link rel="stylesheet" href="/Style/wizard.css">
 </head>
 <body>
 
@@ -24,7 +25,10 @@
 
     <nav class="masthead-nav" aria-label="Menú principal">
       <button type="button" class="nav-tab-btn active" id="tab-chat-btn">CHAT</button>
-      <button type="button" class="nav-tab-btn" id="tab-profile-btn">CONFIGURA TU PERFIL DE VOTANTE</button>
+      <button type="button" class="nav-tab-btn" id="tab-profile-btn">PERFIL (6 BLOQUES)</button>
+      <button type="button" class="nav-tab-btn" id="tab-ideology-btn">TEST (12 EJES)</button>
+      <button type="button" class="nav-tab-btn" id="tab-results-btn">RESULTADOS</button>
+      <button type="button" class="nav-tab-btn" id="tab-comparator-btn">COMPARADOR</button>
       <span class="nav-privacy-note">NOTA: NO RECABAMOS DATOS</span>
     </nav>
   </header>
@@ -120,137 +124,8 @@
     </section>
   </main>
 
-  <!-- VISTA 2: FORMULARIO DE PERFIL A TAMAÑO COMPLETO -->
-  <section class="profile-fullscreen hidden-panel" id="view-profile" aria-label="Configura tu perfil de votante">
-    <div class="profile-card-full">
-      <div class="panel-header-tag">CONFIGURA TU PERFIL DE VOTANTE · NOTA: NO RECABAMOS DATOS</div>
-      <h2 class="hero-title">Análisis imparcial según tu situación</h2>
-      <p class="hero-subtitle">Todos los campos son opcionales. Se utilizan únicamente en tu consulta actual para comparar qué medidas de cada partido te afectan más, sin sesgos ni almacenamiento en servidor.</p>
-
-      <div class="profile-grid-full">
-        <div class="profile-field">
-          <label for="prof-sex">Sexo</label>
-          <select id="prof-sex">
-            <option value="">No indicar</option>
-            <option value="mujer">Mujer</option>
-            <option value="hombre">Hombre</option>
-            <option value="otro">Otro</option>
-          </select>
-        </div>
-
-        <div class="profile-field">
-          <label for="prof-age">Edad</label>
-          <select id="prof-age">
-            <option value="">No indicar</option>
-            <option value="<25">&lt; 25 años</option>
-            <option value="25-35">25 - 35 años</option>
-            <option value="36-50">36 - 50 años</option>
-            <option value="51-65">51 - 65 años</option>
-            <option value=">65">&gt; 65 años</option>
-          </select>
-        </div>
-
-        <div class="profile-field">
-          <label for="prof-salary">Tramo salarial anual</label>
-          <select id="prof-salary">
-            <option value="">No indicar</option>
-            <option value="<15k">&lt; 15.000 €/año</option>
-            <option value="15k-28k">15.000 - 28.000 €/año</option>
-            <option value="28k-50k">28.000 - 50.000 €/año</option>
-            <option value=">50k">&gt; 50.000 €/año</option>
-          </select>
-        </div>
-
-        <div class="profile-field">
-          <label for="prof-family">Familia / Hijos</label>
-          <select id="prof-family">
-            <option value="">No indicar</option>
-            <option value="sin_hijos">Sin hijos</option>
-            <option value="con_hijos">Con hijos (1-2)</option>
-            <option value="familia_numerosa">Familia numerosa (3+)</option>
-            <option value="monoparental">Familia monoparental</option>
-          </select>
-        </div>
-
-        <div class="profile-field">
-          <label for="prof-housing">Situación de vivienda</label>
-          <select id="prof-housing">
-            <option value="">No indicar</option>
-            <option value="alquiler">De alquiler</option>
-            <option value="hipoteca">Con hipoteca</option>
-            <option value="propiedad">En propiedad</option>
-            <option value="busca_primera_vivienda">Busca primera vivienda</option>
-          </select>
-        </div>
-
-        <div class="profile-field">
-          <label for="prof-employment">Situación laboral</label>
-          <select id="prof-employment">
-            <option value="">No indicar</option>
-            <option value="trabajador">Trabajador cuenta ajena</option>
-            <option value="autonomo">Autónomo</option>
-            <option value="desempleado">Desempleado</option>
-            <option value="estudiante">Estudiante</option>
-            <option value="jubilado">Jubilado</option>
-            <option value="funcionario">Funcionario</option>
-          </select>
-        </div>
-
-        <div class="profile-field">
-          <label for="prof-pets">Mascotas</label>
-          <select id="prof-pets">
-            <option value="">No indicar</option>
-            <option value="si">Con mascotas</option>
-            <option value="no">Sin mascotas</option>
-          </select>
-        </div>
-
-        <div class="profile-field">
-          <label for="prof-ccaa">Comunidad Autónoma</label>
-          <select id="prof-ccaa">
-            <option value="Asturias" selected>Principado de Asturias</option>
-            <option value="">Otra / No indicar</option>
-            <option value="Andalucía">Andalucía</option>
-            <option value="Aragón">Aragón</option>
-            <option value="Baleares">Baleares</option>
-            <option value="Canarias">Canarias</option>
-            <option value="Cantabria">Cantabria</option>
-            <option value="Castilla-La Mancha">Castilla-La Mancha</option>
-            <option value="Castilla y León">Castilla y León</option>
-            <option value="Cataluña">Cataluña</option>
-            <option value="Comunidad Valenciana">Comunidad Valenciana</option>
-            <option value="Extremadura">Extremadura</option>
-            <option value="Galicia">Galicia</option>
-            <option value="Madrid">Madrid</option>
-            <option value="Murcia">Murcia</option>
-            <option value="Navarra">Navarra</option>
-            <option value="País Vasco">País Vasco</option>
-            <option value="La Rioja">La Rioja</option>
-            <option value="Ceuta/Melilla">Ceuta / Melilla</option>
-          </select>
-        </div>
-
-        <div class="profile-field">
-          <label for="prof-immigration">Residencia / Inmigración</label>
-          <select id="prof-immigration">
-            <option value="">No indicar</option>
-            <option value="nacional">Nacionalidad española</option>
-            <option value="residente_legal">Inmigrante residente legal</option>
-            <option value="en_regularizacion">Inmigrante en regularización</option>
-          </select>
-        </div>
-      </div>
-
-      <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-        <button type="button" id="profile-analyze-btn" class="chat-send-btn">
-          COMPARAR MEDIDAS PARA MI PERFIL // ⚖️
-        </button>
-        <button type="button" id="profile-back-btn" class="clear-chat-btn">
-          VOLVER AL CHAT
-        </button>
-      </div>
-    </div>
-  </section>
+  <!-- VISTA WIZARD FULL-SCREEN (PERFIL / TEST 12 EJES / RESULTADOS / COMPARADOR) -->
+  <section class="wizard-shell hidden-panel" id="view-wizard" aria-label="Exploración ciudadana 29N"></section>
 
   <footer class="site-footer">
     <div class="footer-inner">
@@ -281,6 +156,10 @@
   </footer>
 
   <script src="/js/profile_store.js"></script>
+  <script src="/js/profile_wizard.js"></script>
+  <script src="/js/ideology_test.js"></script>
+  <script src="/js/results_view.js"></script>
+  <script src="/js/comparator_view.js"></script>
   <script src="/js/chat.js"></script>
 </body>
 </html>

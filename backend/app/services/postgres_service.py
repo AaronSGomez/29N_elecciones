@@ -85,3 +85,41 @@ class PostgresService:
                 proposal_id,
             )
         return dict(row) if row else None
+
+    async def list_topics(self) -> list[str]:
+        if not self.pool:
+            return []
+        async with self.pool.acquire() as conn:
+            rows = await conn.fetch(
+                "SELECT DISTINCT topic FROM proposals WHERE source_type = 'block' ORDER BY topic"
+            )
+        return [r["topic"] for r in rows]
+
+    async def list_proposals(
+        self,
+        topic: str | None = None,
+        party_id: str | None = None,
+        limit: int = 60,
+    ) -> list[dict[str, Any]]:
+        if not self.pool:
+            return []
+        clauses = ["source_type = 'block'"]
+        params: list[Any] = []
+        if topic:
+            params.append(topic)
+            clauses.append(f"topic = ${len(params)}")
+        if party_id:
+            params.append(party_id.lower())
+            clauses.append(f"party_id = ${len(params)}")
+        params.append(max(1, min(limit, 120)))
+        sql = f"""
+            SELECT id, party_id, party_name, topic, subtopic, title,
+                   quote, explanation, source_ref, source_url, source_type
+            FROM proposals
+            WHERE {' AND '.join(clauses)}
+            ORDER BY party_id, subtopic, title
+            LIMIT ${len(params)}
+        """
+        async with self.pool.acquire() as conn:
+            rows = await conn.fetch(sql, *params)
+        return [dict(r) for r in rows]
