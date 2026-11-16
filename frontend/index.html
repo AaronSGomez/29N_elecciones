@@ -29,29 +29,39 @@
     </nav>
   </header>
 
-  <main class="app-shell">
-    <!-- SIDEBAR DE FILTROS Y PERFIL -->
+  <!-- VISTA 1: SOLO CHAT -->
+  <main class="app-shell" id="view-chat">
     <aside class="sidebar-panel">
       <div>
         <div class="panel-header-tag" id="status-text">CARGANDO ÍNDICE QDRANT...</div>
-        <p class="hero-subtitle">Consulta los programas oficiales de <strong>PP, PSOE, VOX, Frente Amplio y SALF</strong> en bloques verificados con enlace directo a cada página.</p>
+        <p class="hero-subtitle">Partidos con mayor representación en <strong>Asturias</strong> y ámbito nacional (29N).</p>
       </div>
 
-      <div id="filters-section">
-        <div class="filter-group-title">01. Filtrar Partidos</div>
+      <div>
+        <div class="filter-group-title">01. Partidos (Asturias / 29N)</div>
         <div class="party-grid">
           <button type="button" class="party-chip full-width active" data-party="all">
             <span>TODOS (COMPARATIVA)</span><span>[5]</span>
           </button>
-          <button type="button" class="party-chip" data-party="pp"><span>PP</span><span>●</span></button>
-          <button type="button" class="party-chip" data-party="psoe"><span>PSOE</span><span>●</span></button>
-          <button type="button" class="party-chip" data-party="vox"><span>VOX</span><span>●</span></button>
-          <button type="button" class="party-chip" data-party="frente-amplio"><span>F. AMPLIO</span><span>●</span></button>
-          <button type="button" class="party-chip full-width" data-party="salf"><span>SALF (SE ACABÓ LA FIESTA)</span><span>●</span></button>
+          <button type="button" class="party-chip" data-party="pp">
+            <span>PP</span><span class="party-logo-badge logo-pp">PP</span>
+          </button>
+          <button type="button" class="party-chip" data-party="psoe">
+            <span>PSOE</span><span class="party-logo-badge logo-psoe">PS</span>
+          </button>
+          <button type="button" class="party-chip" data-party="vox">
+            <span>VOX</span><span class="party-logo-badge logo-vox">VX</span>
+          </button>
+          <button type="button" class="party-chip" data-party="frente-amplio">
+            <span>F. AMPLIO</span><span class="party-logo-badge logo-fa">FA</span>
+          </button>
+          <button type="button" class="party-chip full-width" data-party="salf">
+            <span>SALF (SE ACABÓ LA FIESTA)</span><span class="party-logo-badge logo-salf">SF</span>
+          </button>
         </div>
       </div>
 
-      <div id="topics-section">
+      <div>
         <div class="filter-group-title">02. Bloque Temático (Opcional)</div>
         <div class="topic-list">
           <button type="button" class="topic-pill" data-topic="Vivienda">Vivienda</button>
@@ -67,70 +77,148 @@
         </div>
       </div>
 
-      <div id="profile-section" class="hidden-panel">
-        <div class="filter-group-title">Configura tu perfil de votante (Nota: no recabamos datos)</div>
-        <div class="profile-form">
-          <select id="prof-sex" class="profile-select" aria-label="Sexo">
-            <option value="">Sexo (No indicar)</option>
+      <div class="security-notice">
+        <strong>TRANSPARENCIA 29N:</strong> Datos directos de PostgreSQL + Qdrant con enlace a la página oficial del programa.
+      </div>
+    </aside>
+
+    <!-- ÁREA DE CHAT: BUSCADOR ARRIBA, RESULTADOS DEBAJO -->
+    <section class="chat-workspace" aria-label="Chat Electoral 29N">
+      <div class="chat-toolbar">
+        <span class="chat-scope-badge" id="chat-scope-badge">FILTRO: TODOS</span>
+        <button type="button" class="clear-chat-btn" id="clear-chat-btn">[ LIMPIAR ]</button>
+      </div>
+
+      <form class="chat-input-form" id="chat-form" autocomplete="off">
+        <input
+          type="text"
+          id="chat-input"
+          class="chat-input"
+          maxlength="500"
+          placeholder="Pregunta sobre cualquier tema del 29N (ej. ¿Qué proponen sobre alquiler o impuestos?)..."
+          required
+        >
+        <button type="submit" class="chat-send-btn" id="chat-send-btn">BUSCAR // ↵</button>
+      </form>
+
+      <div class="suggestions-row">
+        <button type="button" class="suggestion-btn" data-q="¿Qué proponen los partidos sobre el alquiler y la Ley de Vivienda?">¿Vivienda y alquiler?</button>
+        <button type="button" class="suggestion-btn" data-q="¿Qué medidas fiscales y de impuestos plantea cada partido?">¿Impuestos y fiscalidad?</button>
+        <button type="button" class="suggestion-btn" data-q="¿Cómo abordan las pensiones y la edad de jubilación?">¿Pensiones?</button>
+        <button type="button" class="suggestion-btn" data-q="¿Qué proponen sobre sanidad pública y listas de espera?">¿Sanidad?</button>
+      </div>
+
+      <div class="chat-messages" id="chat-messages">
+        <article class="msg-card assistant">
+          <div class="msg-meta">
+            <span>SISTEMA // RAG 29N</span>
+            <span>LISTO</span>
+          </div>
+          <div class="msg-body">Escribe tu consulta en el cuadro superior. Mostraré qué partidos tienen propuestas sobre ese tema y debajo aparecerán los bloques oficiales con la cita exacta y el enlace directo a la página del programa.</div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- VISTA 2: FORMULARIO DE PERFIL A TAMAÑO COMPLETO -->
+  <section class="profile-fullscreen hidden-panel" id="view-profile" aria-label="Configura tu perfil de votante">
+    <div class="profile-card-full">
+      <div class="panel-header-tag">CONFIGURA TU PERFIL DE VOTANTE · NOTA: NO RECABAMOS DATOS</div>
+      <h2 class="hero-title">Análisis imparcial según tu situación</h2>
+      <p class="hero-subtitle">Todos los campos son opcionales. Se utilizan únicamente en tu consulta actual para comparar qué medidas de cada partido te afectan más, sin sesgos ni almacenamiento en servidor.</p>
+
+      <div class="profile-grid-full">
+        <div class="profile-field">
+          <label for="prof-sex">Sexo</label>
+          <select id="prof-sex">
+            <option value="">No indicar</option>
             <option value="mujer">Mujer</option>
             <option value="hombre">Hombre</option>
             <option value="otro">Otro</option>
           </select>
-          <select id="prof-age" class="profile-select" aria-label="Edad">
-            <option value="">Edad (No indicar)</option>
+        </div>
+
+        <div class="profile-field">
+          <label for="prof-age">Edad</label>
+          <select id="prof-age">
+            <option value="">No indicar</option>
             <option value="<25">&lt; 25 años</option>
             <option value="25-35">25 - 35 años</option>
             <option value="36-50">36 - 50 años</option>
             <option value="51-65">51 - 65 años</option>
             <option value=">65">&gt; 65 años</option>
           </select>
-          <select id="prof-salary" class="profile-select" aria-label="Tramo salarial">
-            <option value="">Salario (No indicar)</option>
+        </div>
+
+        <div class="profile-field">
+          <label for="prof-salary">Tramo salarial anual</label>
+          <select id="prof-salary">
+            <option value="">No indicar</option>
             <option value="<15k">&lt; 15.000 €/año</option>
-            <option value="15k-28k">15k - 28k €/año</option>
-            <option value="28k-50k">28k - 50k €/año</option>
+            <option value="15k-28k">15.000 - 28.000 €/año</option>
+            <option value="28k-50k">28.000 - 50.000 €/año</option>
             <option value=">50k">&gt; 50.000 €/año</option>
           </select>
-          <select id="prof-family" class="profile-select" aria-label="Situación familiar">
-            <option value="">Familia / Hijos</option>
+        </div>
+
+        <div class="profile-field">
+          <label for="prof-family">Familia / Hijos</label>
+          <select id="prof-family">
+            <option value="">No indicar</option>
             <option value="sin_hijos">Sin hijos</option>
             <option value="con_hijos">Con hijos (1-2)</option>
             <option value="familia_numerosa">Familia numerosa (3+)</option>
             <option value="monoparental">Familia monoparental</option>
           </select>
-          <select id="prof-housing" class="profile-select" aria-label="Vivienda">
-            <option value="">Vivienda</option>
+        </div>
+
+        <div class="profile-field">
+          <label for="prof-housing">Situación de vivienda</label>
+          <select id="prof-housing">
+            <option value="">No indicar</option>
             <option value="alquiler">De alquiler</option>
             <option value="hipoteca">Con hipoteca</option>
             <option value="propiedad">En propiedad</option>
-            <option value="busca_primera_vivienda">Busca 1ª vivienda</option>
+            <option value="busca_primera_vivienda">Busca primera vivienda</option>
           </select>
-          <select id="prof-employment" class="profile-select" aria-label="Situación laboral">
-            <option value="">Situación laboral</option>
-            <option value="trabajador">Cuenta ajena</option>
+        </div>
+
+        <div class="profile-field">
+          <label for="prof-employment">Situación laboral</label>
+          <select id="prof-employment">
+            <option value="">No indicar</option>
+            <option value="trabajador">Trabajador cuenta ajena</option>
             <option value="autonomo">Autónomo</option>
             <option value="desempleado">Desempleado</option>
             <option value="estudiante">Estudiante</option>
             <option value="jubilado">Jubilado</option>
             <option value="funcionario">Funcionario</option>
           </select>
-          <select id="prof-pets" class="profile-select" aria-label="Mascotas">
-            <option value="">Mascotas</option>
+        </div>
+
+        <div class="profile-field">
+          <label for="prof-pets">Mascotas</label>
+          <select id="prof-pets">
+            <option value="">No indicar</option>
             <option value="si">Con mascotas</option>
             <option value="no">Sin mascotas</option>
           </select>
-          <select id="prof-ccaa" class="profile-select" aria-label="Comunidad Autónoma">
-            <option value="">Comunidad Autónoma</option>
+        </div>
+
+        <div class="profile-field">
+          <label for="prof-ccaa">Comunidad Autónoma</label>
+          <select id="prof-ccaa">
+            <option value="Asturias" selected>Principado de Asturias</option>
+            <option value="">Otra / No indicar</option>
             <option value="Andalucía">Andalucía</option>
             <option value="Aragón">Aragón</option>
-            <option value="Asturias">Asturias</option>
             <option value="Baleares">Baleares</option>
             <option value="Canarias">Canarias</option>
             <option value="Cantabria">Cantabria</option>
             <option value="Castilla-La Mancha">Castilla-La Mancha</option>
             <option value="Castilla y León">Castilla y León</option>
             <option value="Cataluña">Cataluña</option>
-            <option value="Comunidad Valenciana">C. Valenciana</option>
+            <option value="Comunidad Valenciana">Comunidad Valenciana</option>
             <option value="Extremadura">Extremadura</option>
             <option value="Galicia">Galicia</option>
             <option value="Madrid">Madrid</option>
@@ -140,60 +228,29 @@
             <option value="La Rioja">La Rioja</option>
             <option value="Ceuta/Melilla">Ceuta / Melilla</option>
           </select>
-          <select id="prof-immigration" class="profile-select full-width" aria-label="Situación residencia">
-            <option value="">Residencia / Inmigración (No indicar)</option>
+        </div>
+
+        <div class="profile-field">
+          <label for="prof-immigration">Residencia / Inmigración</label>
+          <select id="prof-immigration">
+            <option value="">No indicar</option>
             <option value="nacional">Nacionalidad española</option>
             <option value="residente_legal">Inmigrante residente legal</option>
             <option value="en_regularizacion">Inmigrante en regularización</option>
           </select>
-          <button type="button" id="profile-analyze-btn" class="profile-analyze-btn">
-            ANALIZAR MEDIDAS PARA MI PERFIL // ⚖️
-          </button>
         </div>
       </div>
 
-      <div class="security-notice">
-        <strong>TRANSPARENCIA 29N:</strong> No guardamos ni recabamos datos personales. El perfil se usa solo en tu consulta actual para comparar medidas imparcialmente.
+      <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+        <button type="button" id="profile-analyze-btn" class="chat-send-btn">
+          COMPARAR MEDIDAS PARA MI PERFIL // ⚖️
+        </button>
+        <button type="button" id="profile-back-btn" class="clear-chat-btn">
+          VOLVER AL CHAT
+        </button>
       </div>
-    </aside>
-
-    <!-- ÁREA DE CHAT -->
-    <section class="chat-workspace" aria-label="Chat Electoral 29N">
-      <div class="chat-toolbar">
-        <span class="chat-scope-badge" id="chat-scope-badge">FILTRO: TODOS</span>
-        <button type="button" class="clear-chat-btn" id="clear-chat-btn">[ LIMPIAR CHAT ]</button>
-      </div>
-
-      <div class="chat-messages" id="chat-messages">
-        <article class="msg-card assistant">
-          <div class="msg-meta">
-            <span>SISTEMA // RAG 29N</span>
-            <span>LISTO</span>
-          </div>
-          <div class="msg-body">Bienvenido a "A quién votar estas elecciones 29N". Pregunta cualquier tema o configura tu perfil de votante en el menú superior. Verás la respuesta acompañada de bloques por partido con la cita textual y el enlace directo a la página exacta del programa oficial.</div>
-        </article>
-      </div>
-
-      <div class="suggestions-row">
-        <button type="button" class="suggestion-btn" data-q="¿Qué proponen los partidos sobre el alquiler y la Ley de Vivienda?">¿Vivienda y alquiler?</button>
-        <button type="button" class="suggestion-btn" data-q="¿Qué medidas fiscales y de impuestos plantea cada partido?">¿Impuestos y fiscalidad?</button>
-        <button type="button" class="suggestion-btn" data-q="¿Cómo abordan las pensiones y la edad de jubilación?">¿Pensiones?</button>
-        <button type="button" class="suggestion-btn" data-q="¿Qué proponen sobre sanidad pública y listas de espera?">¿Sanidad?</button>
-      </div>
-
-      <form class="chat-input-form" id="chat-form" autocomplete="off">
-        <input
-          type="text"
-          id="chat-input"
-          class="chat-input"
-          maxlength="500"
-          placeholder="Pregunta sobre los programas del 29N (ej. ¿Qué propone cada partido sobre vivienda?)..."
-          required
-        >
-        <button type="submit" class="chat-send-btn" id="chat-send-btn">ENVIAR // ↵</button>
-      </form>
-    </section>
-  </main>
+    </div>
+  </section>
 
   <footer class="site-footer">
     <div class="footer-inner">

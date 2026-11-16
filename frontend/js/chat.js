@@ -22,6 +22,13 @@
     scopeBadge.textContent = `FILTRO: ${pText}${tText}`;
   }
 
+  function cleanPlainText(text) {
+    return (text || "")
+      .replace(/\*\*(.*?)\*\*/g, "$1")
+      .replace(/^#{1,6}\s+/gm, "")
+      .replace(/^\|\s*[-:]+\s*\|.*$/gm, "");
+  }
+
   function createMessageCard(role, initialText) {
     const card = document.createElement("article");
     card.className = `msg-card ${role}`;
@@ -29,7 +36,7 @@
     const meta = document.createElement("div");
     meta.className = "msg-meta";
     const authorSpan = document.createElement("span");
-    authorSpan.textContent = role === "user" ? "CONSULTA // USUARIO" : "RESPUESTA // RAG 29N";
+    authorSpan.textContent = role === "user" ? "CONSULTA // USUARIO" : "RESPUESTA // DATOS 29N";
     const timeSpan = document.createElement("span");
     timeSpan.textContent = new Date().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
     meta.appendChild(authorSpan);
@@ -37,13 +44,12 @@
 
     const body = document.createElement("div");
     body.className = "msg-body";
-    body.textContent = initialText || "";
+    body.textContent = cleanPlainText(initialText || "");
 
     card.appendChild(meta);
     card.appendChild(body);
-    messagesEl.appendChild(card);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-
+    // Insertar arriba (justo debajo del buscador) para ver siempre el resultado más reciente primero
+    messagesEl.prepend(card);
     return { card, body };
   }
 
@@ -124,7 +130,7 @@
     inputEl.value = "";
 
     createMessageCard("user", query);
-    const { card: assistantCard, body: assistantBody } = createMessageCard("assistant", "Consultando programas en Qdrant...");
+    const { card: assistantCard, body: assistantBody } = createMessageCard("assistant", "Consultando PostgreSQL + Qdrant...");
 
     try {
       const profile = {
@@ -179,8 +185,7 @@
               assistantBody.textContent = "";
               firstToken = false;
             }
-            assistantBody.textContent += payload.content;
-            messagesEl.scrollTop = messagesEl.scrollHeight;
+            assistantBody.textContent = cleanPlainText(assistantBody.textContent + payload.content);
           } else if (payload.type === "sources") {
             appendSources(assistantCard, payload.sources);
           } else if (payload.type === "error") {
@@ -235,33 +240,35 @@
     });
   });
 
-  // Pestañas menú superior: Chat vs Configura tu perfil de votante
+  // Pestañas menú superior: vista full-screen de Chat vs Perfil de votante
   const tabChatBtn = document.getElementById("tab-chat-btn");
   const tabProfileBtn = document.getElementById("tab-profile-btn");
-  const filtersSec = document.getElementById("filters-section");
-  const topicsSec = document.getElementById("topics-section");
-  const profileSec = document.getElementById("profile-section");
+  const viewChat = document.getElementById("view-chat");
+  const viewProfile = document.getElementById("view-profile");
 
-  tabChatBtn?.addEventListener("click", () => {
-    tabChatBtn.classList.add("active");
+  function showChatView() {
+    tabChatBtn?.classList.add("active");
     tabProfileBtn?.classList.remove("active");
-    filtersSec?.classList.remove("hidden-panel");
-    topicsSec?.classList.remove("hidden-panel");
-    profileSec?.classList.add("hidden-panel");
-  });
+    viewChat?.classList.remove("hidden-panel");
+    viewProfile?.classList.add("hidden-panel");
+  }
 
-  tabProfileBtn?.addEventListener("click", () => {
-    tabProfileBtn.classList.add("active");
+  function showProfileView() {
+    tabProfileBtn?.classList.add("active");
     tabChatBtn?.classList.remove("active");
-    filtersSec?.classList.add("hidden-panel");
-    topicsSec?.classList.add("hidden-panel");
-    profileSec?.classList.remove("hidden-panel");
-  });
+    viewProfile?.classList.remove("hidden-panel");
+    viewChat?.classList.add("hidden-panel");
+  }
+
+  tabChatBtn?.addEventListener("click", showChatView);
+  tabProfileBtn?.addEventListener("click", showProfileView);
+  document.getElementById("profile-back-btn")?.addEventListener("click", showChatView);
 
   // Botón de análisis imparcial por perfil ciudadano
   document.getElementById("profile-analyze-btn")?.addEventListener("click", () => {
+    showChatView();
     sendQuestion(
-      "Analiza de forma imparcial qué medidas concretas de los programas del 29N me benefician o afectan según mi perfil (empleo, salario, familia/hijos e inmigración si aplica), comparando los partidos con citas exactas."
+      "Analiza de forma imparcial qué medidas concretas de los programas del 29N me benefician o afectan según mi perfil, comparando los partidos con citas exactas."
     );
   });
 
