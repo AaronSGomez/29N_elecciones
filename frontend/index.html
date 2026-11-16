@@ -34,48 +34,52 @@
     </nav>
   </header>
 
-  <!-- APARTADO 1: INICIO (PUERTA DE ENTRADA CONCISA) -->
+  <!-- APARTADO 1: INICIO (PORTADA CLARA: QUÉ HACEMOS, CÓMO Y QUÉ OBTENDRÁS) -->
   <section class="hero-intro-band" id="view-home" aria-label="Inicio y guía">
     <div class="hero-intro-card">
       <div class="panel-header-tag">HERRAMIENTA CÍVICA INDEPENDIENTE · ELECCIONES 29N</div>
-      <h2 class="hero-title" style="font-size: 1.85rem; margin-bottom: 0.5rem;">Consulta, compara y aclara tus ideas con datos oficiales</h2>
-      <p class="hero-subtitle" style="margin-top: 0; max-width: 880px;">
-        Comparamos los cinco programas electorales oficiales (**PP, PSOE, VOX, Frente Amplio y SALF**) extraídos de sus documentos originales y bloques temáticos. No recomendamos el voto ni calculamos afinidades con partidos.
+      <h2 class="hero-title" style="font-size: 1.85rem; margin-bottom: 0.6rem;">Entiende los programas del 29N y aclara tus ideas con datos oficiales</h2>
+      <p class="hero-subtitle" style="margin-top: 0; max-width: 920px;">
+        <strong>En ningún momento facilitamos ni recomendamos votos.</strong> Esta plataforma solo ofrece un análisis orientativo de tus preferencias según tus ideas y prioridades, junto con acceso directo a los documentos oficiales de <strong>PP, PSOE, VOX, Frente Amplio y SALF</strong>.
       </p>
+
+      <div class="home-section-block" style="margin-top: 1.1rem; padding-top: 1rem;">
+        <div class="home-rules-grid">
+          <div class="home-rule-card">
+            <strong style="font-family:var(--font-mono); font-size:0.8rem;">1. QUÉ HACEMOS Y CÓMO LO HACEMOS</strong>
+            <ul>
+              <li>Indexamos los <strong>5 programas electorales oficiales íntegros</strong> (444 páginas en PDF + 931 bloques temáticos) en PostgreSQL y Qdrant.</li>
+              <li>Cada dato mostrado incluye su cita literal y enlace directo a la página exacta del programa oficial.</li>
+              <li>Tu perfil y tu test se calculan <strong>100 % en tu navegador</strong>, sin cuentas ni cookies de seguimiento.</li>
+            </ul>
+          </div>
+          <div class="home-rule-card">
+            <strong style="font-family:var(--font-mono); font-size:0.8rem;">2. QUÉ OBTENDRÁS AL FINALIZAR</strong>
+            <ul>
+              <li><strong>En Programas:</strong> comparativa lado a lado por subtemas y asistente de chat que responde solo con evidencia oficial.</li>
+              <li><strong>En Mi espacio:</strong> un mapa visual de tus ideas en <strong>12 ejes</strong>, detección de matices y el diagrama orientativo <strong>«Uno a uno»</strong> ponderado por los temas que más te importan.</li>
+              <li><strong>Decisión tuya:</strong> tú decides qué peso darle a cada tema y contrastas las medidas reales.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
       <div class="hero-steps-grid" style="margin-top: 1.25rem;">
         <article class="hero-step-box">
-          <strong>CONSULTAR Y COMPARAR PROGRAMAS</strong>
-          <p>Explora las 21 materias oficiales lado a lado por subtemas y consulta los documentos originales con página exacta.</p>
-          <button type="button" class="w-btn primary home-go-btn" data-view="programs" data-sub="comparator">ABRIR PROGRAMAS &rarr;</button>
+          <strong>1 · COMPARAR PROGRAMAS</strong>
+          <p>Explora las 21 materias oficiales partido a partido por subtemas y abre las páginas exactas de cada PDF.</p>
+          <button type="button" class="w-btn primary home-go-btn" data-view="programs" data-sub="comparator">ABRIR COMPARADOR &rarr;</button>
         </article>
         <article class="hero-step-box">
-          <strong>PREGUNTAR SOBRE PROPUESTAS</strong>
-          <p>Formula preguntas libres al asistente documental dentro de Programas para localizar medidas con citas verificables.</p>
-          <button type="button" class="w-btn home-go-btn" data-view="programs" data-sub="chat">IR A PREGUNTAR &rarr;</button>
+          <strong>2 · PREGUNTAR AL ASISTENTE</strong>
+          <p>Escribe dudas concretas con tus propias palabras y recibe citas literales de los programas cargados.</p>
+          <button type="button" class="w-btn home-go-btn" data-view="programs" data-sub="chat">IR AL CHAT ELECTORAL &rarr;</button>
         </article>
         <article class="hero-step-box">
-          <strong>CONOCER TUS PRIORIDADES E IDEAS</strong>
-          <p>Define tu contexto socioeconómico, responde el test orientativo de 12 ejes y revisa tus resultados en tu propio navegador.</p>
+          <strong>3 · MI ESPACIO (PERFIL + TEST)</strong>
+          <p>Define tu contexto opcional, responde el test de 12 ejes con ejemplos claros y consulta tu gráfico «Uno a uno».</p>
           <button type="button" class="w-btn home-go-btn" data-view="myspace" data-sub="context">ABRIR MI ESPACIO &rarr;</button>
         </article>
-      </div>
-
-      <div class="home-section-block">
-        <div class="home-rules-grid">
-          <div class="home-rule-card">
-            <strong style="font-family:var(--font-mono); font-size:0.76rem;">FUNCIONAMIENTO Y PRIVACIDAD</strong>
-            <p class="hero-subtitle" style="margin-top:0.35rem;">
-              Tu perfil, tus respuestas al test y tus prioridades se almacenan solo en tu navegador (<code>localStorage</code> o memoria temporal). Únicamente las preguntas que escribes en el chat se envían al servidor y al proveedor de IA para responderlas.
-            </p>
-          </div>
-          <div class="home-rule-card">
-            <strong style="font-family:var(--font-mono); font-size:0.76rem;">FUENTES DOCUMENTALES</strong>
-            <p class="hero-subtitle" style="margin-top:0.35rem;">
-              PDFs oficiales de 2026 (PP 82 págs., PSOE 114 págs., VOX 55 págs., Frente Amplio 151 págs., SALF 42 págs.) y bloques temáticos de 29nov.es indexados en PostgreSQL y Qdrant.
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -227,13 +231,18 @@
       </div>
 
       <div>
-        <h4 class="footer-col-title">Privacidad y Flujo Real</h4>
+        <h4 class="footer-col-title">Privacidad y Algoritmo Transparente</h4>
         <p class="footer-privacy-text">
           Perfil, test y prioridades permanecen en tu navegador. Las preguntas voluntarias del chat se envían al backend y a Groq; Nginx y FastAPI registran metadatos técnicos HTTP.
         </p>
-        <button type="button" class="footer-privacy-btn" id="open-privacy-btn">
-          VER POLÍTICA DE PRIVACIDAD COMPLETA &rarr;
-        </button>
+        <div style="display:flex; flex-direction:column; gap:0.5rem;">
+          <button type="button" class="footer-privacy-btn" id="open-privacy-btn">
+            POLÍTICA DE PRIVACIDAD (0 % DATOS) &rarr;
+          </button>
+          <a class="footer-privacy-btn" href="/metodologia.html">
+            ALGORITMO Y BAREMOS DE CÁLCULO &rarr;
+          </a>
+        </div>
       </div>
     </div>
   </footer>

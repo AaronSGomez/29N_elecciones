@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metodología, Algoritmo y Baremos · 29N</title>
+  <meta name="description" content="Transparencia total del algoritmo de cálculo de los 12 ejes, baremos por partido y verificación de imparcialidad.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Space+Grotesk:wght@600;700;800&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/Style/base.css">
+  <link rel="stylesheet" href="/Style/navbar.css">
+  <link rel="stylesheet" href="/Style/chat.css">
+  <link rel="stylesheet" href="/Style/wizard.css">
+</head>
+<body>
+
+  <header class="masthead-bar">
+    <div class="masthead-brand">
+      <span class="status-dot"></span>
+      <div class="masthead-title-stack">
+        <h1 class="brand-title">Transparencia del Algoritmo · 29N</h1>
+        <span class="nav-privacy-note">CÁLCULO 100 % EN TU NAVEGADOR · SIN CAJAS NEGRAS</span>
+      </div>
+    </div>
+
+    <nav class="masthead-nav" aria-label="Volver">
+      <a class="nav-tab-btn active" href="/">← VOLVER A LA WEB PRINCIPAL</a>
+    </nav>
+  </header>
+
+  <main class="wizard-shell">
+    <article class="wizard-card">
+      <div class="panel-header-tag">AUDITORÍA PÚBLICA DEL CÁLCULO</div>
+      <h2 class="hero-title" style="font-size: 1.75rem;">Cómo calculamos tus resultados y baremos (sin sesgos)</h2>
+      <p class="hero-subtitle">
+        Todo el cálculo se ejecuta localmente en tu navegador (<code>frontend/js/ideology_test.js</code> y <code>frontend/js/results_view.js</code>). Aquí tienes las fórmulas exactas y la tabla completa de baremos para que puedas comprobarlo tú mismo.
+      </p>
+
+      <div class="home-section-block">
+        <h3 class="home-section-title">1. Escala de respuestas y normalización (0 a 100)</h3>
+        <p class="hero-subtitle">
+          Cada pregunta del test usa una escala del <code>1</code> al <code>5</code> (más la opción <code>0 = Sin información / No responder</code>):
+        </p>
+        <div class="home-rule-card" style="margin-top: 0.75rem;">
+          <ul>
+            <li><strong>Las respuestas <code>0</code> se excluyen:</strong> No puntúan ni bajan tu nota; simplemente no se cuentan en la media del eje.</li>
+            <li><strong>Preguntas directas (68 de 99):</strong> Se mantiene tu valor (<code>1..5</code>).</li>
+            <li><strong>Preguntas inversas (31 de 99):</strong> Se invierte matemáticamente con <code>6 - respuesta</code> (así un <code>5</code> pasa a <code>1</code> y un <code>1</code> pasa a <code>5</code>) para que todas apunten al mismo polo en cada eje.</li>
+            <li><strong>Fórmula a escala 0–100:</strong> <code>((valor_normalizado - 1) / 4) × 100</code>. Así: <code>1 → 0</code>, <code>2 → 25</code>, <code>3 → 50</code>, <code>4 → 75</code>, <code>5 → 100</code>.</li>
+            <li><strong>Cobertura mínima:</strong> Si un eje tiene menos de 5 preguntas respondidas, se avisa explícitamente como <em>«poco representativo»</em>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="home-section-block">
+        <h3 class="home-section-title">2. Cómo funciona el diagrama «Uno a uno» y la ponderación por prioridades</h3>
+        <div class="home-rule-card">
+          <ul>
+            <li><strong>Distancia por eje:</strong> Para cada eje respondido comparamos tu puntuación (<code>U</code>) con el baremo programático del partido (<code>P</code>): <code>cercanía = 100 - |U - P|</code>.</li>
+            <li><strong>Modo Ponderado (3x):</strong> Los ejes correspondientes a tus temas prioritarios (máx. 5) multiplican su peso por <code>3</code>; el resto de ejes cuentan <code>1</code>.</li>
+            <li><strong>Modo Solo mis prioridades:</strong> Calcula el porcentaje usando exclusivamente los ejes de los temas que has marcado como prioritarios.</li>
+            <li><strong>Modo Todos por igual:</strong> Media aritmética simple de todos los ejes respondidos.</li>
+            <li><strong>Ejes coincidentes (X de Y):</strong> Se cuenta un eje como coincidente cuando la diferencia absoluta <code>|U - P| ≤ 25</code> puntos sobre 100.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="home-section-block">
+        <h3 class="home-section-title">3. Baremos públicos por partido (0–100 en los 12 ejes)</h3>
+        <p class="hero-subtitle" style="margin-bottom: 0.75rem;">
+          Estos valores orientativos sitúan la posición programática de cada formación en cada eje según sus documentos oficiales de 2026:
+        </p>
+        <div style="overflow-x: auto;">
+          <table style="width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:0.8rem; background:var(--bg-primary); border:2px solid var(--border-strong);">
+            <thead>
+              <tr style="background:var(--bg-secondary); border-bottom:2px solid var(--border-strong);">
+                <th style="padding:0.5rem; text-align:left;">Eje</th>
+                <th style="padding:0.5rem;">PP</th>
+                <th style="padding:0.5rem;">PSOE</th>
+                <th style="padding:0.5rem;">VOX</th>
+                <th style="padding:0.5rem;">F. Amplio</th>
+                <th style="padding:0.5rem;">SALF</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:0.45rem;">E1. Economía y Mercado (0 Interv. / 100 Mercado)</td><td style="text-align:center;">72</td><td style="text-align:center;">30</td><td style="text-align:center;">78</td><td style="text-align:center;">15</td><td style="text-align:center;">82</td></tr>
+              <tr><td style="padding:0.45rem;">E2. Estado del Bienestar (0 Mixto / 100 Público)</td><td style="text-align:center;">48</td><td style="text-align:center;">82</td><td style="text-align:center;">35</td><td style="text-align:center;">90</td><td style="text-align:center;">30</td></tr>
+              <tr><td style="padding:0.45rem;">E3. Inmigración (0 Control / 100 Apertura)</td><td style="text-align:center;">35</td><td style="text-align:center;">72</td><td style="text-align:center;">10</td><td style="text-align:center;">88</td><td style="text-align:center;">15</td></tr>
+              <tr><td style="padding:0.45rem;">E4. Seguridad y Justicia (0 Garantista / 100 Penal)</td><td style="text-align:center;">78</td><td style="text-align:center;">45</td><td style="text-align:center;">92</td><td style="text-align:center;">25</td><td style="text-align:center;">88</td></tr>
+              <tr><td style="padding:0.45rem;">E5. Libertades Civiles (0 Tradición / 100 Autonomía)</td><td style="text-align:center;">48</td><td style="text-align:center;">78</td><td style="text-align:center;">25</td><td style="text-align:center;">85</td><td style="text-align:center;">55</td></tr>
+              <tr><td style="padding:0.45rem;">E6. Organización Territorial (0 Central / 100 Auton.)</td><td style="text-align:center;">45</td><td style="text-align:center;">70</td><td style="text-align:center;">12</td><td style="text-align:center;">82</td><td style="text-align:center;">25</td></tr>
+              <tr><td style="padding:0.45rem;">E7. Medioambiente y Energía (0 Mix / 100 Transición)</td><td style="text-align:center;">42</td><td style="text-align:center;">78</td><td style="text-align:center;">18</td><td style="text-align:center;">92</td><td style="text-align:center;">22</td></tr>
+              <tr><td style="padding:0.45rem;">E8. Educación y Cultura (0 Elección / 100 Pública)</td><td style="text-align:center;">28</td><td style="text-align:center;">75</td><td style="text-align:center;">22</td><td style="text-align:center;">90</td><td style="text-align:center;">35</td></tr>
+              <tr><td style="padding:0.45rem;">E9. Trabajo y Empresa (0 Flexibilidad / 100 Protec.)</td><td style="text-align:center;">35</td><td style="text-align:center;">78</td><td style="text-align:center;">30</td><td style="text-align:center;">90</td><td style="text-align:center;">25</td></tr>
+              <tr><td style="padding:0.45rem;">E10. Vivienda (0 Oferta priv. / 100 Regulación)</td><td style="text-align:center;">30</td><td style="text-align:center;">76</td><td style="text-align:center;">22</td><td style="text-align:center;">92</td><td style="text-align:center;">25</td></tr>
+              <tr><td style="padding:0.45rem;">E11. Familia y Conciliación (0 Neutro / 100 Ayudas)</td><td style="text-align:center;">65</td><td style="text-align:center;">78</td><td style="text-align:center;">75</td><td style="text-align:center;">85</td><td style="text-align:center;">45</td></tr>
+              <tr><td style="padding:0.45rem;">E12. Gobernanza (0 Actual / 100 Simplificación)</td><td style="text-align:center;">72</td><td style="text-align:center;">60</td><td style="text-align:center;">82</td><td style="text-align:center;">75</td><td style="text-align:center;">92</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="home-section-block">
+        <h3 class="home-section-title">4. Verificación matemática de imparcialidad</h3>
+        <div class="home-rule-card">
+          <ul>
+            <li><strong>Simetría perfecta por perfil:</strong> Cualquier ciudadano que responda alineado con el programa de cualquiera de los cinco partidos obtiene exactamente <code>100.0 %</code> en ese partido y el puesto #1 sin sesgos de orden ni favoritos ocultos.</li>
+            <li><strong>Comportamiento ante respuestas 100 % neutrales (<code>3 = 50</code> en todo):</strong> Ningún partido recibe 100 % artificialmente; las formaciones con posturas más cercanas al punto medio (<code>50</code>) puntúan entre <code>77–85 %</code> y las más alejadas del centro entre <code>64–75 %</code>, reflejando fielmente la distancia geométrica real.</li>
+            <li><strong>Sin recomendación de voto:</strong> El resultado es puramente orientativo y descriptivo. Su objetivo es invitarte a comprobar las propuestas literales de cada partido en la sección <strong>Programas</strong>.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+  </main>
+
+</body>
+</html>

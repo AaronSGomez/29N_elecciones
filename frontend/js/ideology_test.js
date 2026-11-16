@@ -202,20 +202,20 @@
 
   const HELP_BY_ID = {
     e1_1: "Significa pagar menos IRPF o IVA a cambio de que haya menos presupuesto para servicios públicos.",
-    e1_2: "Significa confiar en que la oferta y la demanda funcionen mejor sin normas o precios fijados por el Gobierno.",
+    e1_2: "Confiar en que las empresas compitan libremente sin precios fijados por el Gobierno. Ej: no fijar precios máximos desde un ministerio.",
     e1_3: "Menos trámites, licencias o requisitos legales para que las grandes compañías operen.",
     e1_4: "Que quienes ganan más dinero paguen un porcentaje mayor de impuestos que quienes ganan menos.",
     e1_5: "Que el Gobierno pueda poner topes de precio a productos básicos (alimentos, luz, alquiler).",
     e1_6: "Que empresas privadas gestionen más servicios (hospitales, transporte, etc.) mediante conciertos o concesiones.",
-    e1_7: "Recortar gastos del Estado cuando se gasta más de lo que se ingresa, para no aumentar la deuda.",
-    e1_8: "Apoyar o regular sectores clave (energía, industria, alimentación) aunque limite la competencia libre.",
+    e1_7: "Recortar gastos públicos cuando el Estado gasta más de lo que recauda. Ej: frenar nuevas ayudas o inversiones para bajar la deuda.",
+    e1_8: "Apoyar sectores clave aunque limite la competencia libre. Ej: subvencionar la industria nacional o frenar compras extranjeras.",
     e1_9: "Bajar impuestos sobre sueldos (IRPF) y cotizaciones para que quede más dinero neto en la nómina.",
     e1_10: "Usar los impuestos y ayudas para reducir la diferencia económica entre rentas altas y bajas.",
     e2_1: "Que los hospitales y centros de salud sean gestionados y financiados principalmente por el Estado.",
     e2_2: "Dedicar más dinero público a colegios, institutos y universidades públicas.",
     e2_3: "Que la pensión pública baste para vivir sin depender de planes privados.",
     e2_4: "Garantizar ayudas básicas (como el ingreso mínimo) a hogares con pocos recursos.",
-    e2_5: "Exigir requisitos (buscar empleo, formación, residencia) para recibir ayudas económicas.",
+    e2_5: "Exigir requisitos para cobrar ayudas. Ej: pedir estar buscando empleo activamente o llevar un mínimo de años empadronado.",
     e2_6: "Combinar gestión pública con empresas privadas para prestar servicios sanitarios o sociales.",
     e2_7: "Que todo el mundo pueda usar sanidad o educación de calidad independientemente de lo que gane.",
     e2_8: "Aumentar plazas públicas, ayudas y cuidadores para personas mayores o con discapacidad.",
@@ -240,14 +240,14 @@
     e5_1: "Que las leyes no regulen hábitos o decisiones privadas que no dañen a terceros.",
     e5_2: "Permitir expresar ideas molestas o minoritarias siempre que no constituyan delito.",
     e5_3: "Que hombres y mujeres tengan exactamente los mismos derechos y obligaciones ante la ley.",
-    e5_4: "Dar las mismas posibilidades de partida a todos, sin imponer cuotas o resultados iguales.",
+    e5_4: "Dar las mismas posibilidades de partida sin imponer cuotas finales. Ej: dar becas para estudiar sin reservar plazas por porcentaje.",
     e5_5: "Proteger fiestas, costumbres e identidad cultural tradicional desde las instituciones.",
     e5_6: "Que el Estado no favorezca ninguna religión sobre otras ni sobre quienes no tienen creencias.",
     e5_7: "Proteger la autonomía de cada persona frente a presiones de grupo o normas morales.",
     e5_8: "Garantizar los derechos de las minorías aunque la mayoría no esté de acuerdo con ellas.",
     e6_1: "Que competencias como sanidad, educación o justicia vuelvan al Gobierno central en Madrid.",
     e6_2: "Que cada Comunidad Autónoma tenga más capacidad de decisión sobre sus propias leyes y presupuestos.",
-    e6_3: "Repartir el dinero entre comunidades según cuántos habitantes tienen y cuánto cuesta dar servicios allí.",
+    e6_3: "Repartir el dinero entre comunidades según cuántos habitantes tienen y cuánto cuesta dar servicios allí (ej. zonas más envejecidas o dispersas).",
     e6_4: "Que sanidad, educación o impuestos básicos sean muy parecidos vivas en la comunidad que vivas.",
     e6_5: "Apoyar y financiar el uso oficial del catalán, euskera, gallego o asturiano/otras lenguas.",
     e6_6: "Eliminar organismos repetidos entre Estado, comunidades y ayuntamientos.",
@@ -256,7 +256,7 @@
     e7_1: "Cambiar rápido hacia energías limpias aunque suban algunos costes a corto plazo.",
     e7_2: "Mantener o ampliar las centrales nucleares para producir electricidad estable.",
     e7_3: "Invertir más dinero público en energía solar, eólica y redes eléctricas.",
-    e7_4: "Evitar que normas ambientales obliguen a cerrar fábricas o encarezcan demasiado producir aquí.",
+    e7_4: "Evitar que normas ambientales obliguen a cerrar fábricas o encarezcan demasiado producir aquí. Ej: dar más plazo para adaptarse.",
     e7_5: "Cobrar más impuestos a empresas o actividades que emiten más CO2 o contaminan.",
     e7_6: "Reducir prohibiciones de circulación (como zonas de bajas emisiones) o impuestos al coche privado.",
     e7_7: "Dedicar más recursos a cuidar bosques, ríos, agricultura sostenible y pueblos.",
@@ -271,7 +271,7 @@
     e8_8: "Subvencionar museos, bibliotecas, cine y actividades culturales para que sean accesibles.",
     e9_1: "Hacer más fácil y barato contratar y despedir según la situación de cada empresa.",
     e9_2: "Subir el Salario Mínimo Interprofesional cuando sube la inflación.",
-    e9_3: "Dar más peso a los convenios firmados entre sindicatos y patronal.",
+    e9_3: "Dar más peso a los acuerdos firmados entre sindicatos y patronal. Ej: que el convenio del sector marque sueldos y horarios mínimos.",
     e9_4: "Bajar lo que pagan las empresas a la Seguridad Social por cada trabajador.",
     e9_5: "Aumentar inspecciones contra horas extra no pagadas, economía sumergida o falsos autónomos.",
     e9_6: "Que la cuota mensual de autónomos dependa directamente de lo que ganan realmente.",
@@ -298,7 +298,7 @@
     e12_4: "Publicar de forma clara contratos, presupuestos y decisiones de gobierno.",
     e12_5: "Usar más referéndums o consultas ciudadanas en decisiones importantes.",
     e12_6: "Limitar mandatos o exigir mayor rendición de cuentas a los cargos electos.",
-    e12_7: "Medir con datos públicos si una ley cumplió sus objetivos tras aplicarse.",
+    e12_7: "Medir con datos públicos si una ley funcionó tras aplicarse. Ej: publicar un informe anual viendo si una ayuda redujo realmente el paro.",
     e12_8: "Permitir hacer casi cualquier trámite público por internet de forma sencilla.",
     ctrl_1: "Sirve para contrastar tu preferencia entre rebaja fiscal y tamaño de los servicios públicos.",
     ctrl_2: "Mide si aceptarías mayor carga fiscal con destino finalista a sanidad y educación.",
@@ -421,7 +421,7 @@
         if (HELP_BY_ID[q.id]) {
           const qHelp = document.createElement("div");
           qHelp.className = "ideology-q-help";
-          qHelp.textContent = `Qué significa: ${HELP_BY_ID[q.id]}`;
+          qHelp.textContent = HELP_BY_ID[q.id];
           qCard.appendChild(qHelp);
         }
 
