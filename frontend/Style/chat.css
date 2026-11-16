@@ -330,6 +330,62 @@
   display: none !important;
 }
 
+/* --- FOOTER AUTOR & CONTACTO --- */
+.site-footer {
+  background: var(--bg-surface);
+  border-top: 3px solid var(--border-strong);
+  padding: 1.5rem 2rem;
+  margin-top: 1rem;
+}
+
+.footer-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.footer-meta {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--ink-secondary);
+}
+
+.footer-meta strong {
+  color: var(--ink-primary);
+}
+
+.footer-link-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  align-items: center;
+}
+
+.footer-link-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-strong);
+  padding: 0.4rem 0.75rem;
+  box-shadow: var(--shadow-flat);
+  transition: transform var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+}
+
+.footer-link-list a:hover {
+  transform: translate(-1px, -1px);
+  background: var(--accent-vermilion);
+  color: #FFFFFF;
+}
+
 .suggestions-row {
   padding: 0.6rem 1.25rem;
   border-top: 1px solid var(--border-subtle);
