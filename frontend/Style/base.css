@@ -1,42 +1,43 @@
 /* ==============================================================================
-   A QUIÉN VOTAR ESTAS ELECCIONES 29N — ESTÉTICA EGB AÑOS 90 (SOLO COLORES CLAROS)
-   Negro · Rojo · Azul sobre papel claro (PRINT//CORE 5)
+   A QUIÉN VOTAR ESTAS ELECCIONES 29N — EGB 90s + ESTILO CÓMIC / DIBUJO ANIMADO
+   Inspirado en enplatatv.com: papel mantequilla con trama cómic, bordes gruesos
+   de tinta (#17161C), esquinas redondeadas y sombra dura.
    ============================================================================== */
 
 :root {
-  --bg-primary: #F7F5F0;
-  --bg-secondary: #ECE8DF;
-  --bg-surface: #FFFFFF;
-  --bg-code: #111111;
+  --bg-primary: #FFF2CC;
+  --bg-secondary: #FFE7A3;
+  --bg-surface: #FFFDF6;
+  --bg-code: #17161C;
 
-  --ink-primary: #111111;
-  --ink-secondary: #333740;
-  --ink-muted: #5C6270;
-  --ink-inverse: #FFFFFF;
+  --ink-primary: #17161C;
+  --ink-secondary: #3D3935;
+  --ink-muted: #5F5A54;
+  --ink-inverse: #FFFDF6;
 
-  /* Paleta EGB 90s: Azul bolígrafo BIC, Rojo corrección, Negro tinta */
+  /* Paleta EGB 90s + Cómic: Azul BIC, Rojo corrección, Amarillo cómic, Tinta negra */
   --accent-vermilion: #1D4ED8;
   --accent-vermilion-hover: #1E40AF;
   --accent-red: #D92B2B;
-  --accent-green: #10B981;
+  --accent-yellow: #FFC21A;
+  --accent-green: #12A36A;
 
-  --border-strong: #111111;
-  --border-subtle: #D5CFC2;
-  --border-grid: rgba(29, 78, 216, 0.08);
+  --border-strong: #17161C;
+  --border-subtle: #D8CCA8;
 
-  /* Tipografía */
-  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Tipografía cómic editorial */
+  --font-display: 'Unbounded', 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', Consolas, "Courier New", monospace;
-  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-body: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  --radius-none: 0px;
-  --radius-sm: 2px;
-  --radius-md: 4px;
+  --radius-none: 8px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
 
-  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
 
-  --shadow-flat: 2px 2px 0px #111111;
-  --shadow-card: 4px 4px 0px #111111;
+  --shadow-flat: 3px 3px 0px #17161C;
+  --shadow-card: 6px 6px 0px #17161C;
 }
 
 *, *::before, *::after {
@@ -50,7 +51,7 @@ html {
   font-family: var(--font-body);
   background-color: var(--bg-primary);
   color: var(--ink-primary);
-  line-height: 1.6;
+  line-height: 1.55;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -62,11 +63,9 @@ body {
   background-color: var(--bg-primary);
   color: var(--ink-primary);
   font-family: var(--font-body);
-  /* Cuadrícula tipo cuaderno EGB */
-  background-image:
-    linear-gradient(var(--border-grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border-grid) 1px, transparent 1px);
-  background-size: 32px 32px;
+  /* Trama de puntos estilo cómic / dibujo animado */
+  background-image: radial-gradient(rgba(23, 22, 28, 0.085) 1.4px, transparent 1.9px);
+  background-size: 16px 16px;
 }
 
 button, input, textarea, select {

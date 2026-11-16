@@ -3,9 +3,9 @@
    ============================================================================= */
 
 .masthead-bar {
-  background: var(--bg-surface);
-  border-bottom: 3px solid var(--border-strong);
-  padding: 0.75rem 2rem;
+  background: var(--bg-primary);
+  border-bottom: 4px solid var(--border-strong);
+  padding: 0.8rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -57,34 +57,43 @@
 }
 
 .nav-tab-btn {
-  background: var(--bg-secondary);
-  border: 2px solid var(--border-strong);
-  padding: 0.42rem 0.9rem;
+  background: var(--bg-surface);
+  border: 3px solid var(--border-strong);
+  border-radius: 12px;
+  padding: 0.45rem 0.95rem;
   font-family: var(--font-mono);
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
   box-shadow: var(--shadow-flat);
-  transition: transform var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
 }
 
 .nav-tab-btn:hover {
-  transform: translate(-1px, -1px);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px var(--border-strong);
+}
+
+.nav-tab-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--border-strong);
 }
 
 .nav-tab-btn.active {
-  background: var(--accent-vermilion);
-  color: #FFFFFF;
+  background: var(--accent-yellow);
+  color: var(--ink-primary);
 }
 
 .nav-privacy-note {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: var(--accent-red);
-  border: 1.5px solid var(--accent-red);
-  padding: 0.25rem 0.55rem;
-  background: #FFF5F5;
+  font-size: 0.66rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  border: 2px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 0.22rem 0.55rem;
+  background: var(--accent-red);
+  box-shadow: 2px 2px 0px var(--border-strong);
 }
 
 @media (max-width: 900px) {
