@@ -1,0 +1,473 @@
+/* =============================================================================
+   29N ELECCIONES — PORTADA EDITORIAL (EXPLICAR, CONDUCIR Y DEMOSTRAR)
+   Composición asimétrica con ritmo visual, números gigantes, diagramas y
+   alternancia de zonas claras y de alto contraste.
+   ============================================================================= */
+
+.home-flow {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.home-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* --- BLOQUE 1: HERO PROTAGONISTA --- */
+.hero-band {
+  padding: 2.75rem 0 2.5rem;
+  border-bottom: 4px solid var(--border-strong);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.hero-kicker {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 800;
+  background: var(--accent-yellow);
+  border: 2.5px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 0.28rem 0.7rem;
+  box-shadow: 3px 3px 0px var(--border-strong);
+  margin-bottom: 1rem;
+}
+
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.6vw, 2.9rem);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--ink-primary);
+  margin-bottom: 1rem;
+}
+
+.hero-lead {
+  font-size: 1.04rem;
+  line-height: 1.55;
+  color: var(--ink-secondary);
+  max-width: 60ch;
+  margin-bottom: 1.4rem;
+}
+
+.hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.cta-hero-primary {
+  background: var(--accent-yellow);
+  color: var(--ink-primary);
+  border: 3px solid var(--border-strong);
+  border-radius: 14px;
+  padding: 0.85rem 1.4rem;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px var(--border-strong);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.cta-hero-secondary {
+  background: var(--bg-surface);
+  color: var(--ink-primary);
+  border: 3px solid var(--border-strong);
+  border-radius: 14px;
+  padding: 0.85rem 1.3rem;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px var(--border-strong);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.cta-hero-primary:hover,
+.cta-hero-secondary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--border-strong);
+}
+
+.hero-no-vote-note {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent-red);
+}
+
+/* Visual esquemático del Hero (12 ejes -> contraste) */
+.hero-diagram-box {
+  background: var(--bg-surface);
+  border: 4px solid var(--border-strong);
+  border-radius: 20px;
+  padding: 1.35rem;
+  box-shadow: 8px 8px 0px var(--border-strong);
+}
+
+.diagram-caption {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mini-axis-row {
+  display: grid;
+  grid-template-columns: 95px 1fr;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.mini-axis-track {
+  height: 11px;
+  background: var(--bg-primary);
+  border: 2px solid var(--border-strong);
+  border-radius: 999px;
+  position: relative;
+}
+
+.mini-axis-dot {
+  position: absolute;
+  top: -4px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--accent-vermilion);
+  border: 2px solid var(--border-strong);
+  transform: translateX(-50%);
+}
+
+.diagram-connector {
+  margin: 0.85rem 0;
+  border-top: 2px dashed var(--border-strong);
+  padding-top: 0.7rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.diagram-party-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.d-pill {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.22rem 0.55rem;
+  border: 2px solid var(--border-strong);
+  border-radius: 8px;
+  color: #FFFFFF;
+}
+
+/* --- BLOQUE 1B: DOS FORMAS DE ENTRAR (SPLIT CONTRASTADO) --- */
+.paths-band {
+  background: var(--bg-surface);
+  border-bottom: 4px solid var(--border-strong);
+  padding: 2.25rem 0;
+}
+
+.paths-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 4px solid var(--border-strong);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.path-pane {
+  padding: 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.path-pane.with-test {
+  background: var(--bg-primary);
+  border-right: 4px solid var(--border-strong);
+}
+
+.path-pane.no-test {
+  background: var(--bg-surface);
+}
+
+.path-badge {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 0.22rem 0.6rem;
+  border: 2px solid var(--border-strong);
+  border-radius: 6px;
+}
+
+.path-badge.req { background: var(--accent-yellow); }
+.path-badge.free { background: #ECFDF5; border-color: var(--accent-green); color: #065F46; }
+
+.path-pane h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.path-list {
+  padding-left: 1.2rem;
+  font-size: 0.92rem;
+  color: var(--ink-secondary);
+  flex: 1;
+}
+
+.path-list li { margin-bottom: 0.4rem; }
+
+/* --- BLOQUE 2: ASÍ FUNCIONA (3 PASOS CONECTADOS CON NÚMEROS GRANDES) --- */
+.how-band {
+  padding: 3rem 0;
+  border-bottom: 4px solid var(--border-strong);
+}
+
+.band-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--accent-vermilion);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.35rem;
+}
+
+.band-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.5vw, 2rem);
+  font-weight: 900;
+  margin-bottom: 1.75rem;
+}
+
+.steps-flow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  position: relative;
+}
+
+.step-node {
+  border-top: 5px solid var(--border-strong);
+  padding-top: 1rem;
+  position: relative;
+}
+
+.step-big-num {
+  font-family: var(--font-display);
+  font-size: 3.1rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--ink-primary);
+  margin-bottom: 0.35rem;
+}
+
+.step-big-num span {
+  color: var(--accent-red);
+}
+
+.step-node h4 {
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.step-subtitle {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.step-node p {
+  font-size: 0.9rem;
+  color: var(--ink-secondary);
+  line-height: 1.5;
+}
+
+/* --- BLOQUE 3: QUÉ RECIBES (MUESTRAS ILUSTRATIVAS) --- */
+.deliverables-band {
+  background: var(--bg-surface);
+  padding: 3rem 0;
+  border-bottom: 4px solid var(--border-strong);
+}
+
+.deliverables-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr 0.95fr;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.sample-panel {
+  background: var(--bg-primary);
+  border: 3px solid var(--border-strong);
+  border-radius: 16px;
+  padding: 1.25rem;
+  box-shadow: var(--shadow-flat);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sample-tag {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 800;
+  background: var(--ink-primary);
+  color: var(--accent-yellow);
+  padding: 0.18rem 0.5rem;
+  border-radius: 6px;
+}
+
+.sample-panel h4 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+.sample-panel p {
+  font-size: 0.88rem;
+  color: var(--ink-secondary);
+}
+
+.demo-bar-row {
+  display: grid;
+  grid-template-columns: 92px 1fr 44px;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.demo-bar-track {
+  height: 12px;
+  background: var(--bg-surface);
+  border: 2px solid var(--border-strong);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.demo-bar-fill {
+  height: 100%;
+  background: var(--accent-vermilion);
+}
+
+.demo-quote-snippet {
+  background: var(--bg-surface);
+  border: 2px solid var(--border-strong);
+  border-left-width: 6px;
+  border-radius: 10px;
+  padding: 0.75rem;
+  font-size: 0.84rem;
+  color: var(--ink-secondary);
+}
+
+/* --- BLOQUE 4: FUENTES Y PRIVACIDAD (BANDA DE ALTO CONTRASTE) --- */
+.sources-dark-band {
+  background: var(--ink-primary);
+  color: var(--ink-inverse);
+  padding: 2.75rem 0;
+}
+
+.sources-dark-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.sources-dark-band .band-eyebrow {
+  color: var(--accent-yellow);
+}
+
+.sources-dark-band .band-heading {
+  color: #FFFFFF;
+  margin-bottom: 1rem;
+}
+
+.source-type-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0 1.25rem;
+}
+
+.source-type-list li {
+  border-left: 4px solid var(--accent-yellow);
+  padding-left: 0.85rem;
+  font-size: 0.9rem;
+  color: #E5E0D0;
+}
+
+.privacy-summary-box {
+  background: #24222B;
+  border: 3px solid var(--accent-yellow);
+  border-radius: 16px;
+  padding: 1.35rem;
+}
+
+.privacy-summary-box h4 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--accent-yellow);
+  margin-bottom: 0.65rem;
+}
+
+.privacy-summary-box ul {
+  padding-left: 1.15rem;
+  font-size: 0.88rem;
+  color: #E5E0D0;
+}
+
+.privacy-summary-box li {
+  margin-bottom: 0.45rem;
+}
+
+@media (max-width: 960px) {
+  .home-container { padding: 0 1rem; }
+  .hero-grid,
+  .paths-split,
+  .steps-flow,
+  .deliverables-grid,
+  .sources-dark-grid {
+    grid-template-columns: 1fr;
+  }
+  .path-pane.with-test {
+    border-right: none;
+    border-bottom: 4px solid var(--border-strong);
+  }
+}

@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="/Style/navbar.css">
   <link rel="stylesheet" href="/Style/chat.css">
   <link rel="stylesheet" href="/Style/wizard.css">
+  <link rel="stylesheet" href="/Style/home.css">
 </head>
 <body>
 
@@ -34,54 +35,214 @@
     </nav>
   </header>
 
-  <!-- APARTADO 1: INICIO (PORTADA CLARA: QUÉ HACEMOS, CÓMO Y QUÉ OBTENDRÁS) -->
-  <section class="hero-intro-band" id="view-home" aria-label="Inicio y guía">
-    <div class="hero-intro-card">
-      <div class="panel-header-tag">HERRAMIENTA CÍVICA INDEPENDIENTE · ELECCIONES 29N</div>
-      <h2 class="hero-title" style="font-size: 1.85rem; margin-bottom: 0.6rem;">Entiende los programas del 29N y aclara tus ideas con datos oficiales</h2>
-      <p class="hero-subtitle" style="margin-top: 0; max-width: 920px;">
-        <strong>La plataforma no recomienda, predice ni facilita el voto.</strong> Su finalidad es ayudarte a comprender tus propias posiciones y contrastarlas con las propuestas publicadas por los partidos (<strong>PP, PSOE, VOX, Frente Amplio y SALF</strong>, programas de 2026).
-      </p>
+  <!-- APARTADO 1: INICIO (PORTADA EDITORIAL: EXPLICAR, CONDUCIR Y DEMOSTRAR) -->
+  <section class="home-flow" id="view-home" aria-label="Inicio y guía">
 
-      <div class="home-section-block" style="margin-top: 1.1rem; padding-top: 1rem;">
-        <div class="home-rules-grid">
-          <div class="home-rule-card">
-            <strong style="font-family:var(--font-mono); font-size:0.8rem;">1. QUÉ HACEMOS Y CÓMO LO HACEMOS</strong>
-            <ul>
-              <li>Indexamos los <strong>5 programas electorales oficiales de 2026</strong> (PP 82 págs., PSOE 114 págs., VOX 55 págs., Frente Amplio 151 págs., SALF 42 págs.) en PostgreSQL y Qdrant.</li>
-              <li>Cada dato mostrado incluye su cita literal, el documento de origen, su año y enlace directo a la página exacta.</li>
-              <li>Tu perfil y tu test se calculan <strong>en tu navegador</strong>, sin cuentas ni cookies de seguimiento.</li>
-            </ul>
+    <!-- BLOQUE 1 — HERO -->
+    <div class="hero-band">
+      <div class="home-container hero-grid">
+        <div>
+          <span class="hero-kicker">ELECCIONES 29N · EXPLORADOR CÍVICO INDEPENDIENTE</span>
+          <h2 class="hero-headline">¿Qué defiendes tú? ¿Y qué proponen realmente los partidos?</h2>
+          <p class="hero-lead">
+            Responde a unas preguntas sobre tus ideas, descubre cómo se distribuyen en 12 ejes y contrasta tus posiciones con los programas electorales oficiales. Sin recomendaciones de voto y con las fuentes a la vista.
+          </p>
+          <div class="hero-cta-row">
+            <button type="button" class="cta-hero-primary home-go-btn" data-view="myspace" data-sub="ideas">EMPEZAR MI TEST &rarr;</button>
+            <button type="button" class="cta-hero-secondary home-go-btn" data-view="programs" data-sub="comparator">EXPLORAR LOS PROGRAMAS &rarr;</button>
           </div>
-          <div class="home-rule-card">
-            <strong style="font-family:var(--font-mono); font-size:0.8rem;">2. QUÉ OBTENDRÁS AL FINALIZAR</strong>
-            <ul>
-              <li><strong>En Programas:</strong> comparativa lado a lado por subtemas, asistente de chat basado solo en documentos oficiales y sección independiente de <em>Promesas y cumplimiento</em>.</li>
-              <li><strong>En Mi espacio:</strong> mapa orientativo de tus ideas en <strong>12 ejes</strong> y comparación de tus respuestas con las posiciones documentadas de los partidos, dando más peso a los temas que hayas marcado como prioritarios.</li>
-              <li><strong>Decisión tuya:</strong> tú decides qué peso darle a cada tema y contrastas las medidas reales.</li>
+          <div class="hero-no-vote-note">
+            No recomendamos, predecimos ni facilitamos el voto · Tú decides con los documentos oficiales.
+          </div>
+        </div>
+
+        <aside class="hero-diagram-box" aria-label="Esquema visual del recorrido">
+          <div class="diagram-caption">
+            <span>RECORRIDO ORIENTATIVO</span>
+            <span>12 EJES &rarr; 5 PROGRAMAS</span>
+          </div>
+          <div class="mini-axis-row">
+            <span>Economía</span>
+            <div class="mini-axis-track"><div class="mini-axis-dot" style="left: 68%;"></div></div>
+          </div>
+          <div class="mini-axis-row">
+            <span>Vivienda</span>
+            <div class="mini-axis-track"><div class="mini-axis-dot" style="left: 32%;"></div></div>
+          </div>
+          <div class="mini-axis-row">
+            <span>Bienestar</span>
+            <div class="mini-axis-track"><div class="mini-axis-dot" style="left: 78%;"></div></div>
+          </div>
+          <div class="mini-axis-row">
+            <span>Seguridad</span>
+            <div class="mini-axis-track"><div class="mini-axis-dot" style="left: 55%;"></div></div>
+          </div>
+          <div class="diagram-connector">
+            <span>SE CONTRASTA CON:</span>
+            <span>EJEMPLO ILUSTRATIVO</span>
+          </div>
+          <div class="diagram-party-pills">
+            <span class="d-pill" style="background:#1D4ED8;">PP</span>
+            <span class="d-pill" style="background:#D92B2B;">PSOE</span>
+            <span class="d-pill" style="background:#16A34A;">VOX</span>
+            <span class="d-pill" style="background:#7C3AED;">F. AMPLIO</span>
+            <span class="d-pill" style="background:#17161C;">SALF</span>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- BLOQUE 1B — DOS FORMAS DE UTILIZAR LA PLATAFORMA -->
+    <div class="paths-band">
+      <div class="home-container">
+        <div class="paths-split">
+          <div class="path-pane with-test">
+            <span class="path-badge req">REQUIERE COMPLETAR EL TEST</span>
+            <h3>A. Quiero conocer mis posiciones y obtener una valoración personalizada</h3>
+            <ul class="path-list">
+              <li>Respondes a <strong>99 preguntas</strong> sencillas sobre economía, sociedad, vivienda, sanidad o seguridad.</li>
+              <li>Representamos tus ideas en <strong>12 ejes</strong> y puedes marcar qué temas son prioritarios para ti.</li>
+              <li>Comparamos tus respuestas con los baremos de las cinco formaciones en un gráfico orientativo «Uno a uno».</li>
+              <li><em>Sin completar el test no es posible calcular esta valoración personalizada.</em></li>
             </ul>
+            <div>
+              <button type="button" class="w-btn primary home-go-btn" data-view="myspace" data-sub="ideas">EMPEZAR MI TEST &rarr;</button>
+            </div>
+          </div>
+
+          <div class="path-pane no-test">
+            <span class="path-badge free">ACCESO DIRECTO SIN TEST</span>
+            <h3>B. Quiero consultar qué proponen los partidos</h3>
+            <ul class="path-list">
+              <li>Compara propuestas oficiales por <strong>materias y subtemas</strong> lado a lado entre los cinco partidos.</li>
+              <li>Consulta los programas oficiales completos con cita textual y número de página.</li>
+              <li>Pregunta al asistente sobre cualquier duda concreta para localizar medidas en segundos.</li>
+              <li>Consulta por separado el apartado independiente de <strong>Promesas y cumplimiento</strong>.</li>
+            </ul>
+            <div>
+              <button type="button" class="w-btn home-go-btn" data-view="programs" data-sub="comparator">EXPLORAR LOS PROGRAMAS &rarr;</button>
+            </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="hero-steps-grid" style="margin-top: 1.25rem;">
-        <article class="hero-step-box">
-          <strong>1 · COMPARAR PROGRAMAS</strong>
-          <p>Explora las 21 materias oficiales partido a partido por subtemas y abre las páginas exactas de cada PDF.</p>
-          <button type="button" class="w-btn primary home-go-btn" data-view="programs" data-sub="comparator">ABRIR COMPARADOR &rarr;</button>
-        </article>
-        <article class="hero-step-box">
-          <strong>2 · PREGUNTAR AL ASISTENTE</strong>
-          <p>Escribe dudas concretas con tus propias palabras y recibe citas literales de los programas cargados.</p>
-          <button type="button" class="w-btn home-go-btn" data-view="programs" data-sub="chat">IR AL CHAT ELECTORAL &rarr;</button>
-        </article>
-        <article class="hero-step-box">
-          <strong>3 · MI ESPACIO (PERFIL + TEST)</strong>
-          <p>Define tu contexto opcional, responde el test de 12 ejes con ejemplos claros y consulta tu gráfico «Uno a uno».</p>
-          <button type="button" class="w-btn home-go-btn" data-view="myspace" data-sub="context">ABRIR MI ESPACIO &rarr;</button>
-        </article>
+    <!-- BLOQUE 2 — ASÍ FUNCIONA (3 PASOS CONECTADOS) -->
+    <div class="how-band">
+      <div class="home-container">
+        <div class="band-eyebrow">CÓMO SE GENERA TU ANÁLISIS</div>
+        <h3 class="band-heading">Primero entendemos tus ideas. Después las contrastamos.</h3>
+        <div class="steps-flow">
+          <article class="step-node">
+            <div class="step-big-num">01<span>.</span></div>
+            <h4>RESPONDE</h4>
+            <div class="step-subtitle">Cuéntanos qué piensas</div>
+            <p>Contestas al test de 99 preguntas con opciones claras de acuerdo o desacuerdo. No necesitas saber economía ni términos políticos: cada cuestión incluye explicaciones cotidianas y opción de «Sin información».</p>
+          </article>
+          <article class="step-node">
+            <div class="step-big-num">02<span>.</span></div>
+            <h4>ANALIZAMOS TUS IDEAS</h4>
+            <div class="step-subtitle">Construimos tu mapa de 12 ejes</div>
+            <p>Tus respuestas se calculan en tu propio navegador en puntuaciones de 0 a 100 por cada eje. Además, puedes elegir tus temas prioritarios para darles más peso en la comparación.</p>
+          </article>
+          <article class="step-node">
+            <div class="step-big-num">03<span>.</span></div>
+            <h4>CONTRASTAMOS</h4>
+            <div class="step-subtitle">Comparamos con los programas</div>
+            <p>Cruzamos tus ejes con los baremos de las cinco formaciones. El resultado muestra cercanía geométrica orientativa entre posiciones, nunca un porcentaje literal de programa compartido ni un consejo de voto.</p>
+          </article>
+        </div>
       </div>
     </div>
+
+    <!-- BLOQUE 3 — QUÉ RECIBES (MUESTRAS ILUSTRATIVAS) -->
+    <div class="deliverables-band">
+      <div class="home-container">
+        <div class="band-eyebrow">QUÉ VERÁS AL TERMINAR</div>
+        <h3 class="band-heading">Resultados visuales para explorar, no para decidir por ti</h3>
+        <div class="deliverables-grid">
+          <article class="sample-panel">
+            <span class="sample-tag">EJEMPLO ILUSTRATIVO</span>
+            <h4>Tu mapa de ideas</h4>
+            <p>Visualización de tus 12 ejes (de 0 a 100) con explicación de cada polo y cobertura de respuestas.</p>
+            <div class="mini-axis-row">
+              <span>Bienestar</span>
+              <div class="mini-axis-track"><div class="mini-axis-dot" style="left: 72%;"></div></div>
+            </div>
+            <div class="mini-axis-row">
+              <span>Vivienda</span>
+              <div class="mini-axis-track"><div class="mini-axis-dot" style="left: 36%;"></div></div>
+            </div>
+            <div class="mini-axis-row">
+              <span>Fiscalidad</span>
+              <div class="mini-axis-track"><div class="mini-axis-dot" style="left: 61%;"></div></div>
+            </div>
+          </article>
+
+          <article class="sample-panel">
+            <span class="sample-tag">EJEMPLO ILUSTRATIVO · NO REAL</span>
+            <h4>Tu comparativa Uno a uno</h4>
+            <p>Cercanía orientativa ponderada por tus prioridades. No es una predicción ni una coincidencia literal con todo el programa.</p>
+            <div class="demo-bar-row">
+              <span>Opción A</span>
+              <div class="demo-bar-track"><div class="demo-bar-fill" style="width: 74%;"></div></div>
+              <span>74%</span>
+            </div>
+            <div class="demo-bar-row">
+              <span>Opción B</span>
+              <div class="demo-bar-track"><div class="demo-bar-fill" style="width: 63%; background:#16A34A;"></div></div>
+              <span>63%</span>
+            </div>
+            <div class="demo-bar-row">
+              <span>Opción C</span>
+              <div class="demo-bar-track"><div class="demo-bar-fill" style="width: 51%; background:#D92B2B;"></div></div>
+              <span>51%</span>
+            </div>
+          </article>
+
+          <article class="sample-panel">
+            <span class="sample-tag">EJEMPLO ILUSTRATIVO</span>
+            <h4>Tus puntos de contraste</h4>
+            <p>Acceso directo a citas literales, diferencias entre formaciones y páginas del documento oficial.</p>
+            <div class="demo-quote-snippet">
+              <strong>Materia · Subtema</strong><br>
+              «Cita textual del programa oficial para que compruebes por ti mismo la propuesta exacta.»<br>
+              <span style="font-family:var(--font-mono); font-size:0.74rem; color:var(--accent-vermilion);">Programa oficial 2026, pág. X &nearr;</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOQUE 4 — DE DÓNDE SALE LA INFORMACIÓN + PRIVACIDAD -->
+    <div class="sources-dark-band">
+      <div class="home-container sources-dark-grid">
+        <div>
+          <div class="band-eyebrow">FUENTES Y TRANSPARENCIA</div>
+          <h3 class="band-heading">De dónde sale la información</h3>
+          <p style="font-size:0.94rem; color:#E5E0D0; max-width:60ch;">
+            Trabajamos sobre los documentos de cinco formaciones (<strong>PP, PSOE, VOX, Frente Amplio y SALF</strong>), diferenciando claramente el origen de cada dato:
+          </p>
+          <ul class="source-type-list">
+            <li><strong>Programas y propuestas oficiales (2026):</strong> Documentos completos de cada partido (PP 82 págs., PSOE 114 págs., VOX 55 págs., Frente Amplio 151 págs., SALF 42 págs.) con enlace a la página exacta.</li>
+            <li><strong>Bloques temáticos complementarios:</strong> Estructuración por 21 materias y subtemas para facilitar la comparación lado a lado.</li>
+            <li><strong>Promesas y cumplimiento (sección independiente):</strong> Marco metodológico separado para evaluar gestión ejecutada frente a promesas futuras, sin mezclar un fragmento programático con una medida ya cumplida.</li>
+          </ul>
+          <a class="w-btn primary" href="/metodologia.html">VER METODOLOGÍA Y BAREMOS &rarr;</a>
+        </div>
+
+        <aside class="privacy-summary-box" aria-label="Privacidad y neutralidad">
+          <h4>Privacidad y neutralidad</h4>
+          <ul>
+            <li>Tu perfil y tus respuestas del test se procesan localmente en tu navegador.</li>
+            <li>No se envían automáticamente al asistente ni al proveedor de IA.</li>
+            <li>Las preguntas que escribes voluntariamente en el chat sí viajan al servidor para poder responderlas.</li>
+            <li>No se generan recomendaciones ni rankings de voto; el resultado es orientativo y sujeto a la metodología publicada.</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+
   </section>
 
   <!-- APARTADO 2: PROGRAMAS (COMPARAR + PREGUNTAR + PROMESAS Y CUMPLIMIENTO) -->
