@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>29N · Chat Electoral RAG — Programas Comparados</title>
+  <meta name="description" content="Consulta rápida sobre los programas electorales del 29 de noviembre mediante RAG en Qdrant y FastAPI.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/Style/base.css">
+  <link rel="stylesheet" href="/Style/navbar.css">
+  <link rel="stylesheet" href="/Style/chat.css">
+
+  <script>
+    (function () {
+      const t = localStorage.getItem("29n-theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="masthead-bar">
+    <div class="system-status-indicator">
+      <span class="status-dot" id="status-dot"></span>
+      <span id="status-text">STATUS: CONECTANDO // QDRANT // FASTAPI</span>
+    </div>
+
+    <div class="masthead-controls">
+      <span class="brand-badge">29N // RAG</span>
+      <button class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Cambiar tema visual">[ DARK THEME ]</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <!-- SIDEBAR DE CONTROL Y FILTROS -->
+    <aside class="sidebar-panel">
+      <div>
+        <div class="panel-header-tag">ELECCIONES 29 NOVIEMBRE</div>
+        <h1 class="hero-title">Programas Electorales 29N</h1>
+        <p class="hero-subtitle">Consulta directa sobre propuestas oficiales indexadas por bloques temáticos en Qdrant.</p>
+      </div>
+
+      <div>
+        <div class="filter-group-title">01. Filtrar Partidos</div>
+        <div class="party-grid">
+          <button type="button" class="party-chip full-width active" data-party="all">
+            <span>TODOS (COMPARATIVA)</span><span>[5]</span>
+          </button>
+          <button type="button" class="party-chip" data-party="pp"><span>PP</span><span>●</span></button>
+          <button type="button" class="party-chip" data-party="psoe"><span>PSOE</span><span>●</span></button>
+          <button type="button" class="party-chip" data-party="vox"><span>VOX</span><span>●</span></button>
+          <button type="button" class="party-chip" data-party="frente-amplio"><span>F. AMPLIO</span><span>●</span></button>
+          <button type="button" class="party-chip full-width" data-party="salf"><span>SALF (SE ACABÓ LA FIESTA)</span><span>●</span></button>
+        </div>
+      </div>
+
+      <div>
+        <div class="filter-group-title">02. Bloque Temático (Opcional)</div>
+        <div class="topic-list">
+          <button type="button" class="topic-pill" data-topic="Vivienda">Vivienda</button>
+          <button type="button" class="topic-pill" data-topic="Economía">Economía</button>
+          <button type="button" class="topic-pill" data-topic="Impuestos">Impuestos</button>
+          <button type="button" class="topic-pill" data-topic="Sanidad">Sanidad</button>
+          <button type="button" class="topic-pill" data-topic="Educación">Educación</button>
+          <button type="button" class="topic-pill" data-topic="Empleo">Empleo</button>
+          <button type="button" class="topic-pill" data-topic="Pensiones">Pensiones</button>
+          <button type="button" class="topic-pill" data-topic="Inmigración">Inmigración</button>
+          <button type="button" class="topic-pill" data-topic="Seguridad y Justicia">Seguridad</button>
+          <button type="button" class="topic-pill" data-topic="Energía">Energía</button>
+        </div>
+      </div>
+
+      <div class="security-notice">
+        <strong>MODO ESTRICTO ACTIVO:</strong> El asistente solo responde con información verificada de los programas cargados en Qdrant y cita la página exacta. Consultas fuera de ámbito son bloqueadas automáticamente.
+      </div>
+    </aside>
+
+    <!-- ÁREA DE CHAT -->
+    <section class="chat-workspace" aria-label="Chat Electoral 29N">
+      <div class="chat-toolbar">
+        <span class="chat-scope-badge" id="chat-scope-badge">FILTRO: TODOS</span>
+        <button type="button" class="clear-chat-btn" id="clear-chat-btn">[ LIMPIAR CHAT ]</button>
+      </div>
+
+      <div class="chat-messages" id="chat-messages">
+        <article class="msg-card assistant">
+          <div class="msg-meta">
+            <span>SISTEMA // RAG 29N</span>
+            <span>LISTO</span>
+          </div>
+          <div class="msg-body">Bienvenido al consultor de programas electorales del 29N. Selecciona uno o varios partidos en el panel izquierdo o pregunta directamente para comparar propuestas sobre vivienda, impuestos, sanidad, pensiones, empleo o cualquier bloque cargado.</div>
+        </article>
+      </div>
+
+      <div class="suggestions-row">
+        <button type="button" class="suggestion-btn" data-q="¿Qué proponen los partidos sobre el alquiler y la Ley de Vivienda?">¿Vivienda y alquiler?</button>
+        <button type="button" class="suggestion-btn" data-q="¿Qué medidas fiscales y de impuestos plantea cada partido?">¿Impuestos y fiscalidad?</button>
+        <button type="button" class="suggestion-btn" data-q="¿Cómo abordan las pensiones y la edad de jubilación?">¿Pensiones?</button>
+        <button type="button" class="suggestion-btn" data-q="¿Qué proponen sobre sanidad pública y listas de espera?">¿Sanidad?</button>
+      </div>
+
+      <form class="chat-input-form" id="chat-form" autocomplete="off">
+        <input
+          type="text"
+          id="chat-input"
+          class="chat-input"
+          maxlength="500"
+          placeholder="Pregunta sobre los programas del 29N (ej. ¿Qué propone cada partido sobre vivienda?)..."
+          required
+        >
+        <button type="submit" class="chat-send-btn" id="chat-send-btn">ENVIAR // ↵</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="/js/theme.js"></script>
+  <script src="/js/chat.js"></script>
+</body>
+</html>

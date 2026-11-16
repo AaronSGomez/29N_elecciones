@@ -1,0 +1,44 @@
+# Plantilla Nginx para 29N Elecciones (NO sobrescribe sitios existentes)
+# Reemplazar ${DOMAIN_NAME} y ${APP_PORT} desde .env al instalar en /etc/nginx/sites-available/
+
+limit_req_zone $binary_remote_addr zone=limit_29n:10m rate=${NGINX_RATE_LIMIT_RPS};
+
+server {
+    listen 80;
+    server_name ${DOMAIN_NAME};
+
+    # Bloqueo básico de bots/escáneres comunes (complementa tus reglas globales de Nginx)
+    if ($http_user_agent ~* (curl|wget|python-requests|nikto|sqlmap|nmap|masscan|zgrab|gobuster|dirbuster|scrapy|semrush|ahrefs|mj12bot)) {
+        return 403;
+    }
+
+    # Bloqueo de rutas de sondeo típicas
+    location ~* (\.env|\.git|wp-admin|wp-login|phpmyadmin|xmlrpc\.php) {
+        return 444;
+    }
+
+    location /api/chat {
+        limit_req zone=limit_29n burst=${NGINX_BURST} nodelay;
+        proxy_pass http://127.0.0.1:${APP_PORT};
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # Imprescindible para Streaming SSE sin buffering
+        proxy_buffering off;
+        proxy_cache off;
+        proxy_read_timeout 120s;
+    }
+
+    location / {
+        limit_req zone=limit_29n burst=20 nodelay;
+        proxy_pass http://127.0.0.1:${APP_PORT};
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
