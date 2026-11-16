@@ -22,214 +22,175 @@
       <span class="status-dot" id="status-dot"></span>
       <div class="masthead-title-stack">
         <h1 class="brand-title">A quién votar estas elecciones 29N</h1>
-        <span class="nav-privacy-note">NOTA: NO RECABAMOS DATOS</span>
+        <span class="nav-privacy-note">PERFIL Y TEST EN TU NAVEGADOR · CONSULTAS LIBRES ENVIADAS AL CHAT</span>
       </div>
     </div>
 
+    <!-- NAVEGACIÓN PRINCIPAL: EXACTAMENTE 3 APARTADOS -->
     <nav class="masthead-nav" aria-label="Menú principal">
-      <button type="button" class="nav-tab-btn active" id="tab-home-btn">0. INICIO</button>
-      <button type="button" class="nav-tab-btn" id="tab-chat-btn">1. CHAT ELECTORAL</button>
-      <button type="button" class="nav-tab-btn" id="tab-comparator-btn">2. COMPARADOR</button>
-      <button type="button" class="nav-tab-btn" id="tab-profile-btn">3. MI PERFIL (6 BLOQUES)</button>
-      <button type="button" class="nav-tab-btn" id="tab-ideology-btn">4. TEST (12 EJES)</button>
-      <button type="button" class="nav-tab-btn" id="tab-results-btn">5. RESULTADOS</button>
+      <button type="button" class="nav-tab-btn active" id="tab-home-btn">INICIO</button>
+      <button type="button" class="nav-tab-btn" id="tab-programs-btn">PROGRAMAS</button>
+      <button type="button" class="nav-tab-btn" id="tab-myspace-btn">MI ESPACIO</button>
     </nav>
   </header>
 
-  <!-- VISTA 0: PORTADA INICIAL (GUÍA COMPLETA Y TUTORIAL CLARO) -->
-  <section class="hero-intro-band" id="view-home" aria-label="Portada y guía de uso">
+  <!-- APARTADO 1: INICIO (PUERTA DE ENTRADA CONCISA) -->
+  <section class="hero-intro-band" id="view-home" aria-label="Inicio y guía">
     <div class="hero-intro-card">
-      <div class="panel-header-tag">GUÍA DE USO · ELECCIONES GENERALES 29N · SIN MANIPULACIÓN</div>
-      <h2 class="hero-title" style="font-size: 1.95rem; margin-bottom: 0.6rem;">¿No sabes qué propone cada partido? Aquí lo ves claro y sin rollos.</h2>
-      <p class="hero-subtitle" style="margin-top: 0; max-width: 920px; font-size: 0.96rem;">
-        Hemos cogido los <strong>programas oficiales completos</strong> que han publicado los partidos para el 29 de noviembre y los hemos ordenado por temas. <strong>No te vamos a decir a quién votar</strong> ni qué partido es mejor o peor. Solo te enseñamos lo que pone en sus papeles oficiales, con la cita literal y el enlace a la página exacta para que lo compruebes con tus propios ojos.
+      <div class="panel-header-tag">HERRAMIENTA CÍVICA INDEPENDIENTE · ELECCIONES 29N</div>
+      <h2 class="hero-title" style="font-size: 1.85rem; margin-bottom: 0.5rem;">Consulta, compara y aclara tus ideas con datos oficiales</h2>
+      <p class="hero-subtitle" style="margin-top: 0; max-width: 880px;">
+        Comparamos los cinco programas electorales oficiales (**PP, PSOE, VOX, Frente Amplio y SALF**) extraídos de sus documentos originales y bloques temáticos. No recomendamos el voto ni calculamos afinidades con partidos.
       </p>
 
-      <!-- BLOQUE DE DATOS REALES CARGADOS -->
-      <div class="home-section-block">
-        <h3 class="home-section-title">1. Qué hay cargado aquí ahora mismo</h3>
-        <div class="home-stats-grid">
-          <div class="home-stat-card" style="border-top-color: #1D4ED8;">
-            <div class="home-stat-num">PP</div>
-            <div class="home-stat-label">82 páginas oficiales indexadas</div>
-          </div>
-          <div class="home-stat-card" style="border-top-color: #D92B2B;">
-            <div class="home-stat-num">PSOE</div>
-            <div class="home-stat-label">114 páginas oficiales indexadas</div>
-          </div>
-          <div class="home-stat-card" style="border-top-color: #16A34A;">
-            <div class="home-stat-num">VOX</div>
-            <div class="home-stat-label">55 páginas oficiales indexadas</div>
-          </div>
-          <div class="home-stat-card" style="border-top-color: #7C3AED;">
-            <div class="home-stat-num">F. AMPLIO</div>
-            <div class="home-stat-label">151 páginas oficiales indexadas</div>
-          </div>
-          <div class="home-stat-card" style="border-top-color: #111111;">
-            <div class="home-stat-num">SALF</div>
-            <div class="home-stat-label">42 páginas oficiales indexadas</div>
-          </div>
-          <div class="home-stat-card" style="border-top-color: #1D4ED8;">
-            <div class="home-stat-num">1.961</div>
-            <div class="home-stat-label">Bloques y fragmentos verificados en 21 temas</div>
-          </div>
-        </div>
+      <div class="hero-steps-grid" style="margin-top: 1.25rem;">
+        <article class="hero-step-box">
+          <strong>CONSULTAR Y COMPARAR PROGRAMAS</strong>
+          <p>Explora las 21 materias oficiales lado a lado por subtemas y consulta los documentos originales con página exacta.</p>
+          <button type="button" class="w-btn primary home-go-btn" data-view="programs" data-sub="comparator">ABRIR PROGRAMAS &rarr;</button>
+        </article>
+        <article class="hero-step-box">
+          <strong>PREGUNTAR SOBRE PROPUESTAS</strong>
+          <p>Formula preguntas libres al asistente documental dentro de Programas para localizar medidas con citas verificables.</p>
+          <button type="button" class="w-btn home-go-btn" data-view="programs" data-sub="chat">IR A PREGUNTAR &rarr;</button>
+        </article>
+        <article class="hero-step-box">
+          <strong>CONOCER TUS PRIORIDADES E IDEAS</strong>
+          <p>Define tu contexto socioeconómico, responde el test orientativo de 12 ejes y revisa tus resultados en tu propio navegador.</p>
+          <button type="button" class="w-btn home-go-btn" data-view="myspace" data-sub="context">ABRIR MI ESPACIO &rarr;</button>
+        </article>
       </div>
 
-      <!-- TUTORIAL PASO A PASO DE CADA SECCIÓN -->
       <div class="home-section-block">
-        <h3 class="home-section-title">2. Tutorial rápido: cómo usar cada apartado</h3>
-        <div class="hero-steps-grid">
-          <article class="hero-step-box">
-            <strong>1 · CHAT ELECTORAL (PREGUNTA LO QUE QUIERAS)</strong>
-            <p><strong>Cómo se usa:</strong> Escribe una duda normal arriba (por ejemplo: <em>"¿Qué proponen sobre el alquiler?"</em> o <em>"¿Qué pasa con los autónomos?"</em>).<br><strong>Qué te da:</strong> Un resumen directo y, debajo, tarjetas con el color de cada partido, su frase exacta y el enlace a esa página del PDF.</p>
-            <button type="button" class="w-btn primary home-go-btn" data-go="chat">IR AL CHAT ELECTORAL &rarr;</button>
-          </article>
-
-          <article class="hero-step-box">
-            <strong>2 · COMPARADOR POR TEMAS (SIN PREGUNTAR NADA)</strong>
-            <p><strong>Cómo se usa:</strong> Elige un tema de la lista (Vivienda, Sanidad, Impuestos, Pensiones...) y, si quieres, filtra por partido.<br><strong>Qué te da:</strong> Todas las propuestas oficiales puestas una al lado de la otra para compararlas a simple vista.</p>
-            <button type="button" class="w-btn home-go-btn" data-go="comparator">IR AL COMPARADOR &rarr;</button>
-          </article>
-
-          <article class="hero-step-box">
-            <strong>3 · MI PERFIL (OPCIONAL Y SOLO EN TU MÓVIL/PC)</strong>
-            <p><strong>Cómo se usa:</strong> Son 6 bloques fáciles sobre tu situación (edad, si tienes hijos, vivienda, trabajo...). Puedes saltarte cualquier pregunta.<br><strong>Privacidad:</strong> Se guarda solo en tu navegador. Nosotros no vemos ni guardamos nada.</p>
-            <button type="button" class="w-btn home-go-btn" data-go="profile">CONFIGURAR MI PERFIL &rarr;</button>
-          </article>
-
-          <article class="hero-step-box">
-            <strong>4 · TEST DE 12 EJES Y RESULTADOS</strong>
-            <p><strong>Cómo se usa:</strong> Responde si estás de acuerdo o no con frases sobre economía, sanidad, vivienda o seguridad. Cada frase lleva una explicación sencilla debajo.<br><strong>Qué te da:</strong> Un dibujo de tus propias ideas en 12 barras (de 0 a 100), sin decirte qué partido votar.</p>
-            <button type="button" class="w-btn home-go-btn" data-go="ideology">EMPEZAR EL TEST &rarr;</button>
-          </article>
-        </div>
-      </div>
-
-      <!-- COMPROMISO ANTI-MANIPULACIÓN -->
-      <div class="home-section-block">
-        <h3 class="home-section-title">3. Reglas claras: sin trampa ni manipulación</h3>
         <div class="home-rules-grid">
-          <div class="home-rule-card" style="border-left: 6px solid #16A34A;">
-            <strong style="font-family:var(--font-mono); font-size:0.78rem;">LO QUE SÍ HACEMOS</strong>
-            <ul>
-              <li>Mostramos el texto literal del programa oficial y el número de página.</li>
-              <li>Si un partido no dice nada sobre un tema, te decimos claro que no consta.</li>
-              <li>Puedes usar toda la web sin registrarte ni dar tu correo o teléfono.</li>
-              <li>Puedes exportar, importar o borrar tu perfil y tu test en 1 clic.</li>
-            </ul>
+          <div class="home-rule-card">
+            <strong style="font-family:var(--font-mono); font-size:0.76rem;">FUNCIONAMIENTO Y PRIVACIDAD</strong>
+            <p class="hero-subtitle" style="margin-top:0.35rem;">
+              Tu perfil, tus respuestas al test y tus prioridades se almacenan solo en tu navegador (<code>localStorage</code> o memoria temporal). Únicamente las preguntas que escribes en el chat se envían al servidor y al proveedor de IA para responderlas.
+            </p>
           </div>
-          <div class="home-rule-card" style="border-left: 6px solid #D92B2B;">
-            <strong style="font-family:var(--font-mono); font-size:0.78rem;">LO QUE NUNCA HACEMOS</strong>
-            <ul>
-              <li>Nunca te diremos "vota a este partido" ni haremos un ranking de ganadores.</li>
-              <li>Nunca mezclamos tu perfil ni tus respuestas del test con las preguntas del chat.</li>
-              <li>Nunca guardamos tus datos personales en bases de datos ni ponemos cookies de rastreo.</li>
-              <li>Nunca inventamos medidas: si no está en el PDF oficial, no se muestra.</li>
-            </ul>
+          <div class="home-rule-card">
+            <strong style="font-family:var(--font-mono); font-size:0.76rem;">FUENTES DOCUMENTALES</strong>
+            <p class="hero-subtitle" style="margin-top:0.35rem;">
+              PDFs oficiales de 2026 (PP 82 págs., PSOE 114 págs., VOX 55 págs., Frente Amplio 151 págs., SALF 42 págs.) y bloques temáticos de 29nov.es indexados en PostgreSQL y Qdrant.
+            </p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- VISTA 1: SOLO CHAT -->
-  <main class="app-shell hidden-panel" id="view-chat">
-    <aside class="sidebar-panel">
-      <div>
-        <div class="panel-header-tag" id="status-text">CARGANDO ÍNDICE QDRANT...</div>
-        <p class="hero-subtitle">Partidos con mayor representación en <strong>Asturias</strong> y ámbito nacional (29N).</p>
-      </div>
+  <!-- APARTADO 2: PROGRAMAS (COMPARAR + PREGUNTAR) -->
+  <section class="section-shell hidden-panel" id="view-programs" aria-label="Programas Electorales">
+    <div class="subnav-bar" role="tablist" aria-label="Herramientas de Programas">
+      <button type="button" class="subnav-btn active" id="subtab-comparator-btn">A. COMPARAR PROGRAMAS</button>
+      <button type="button" class="subnav-btn" id="subtab-chat-btn">B. PREGUNTAR AL ASISTENTE</button>
+    </div>
 
-      <div>
-        <div class="filter-group-title">01. Partidos (Asturias / 29N)</div>
-        <div class="party-grid">
-          <button type="button" class="party-chip full-width active" data-party="all">
-            <span>TODOS (COMPARATIVA)</span><span>[5]</span>
-          </button>
-          <button type="button" class="party-chip" data-party="pp">
-            <span>PP</span><span class="party-logo-badge logo-pp">PP</span>
-          </button>
-          <button type="button" class="party-chip" data-party="psoe">
-            <span>PSOE</span><span class="party-logo-badge logo-psoe">PS</span>
-          </button>
-          <button type="button" class="party-chip" data-party="vox">
-            <span>VOX</span><span class="party-logo-badge logo-vox">VX</span>
-          </button>
-          <button type="button" class="party-chip" data-party="frente-amplio">
-            <span>F. AMPLIO</span><span class="party-logo-badge logo-fa">FA</span>
-          </button>
-          <button type="button" class="party-chip full-width" data-party="salf">
-            <span>SALF (SE ACABÓ LA FIESTA)</span><span class="party-logo-badge logo-salf">SF</span>
-          </button>
+    <div id="subview-comparator"></div>
+
+    <main class="app-shell hidden-panel" id="view-chat" style="padding: 0; max-width: 100%;">
+      <aside class="sidebar-panel">
+        <div>
+          <div class="panel-header-tag" id="status-text">CARGANDO ÍNDICE QDRANT...</div>
+          <p class="hero-subtitle">Consulta sobre los programas oficiales de <strong>PP, PSOE, VOX, Frente Amplio y SALF</strong>.</p>
         </div>
-      </div>
 
-      <div>
-        <div class="filter-group-title">02. Bloque Temático (Opcional)</div>
-        <div class="topic-list">
-          <button type="button" class="topic-pill" data-topic="Vivienda">Vivienda</button>
-          <button type="button" class="topic-pill" data-topic="Economía">Economía</button>
-          <button type="button" class="topic-pill" data-topic="Impuestos">Impuestos</button>
-          <button type="button" class="topic-pill" data-topic="Sanidad">Sanidad</button>
-          <button type="button" class="topic-pill" data-topic="Educación">Educación</button>
-          <button type="button" class="topic-pill" data-topic="Empleo">Empleo</button>
-          <button type="button" class="topic-pill" data-topic="Pensiones">Pensiones</button>
-          <button type="button" class="topic-pill" data-topic="Inmigración">Inmigración</button>
-          <button type="button" class="topic-pill" data-topic="Seguridad y Justicia">Seguridad</button>
-          <button type="button" class="topic-pill" data-topic="Energía">Energía</button>
-        </div>
-      </div>
-
-      <div class="security-notice">
-        <strong>TRANSPARENCIA 29N:</strong> Datos directos de PostgreSQL + Qdrant con enlace a la página oficial. Las preguntas escritas libremente en el chat se envían al servicio de consulta y al proveedor LLM: evita incluir datos personales.
-      </div>
-    </aside>
-
-    <!-- ÁREA DE CHAT: BUSCADOR ARRIBA, RESULTADOS DEBAJO -->
-    <section class="chat-workspace" aria-label="Chat Electoral 29N">
-      <div class="chat-toolbar">
-        <span class="chat-scope-badge" id="chat-scope-badge">FILTRO: TODOS</span>
-        <button type="button" class="clear-chat-btn" id="clear-chat-btn">[ LIMPIAR ]</button>
-      </div>
-
-      <form class="chat-input-form" id="chat-form" autocomplete="off">
-        <input
-          type="text"
-          id="chat-input"
-          class="chat-input"
-          maxlength="500"
-          placeholder="Pregunta sobre cualquier tema del 29N (ej. ¿Qué proponen sobre alquiler o impuestos?)..."
-          required
-        >
-        <button type="submit" class="chat-send-btn" id="chat-send-btn">BUSCAR // ↵</button>
-      </form>
-
-      <div class="suggestions-row">
-        <button type="button" class="suggestion-btn" data-q="¿Qué proponen los partidos sobre el alquiler y la Ley de Vivienda?">¿Vivienda y alquiler?</button>
-        <button type="button" class="suggestion-btn" data-q="¿Qué medidas fiscales y de impuestos plantea cada partido?">¿Impuestos y fiscalidad?</button>
-        <button type="button" class="suggestion-btn" data-q="¿Cómo abordan las pensiones y la edad de jubilación?">¿Pensiones?</button>
-        <button type="button" class="suggestion-btn" data-q="¿Qué proponen sobre sanidad pública y listas de espera?">¿Sanidad?</button>
-      </div>
-
-      <div class="chat-messages" id="chat-messages">
-        <article class="msg-card assistant">
-          <div class="msg-meta">
-            <span>SISTEMA // RAG 29N</span>
-            <span>LISTO</span>
+        <div>
+          <div class="filter-group-title">01. Filtrar Partidos</div>
+          <div class="party-grid">
+            <button type="button" class="party-chip full-width active" data-party="all">
+              <span>TODOS (COMPARATIVA)</span><span>[5]</span>
+            </button>
+            <button type="button" class="party-chip" data-party="pp">
+              <span>PP</span><span class="party-logo-badge logo-pp">PP</span>
+            </button>
+            <button type="button" class="party-chip" data-party="psoe">
+              <span>PSOE</span><span class="party-logo-badge logo-psoe">PS</span>
+            </button>
+            <button type="button" class="party-chip" data-party="vox">
+              <span>VOX</span><span class="party-logo-badge logo-vox">VX</span>
+            </button>
+            <button type="button" class="party-chip" data-party="frente-amplio">
+              <span>F. AMPLIO</span><span class="party-logo-badge logo-fa">FA</span>
+            </button>
+            <button type="button" class="party-chip full-width" data-party="salf">
+              <span>SALF (SE ACABÓ LA FIESTA)</span><span class="party-logo-badge logo-salf">SF</span>
+            </button>
           </div>
-          <div class="msg-body">Escribe tu consulta en el cuadro superior. Mostraré qué partidos tienen propuestas sobre ese tema y debajo aparecerán los bloques oficiales con la cita exacta y el enlace directo a la página del programa.</div>
-        </article>
-      </div>
-    </section>
-  </main>
+        </div>
 
-  <!-- VISTA WIZARD FULL-SCREEN (PERFIL / TEST 12 EJES / RESULTADOS / COMPARADOR) -->
-  <section class="wizard-shell hidden-panel" id="view-wizard" aria-label="Exploración ciudadana 29N"></section>
+        <div>
+          <div class="filter-group-title">02. Bloque Temático (Opcional)</div>
+          <div class="topic-list">
+            <button type="button" class="topic-pill" data-topic="Vivienda">Vivienda</button>
+            <button type="button" class="topic-pill" data-topic="Economía">Economía</button>
+            <button type="button" class="topic-pill" data-topic="Impuestos">Impuestos</button>
+            <button type="button" class="topic-pill" data-topic="Sanidad">Sanidad</button>
+            <button type="button" class="topic-pill" data-topic="Educación">Educación</button>
+            <button type="button" class="topic-pill" data-topic="Empleo">Empleo</button>
+            <button type="button" class="topic-pill" data-topic="Pensiones">Pensiones</button>
+            <button type="button" class="topic-pill" data-topic="Inmigración">Inmigración</button>
+            <button type="button" class="topic-pill" data-topic="Seguridad y Justicia">Seguridad</button>
+            <button type="button" class="topic-pill" data-topic="Energía">Energía</button>
+          </div>
+        </div>
+
+        <div class="security-notice">
+          <strong>AVISO DE PRIVACIDAD:</strong> El chat es independiente de tu perfil. La pregunta que escribes aquí se envía al servidor y a Groq para responderla con citas. No incluyas datos personales.
+        </div>
+      </aside>
+
+      <section class="chat-workspace" aria-label="Chat Electoral 29N">
+        <div class="chat-toolbar">
+          <span class="chat-scope-badge" id="chat-scope-badge">FILTRO: TODOS</span>
+          <button type="button" class="clear-chat-btn" id="clear-chat-btn">[ LIMPIAR ]</button>
+        </div>
+
+        <form class="chat-input-form" id="chat-form" autocomplete="off">
+          <input
+            type="text"
+            id="chat-input"
+            class="chat-input"
+            maxlength="500"
+            placeholder="Pregunta sobre cualquier tema del 29N (ej. ¿Qué proponen sobre alquiler o impuestos?)..."
+            required
+          >
+          <button type="submit" class="chat-send-btn" id="chat-send-btn">BUSCAR // ↵</button>
+        </form>
+
+        <div class="suggestions-row">
+          <button type="button" class="suggestion-btn" data-q="¿Qué proponen los partidos sobre el alquiler y la Ley de Vivienda?">¿Vivienda y alquiler?</button>
+          <button type="button" class="suggestion-btn" data-q="¿Qué medidas fiscales y de impuestos plantea cada partido?">¿Impuestos y fiscalidad?</button>
+          <button type="button" class="suggestion-btn" data-q="¿Cómo abordan las pensiones y la edad de jubilación?">¿Pensiones?</button>
+          <button type="button" class="suggestion-btn" data-q="¿Qué proponen sobre sanidad pública y listas de espera?">¿Sanidad?</button>
+        </div>
+
+        <div class="chat-messages" id="chat-messages">
+          <article class="msg-card assistant">
+            <div class="msg-meta">
+              <span>SISTEMA // RAG 29N</span>
+              <span>LISTO</span>
+            </div>
+            <div class="msg-body">Escribe tu consulta en el cuadro superior. Mostraré qué partidos tienen propuestas sobre ese tema y debajo aparecerán los bloques con la cita exacta y el enlace al documento oficial.</div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <!-- APARTADO 3: MI ESPACIO (MI CONTEXTO + MIS IDEAS + MIS RESULTADOS) -->
+  <section class="section-shell hidden-panel" id="view-myspace" aria-label="Mi espacio personal">
+    <div class="subnav-bar" role="tablist" aria-label="Herramientas personales">
+      <button type="button" class="subnav-btn active" id="subtab-context-btn">A. MI CONTEXTO (6 BLOQUES)</button>
+      <button type="button" class="subnav-btn" id="subtab-ideas-btn">B. MIS IDEAS (TEST 12 EJES)</button>
+      <button type="button" class="subnav-btn" id="subtab-results-btn">C. MIS RESULTADOS</button>
+    </div>
+    <div id="myspace-content"></div>
+  </section>
 
   <footer class="site-footer">
     <div class="footer-grid">
-      <!-- IZQUIERDA: RRSS CON TUS DATOS -->
       <div>
         <h4 class="footer-col-title">Autor &amp; Redes Sociales</h4>
         <ul class="footer-link-list">
@@ -254,7 +215,6 @@
         </ul>
       </div>
 
-      <!-- CENTRO: ENLACES DIRECTOS A LOS PROGRAMAS OFICIALES -->
       <div>
         <h4 class="footer-col-title">Programas Electorales Oficiales (PDF)</h4>
         <div class="footer-programs-wrap">
@@ -266,11 +226,10 @@
         </div>
       </div>
 
-      <!-- DERECHA: POLÍTICA DE PRIVACIDAD 100% TRANSPARENTE -->
       <div>
-        <h4 class="footer-col-title">Política de Privacidad (0 % Datos)</h4>
+        <h4 class="footer-col-title">Privacidad y Flujo Real</h4>
         <p class="footer-privacy-text">
-          No recabamos datos personales ni usamos cookies de seguimiento. Tu perfil y respuestas del test permanecen exclusivamente en tu navegador.
+          Perfil, test y prioridades permanecen en tu navegador. Las preguntas voluntarias del chat se envían al backend y a Groq; Nginx y FastAPI registran metadatos técnicos HTTP.
         </p>
         <button type="button" class="footer-privacy-btn" id="open-privacy-btn">
           VER POLÍTICA DE PRIVACIDAD COMPLETA &rarr;
@@ -279,24 +238,19 @@
     </div>
   </footer>
 
-  <!-- MODAL POLÍTICA DE PRIVACIDAD 100% TRANSPARENTE -->
   <div class="privacy-modal-backdrop hidden-panel" id="privacy-modal" role="dialog" aria-modal="true" aria-label="Política de privacidad">
     <div class="privacy-modal-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-        <span class="panel-header-tag" style="margin:0;">TRANSPARENCIA TOTAL · ARQUITECTURA LOCAL-FIRST</span>
+        <span class="panel-header-tag" style="margin:0;">TRANSPARENCIA REAL · ARQUITECTURA LOCAL-FIRST</span>
         <button type="button" class="clear-chat-btn" id="close-privacy-btn">[ CERRAR ✕ ]</button>
       </div>
-      <h3>Política de Privacidad — Cero Recolección de Datos</h3>
-      <p>Esta herramienta cívica está diseñada bajo el principio estricto de <strong>privacidad local-first</strong>:</p>
+      <h3>Política de Privacidad y Uso de Datos</h3>
       <ul>
-        <li><strong>Sin cuentas ni cookies de seguimiento:</strong> No existe registro de usuarios, ni identificadores persistentes, ni herramientas de analítica o <em>session replay</em>.</li>
-        <li><strong>Perfil y Test 100 % en tu navegador:</strong> Los 6 bloques del perfil ciudadano, las respuestas del test de 12 ejes, las preguntas de control y tus prioridades se almacenan únicamente en el <code>localStorage</code> de tu dispositivo (o en memoria temporal si está deshabilitado). Nunca se envían al servidor ni a PostgreSQL/Qdrant.</li>
-        <li><strong>Control total:</strong> Puedes exportar tus datos en JSON, importarlos o borrarlos por completo en cualquier momento.</li>
-        <li><strong>Transparencia sobre el Chat RAG:</strong> El chat es independiente del perfil. Cuando escribes libremente una pregunta en el chat, ese texto viaja al backend FastAPI y al proveedor LLM para generar la respuesta con citas, por lo que te recomendamos no incluir datos personales en tus preguntas.</li>
+        <li><strong>Almacenamiento local (navegador):</strong> Tu perfil de 6 bloques, las respuestas del test ideológico, las preguntas de control y tus prioridades se guardan únicamente en <code>localStorage</code> (o memoria temporal si está deshabilitado). Nunca se transmiten al backend ni se guardan en PostgreSQL o Qdrant.</li>
+        <li><strong>Consultas voluntarias del chat:</strong> Cuando escribes y envías una pregunta en el chat, ese texto se transmite por HTTPS al backend FastAPI y a Groq API junto con el contexto documental recuperado.</li>
+        <li><strong>Metadatos técnicos:</strong> Nginx y FastAPI registran metadatos técnicos estándar de acceso HTTP (dirección IP, fecha/hora, ruta y User-Agent). No usamos cookies de seguimiento, cuentas ni analítica.</li>
+        <li><strong>Control total:</strong> Puedes exportar, importar o borrar tu perfil y tu test en cualquier momento desde Mi espacio.</li>
       </ul>
-      <p style="font-family:var(--font-mono); font-size:0.74rem; color:var(--ink-muted);">
-        Proyecto de código abierto · Arquitectura: FastAPI + PostgreSQL + Qdrant + FastEmbed.
-      </p>
     </div>
   </div>
 

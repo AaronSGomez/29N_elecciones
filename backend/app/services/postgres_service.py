@@ -99,10 +99,11 @@ class PostgresService:
         self,
         topic: str | None = None,
         party_id: str | None = None,
-        limit: int = 60,
-    ) -> list[dict[str, Any]]:
+        limit: int = 120,
+        offset: int = 0,
+    ) -> tuple[list[dict[str, Any]], int]:
         if not self.pool:
-            return []
+            return [], 0
         clauses = ["source_type = 'block'"]
         params: list[Any] = []
         if topic:
@@ -111,15 +112,27 @@ class PostgresService:
         if party_id:
             params.append(party_id.lower())
             clauses.append(f"party_id = ${len(params)}")
-        params.append(max(1, min(limit, 120)))
-        sql = f"""
-            SELECT id, party_id, party_name, topic, subtopic, title,
-                   quote, explanation, source_ref, source_url, source_type
-            FROM proposals
-            WHERE {' AND '.join(clauses)}
-            ORDER BY party_id, subtopic, title
-            LIMIT ${len(params)}
-        """
+
+        where_sql = " AND ".join(clauses)
+        safe_limit = max(1, min(limit, 250))
+        safe_offset = max(0, offset)
+
         async with self.pool.acquire() as conn:
-            rows = await conn.fetch(sql, *params)
-        return [dict(r) for r in rows]
+            total = await conn.fetchval(
+                f"SELECT COUNT(*) FROM proposals WHERE {where_sql}",
+                *params,
+            )
+            rows = await conn.fetch(
+                f"""
+                SELECT id, party_id, party_name, topic, subtopic, title,
+                       quote, explanation, source_ref, source_url, source_type
+                FROM proposals
+                WHERE {where_sql}
+                ORDER BY topic, subtopic, party_id, title, id
+                LIMIT ${len(params) + 1} OFFSET ${len(params) + 2}
+                """,
+                *params,
+                safe_limit,
+                safe_offset,
+            )
+        return [dict(r) for r in rows], int(total or 0)

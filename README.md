@@ -11,8 +11,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
 > **Resumen Ejecutivo**:  
-> Plataforma RAG (*Retrieval-Augmented Generation*) de alta velocidad y bajo consumo diseñada para ejecutarse de forma **totalmente aislada en una Raspberry Pi 5 (8 GB RAM, ARM64)** junto a otros servicios existentes. Permite consultar y comparar en tiempo real las propuestas oficiales de los programas electorales del **29 de noviembre (29N)** —**PP, PSOE, VOX, Frente Amplio y SALF**— tanto desde una **interfaz web multihilo/asíncrona (SSE)** con estética *Swiss-Industrial* (**PRINT//CORE 5**), como desde un **Bot privado de Telegram**.  
-> Implementa embeddings locales **FastEmbed (ONNX)** para no consumir cuota de API en búsquedas, protección estricta contra *prompt injection* y XSS, bloqueo automático de preguntas fuera de dominio mediante umbral de similitud en Qdrant (`QDRANT_SCORE_THRESHOLD`), y un **Gate obligatorio de secretos** (`verify_env.py`) que prohíbe cualquier despliegue sin validar `.env`.
+> Plataforma RAG (*Retrieval-Augmented Generation*) de alta velocidad y bajo consumo diseñada para ejecutarse de forma **totalmente aislada en una Raspberry Pi 5 (8 GB RAM, ARM64)** junto a otros servicios existentes. Permite consultar y comparar las propuestas oficiales de los programas electorales del **29 de noviembre (29N)** —**PP, PSOE, VOX, Frente Amplio y SALF**— mediante una interfaz clara organizada en **3 apartados principales** (**Inicio**, **Programas** [Comparador + Chat SSE] y **Mi espacio** [Perfil de 6 bloques + Test de 12 ejes + Resultados]), además de soporte opcional para Bot de Telegram.  
+> Implementa embeddings locales **FastEmbed (ONNX)** para no consumir cuota de API en búsquedas, **PostgreSQL** como fuente de verdad estructurada (`2.177` registros: `931` bloques temáticos + `1.246` fragmentos PDF), protección estricta contra *prompt injection* y XSS, y un **Gate obligatorio de secretos** (`verify_env.py`) que prohíbe cualquier despliegue sin validar `.env`.
 
 ---
 
@@ -45,7 +45,7 @@ FastAPI Middleware (backend_29n)
 | **Embeddings** | **FastEmbed** (`intfloat/multilingual-e5-small`) | Vectorización local en CPU (ONNX, 384 dims) con **0 gasto de cuota** de Grok en ingesta y búsqueda. |
 | **Generación LLM** | **Grok API** (OpenAI-compatible) | Síntesis neutral y comparativa con citas de página, protegida por semáforo de concurrencia y caché TTL. |
 | **Canal Móvil** | **Telegram Bot** (`long-polling` async) | Consultas desde el móvil restringidas mediante lista blanca `TELEGRAM_ALLOWED_USER_IDS`. |
-| **Ingesta** | `scrape_29nov.py` + `ingest_qdrant.py` | Extracción estructurada de **715 propuestas** en 21 bloques temáticos (`PP`, `PSOE`, `VOX`, `Frente Amplio`, `SALF`). |
+| **Ingesta** | `scrape_29nov.py` + `sync_postgres_and_qdrant.py` | Extracción de **931 bloques temáticos** (21 materias) + **1.246 fragmentos PDF** de los 5 partidos (`PP`, `PSOE`, `VOX`, `Frente Amplio`, `SALF`). |
 | **Seguridad & Proxy** | **Nginx** + `verify_env.py` + `pydantic-settings` | Bloqueo de bots/escáneres, cabeceras CSP, cero hardcodeo y Gate obligatorio de `.env` previo al despliegue. |
 
 ---

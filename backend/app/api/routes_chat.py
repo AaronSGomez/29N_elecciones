@@ -47,12 +47,18 @@ async def list_proposals(
     request: Request,
     topic: str | None = None,
     party_id: str | None = None,
-    limit: int = 60,
+    limit: int = 120,
+    offset: int = 0,
 ) -> dict[str, Any]:
-    rows = await request.app.state.postgres.list_proposals(
-        topic=topic, party_id=party_id, limit=limit
+    rows, total = await request.app.state.postgres.list_proposals(
+        topic=topic, party_id=party_id, limit=limit, offset=offset
     )
-    return {"proposals": rows}
+    return {
+        "proposals": rows,
+        "total": total,
+        "limit": max(1, min(limit, 250)),
+        "offset": max(0, offset),
+    }
 
 
 @router.get("/proposals/{proposal_id}")

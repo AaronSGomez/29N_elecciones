@@ -17,6 +17,12 @@ from pathlib import Path
 BASE_URL = "https://29nov.es"
 DEFAULT_PARTIES = ("pp", "psoe", "vox", "frente-amplio", "salf")
 
+# Mapeo explícito de alias HTML en 29nov.es hacia la identidad interna canónica.
+# En 29nov.es el programa de Frente Amplio se etiqueta con data-party="sumar".
+PARTY_ALIASES: dict[str, tuple[str, str]] = {
+    "sumar": ("frente-amplio", "Frente Amplio"),
+}
+
 TEMAS = [
     ("ciencia-digital", "Ciencia y Digital"),
     ("clima-medio-ambiente", "Clima y Medio Ambiente"),
@@ -83,12 +89,16 @@ class TemaParser(HTMLParser):
             return
 
         if tag == "section" and "papeleta" in cls:
-            party_id = (attr_dict.get("data-party") or "").strip().lower()
-            if party_id in self.allowed_parties:
+            raw_party = (attr_dict.get("data-party") or "").strip().lower()
+            canonical_id, canonical_name = PARTY_ALIASES.get(
+                raw_party,
+                (raw_party, (attr_dict.get("aria-label") or raw_party.upper()).strip()),
+            )
+            if canonical_id in self.allowed_parties:
                 self._in_papeleta = True
                 self._papeleta_depth = 1
-                self._current_party_id = party_id
-                self._current_party_name = (attr_dict.get("aria-label") or party_id.upper()).strip()
+                self._current_party_id = canonical_id
+                self._current_party_name = canonical_name
             return
 
         if self._in_papeleta:

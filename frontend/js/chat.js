@@ -252,42 +252,121 @@
     });
   });
 
-  // Navegación entre módulos (Inicio / Chat / Perfil / Test 12 Ejes / Resultados / Comparador)
+  // Navegación principal (EXACTAMENTE 3 apartados: INICIO · PROGRAMAS · MI ESPACIO)
   const viewHome = document.getElementById("view-home");
-  const viewChat = document.getElementById("view-chat");
-  const viewWizard = document.getElementById("view-wizard");
-  const navButtons = {
+  const viewPrograms = document.getElementById("view-programs");
+  const viewMyspace = document.getElementById("view-myspace");
+  const subviewComparator = document.getElementById("subview-comparator");
+  const subviewChat = document.getElementById("view-chat");
+  const myspaceContent = document.getElementById("myspace-content");
+
+  const mainNavBtns = {
     home: document.getElementById("tab-home-btn"),
-    chat: document.getElementById("tab-chat-btn"),
-    profile: document.getElementById("tab-profile-btn"),
-    ideology: document.getElementById("tab-ideology-btn"),
-    results: document.getElementById("tab-results-btn"),
-    comparator: document.getElementById("tab-comparator-btn"),
+    programs: document.getElementById("tab-programs-btn"),
+    myspace: document.getElementById("tab-myspace-btn"),
   };
 
-  function navigateTo(view) {
-    Object.entries(navButtons).forEach(([k, btn]) => {
-      if (btn) btn.classList.toggle("active", k === view);
-    });
-    viewHome?.classList.toggle("hidden-panel", view !== "home");
-    viewChat?.classList.toggle("hidden-panel", view !== "chat");
-    const isWizard = ["profile", "ideology", "results", "comparator"].includes(view);
-    viewWizard?.classList.toggle("hidden-panel", !isWizard);
+  const progSubBtns = {
+    comparator: document.getElementById("subtab-comparator-btn"),
+    chat: document.getElementById("subtab-chat-btn"),
+  };
 
-    if (view === "profile") window.ProfileWizard29N?.render(viewWizard, navigateTo);
-    else if (view === "ideology") window.IdeologyTest29N?.render(viewWizard, navigateTo);
-    else if (view === "results") window.ResultsView29N?.render(viewWizard, navigateTo);
-    else if (view === "comparator") window.ComparatorView29N?.render(viewWizard);
+  const spaceSubBtns = {
+    context: document.getElementById("subtab-context-btn"),
+    ideas: document.getElementById("subtab-ideas-btn"),
+    results: document.getElementById("subtab-results-btn"),
+  };
+
+  let activeProgramSub = "comparator";
+  let activeSpaceSub = "context";
+  let comparatorInitialized = false;
+
+  function openPreparedChat(topic, prefilledText) {
+    if (topic) {
+      selectedTopic = topic;
+      document.querySelectorAll(".topic-pill").forEach((p) => {
+        p.classList.toggle("active", (p.dataset.topic || "") === topic);
+      });
+      updateScopeBadge();
+    }
+    if (prefilledText && inputEl) {
+      inputEl.value = prefilledText;
+    }
+    navigateTo("programs", "chat");
+    inputEl?.focus();
   }
 
-  Object.entries(navButtons).forEach(([view, btn]) => {
-    btn?.addEventListener("click", () => navigateTo(view));
-  });
+  function navigateTo(mainView, subView) {
+    // Compatibilidad si un subcomponente llama con un alias antiguo
+    if (mainView === "ideology") {
+      mainView = "myspace";
+      subView = "ideas";
+    } else if (mainView === "results") {
+      mainView = "myspace";
+      subView = "results";
+    } else if (mainView === "comparator") {
+      mainView = "programs";
+      subView = "comparator";
+    } else if (mainView === "profile") {
+      mainView = "myspace";
+      subView = "context";
+    } else if (mainView === "chat") {
+      mainView = "programs";
+      subView = "chat";
+    }
+
+    Object.entries(mainNavBtns).forEach(([k, btn]) => {
+      if (btn) btn.classList.toggle("active", k === mainView);
+    });
+
+    viewHome?.classList.toggle("hidden-panel", mainView !== "home");
+    viewPrograms?.classList.toggle("hidden-panel", mainView !== "programs");
+    viewMyspace?.classList.toggle("hidden-panel", mainView !== "myspace");
+
+    if (mainView === "programs") {
+      activeProgramSub = subView || activeProgramSub || "comparator";
+      Object.entries(progSubBtns).forEach(([k, btn]) => {
+        if (btn) btn.classList.toggle("active", k === activeProgramSub);
+      });
+      subviewComparator?.classList.toggle("hidden-panel", activeProgramSub !== "comparator");
+      subviewChat?.classList.toggle("hidden-panel", activeProgramSub !== "chat");
+
+      if (activeProgramSub === "comparator" && !comparatorInitialized) {
+        comparatorInitialized = true;
+        window.ComparatorView29N?.render(subviewComparator, { onAskChat: openPreparedChat });
+      }
+    } else if (mainView === "myspace") {
+      activeSpaceSub = subView || activeSpaceSub || "context";
+      Object.entries(spaceSubBtns).forEach(([k, btn]) => {
+        if (btn) btn.classList.toggle("active", k === activeSpaceSub);
+      });
+
+      if (activeSpaceSub === "context") {
+        window.ProfileWizard29N?.render(myspaceContent, navigateTo);
+      } else if (activeSpaceSub === "ideas") {
+        window.IdeologyTest29N?.render(myspaceContent, navigateTo);
+      } else if (activeSpaceSub === "results") {
+        window.ResultsView29N?.render(myspaceContent, navigateTo);
+      }
+    }
+  }
+
+  mainNavBtns.home?.addEventListener("click", () => navigateTo("home"));
+  mainNavBtns.programs?.addEventListener("click", () => navigateTo("programs", activeProgramSub));
+  mainNavBtns.myspace?.addEventListener("click", () => navigateTo("myspace", activeSpaceSub));
+
+  progSubBtns.comparator?.addEventListener("click", () => navigateTo("programs", "comparator"));
+  progSubBtns.chat?.addEventListener("click", () => navigateTo("programs", "chat"));
+
+  spaceSubBtns.context?.addEventListener("click", () => navigateTo("myspace", "context"));
+  spaceSubBtns.ideas?.addEventListener("click", () => navigateTo("myspace", "ideas"));
+  spaceSubBtns.results?.addEventListener("click", () => navigateTo("myspace", "results"));
 
   document.querySelectorAll(".home-go-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
-      const target = btn.dataset.go;
-      if (target) navigateTo(target);
+      const view = btn.dataset.view || "programs";
+      const sub = btn.dataset.sub;
+      navigateTo(view, sub);
     });
   });
 

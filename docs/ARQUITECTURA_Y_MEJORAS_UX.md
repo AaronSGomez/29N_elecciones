@@ -26,16 +26,16 @@ Navegador del Usuario (100 % Local-First para Perfil, Test y Prioridades)
           ▼
    FastAPI Middleware (backend_29n · 127.0.0.1:8029)
           │  • security.py: anti-prompt injection, longitud máxima, rate limit, CSP
-          │  • routes_chat.py: /api/health, /api/parties, /api/topics, /api/proposals, /api/chat (SSE)
-          ├──► Qdrant (qdrant_29n · 127.0.0.1:6339)  ──► Índice vectorial (1.961 vectores, 384 dims)
-          ├──► PostgreSQL (postgres_29n · net_29n)   ──► Fuente de verdad (1.961 registros)
+          │  • routes_chat.py: /api/health, /api/parties, /api/topics, /api/proposals (paginado), /api/chat (SSE)
+          ├──► Qdrant (qdrant_29n · 127.0.0.1:6339)  ──► Índice vectorial (2.177 vectores, 384 dims)
+          ├──► PostgreSQL (postgres_29n · net_29n)   ──► Fuente de verdad (2.177 registros: 931 bloques + 1.246 PDF)
           └──► Groq API (openai/gpt-oss-20b)         ──► Síntesis neutral en streaming (SSE)
 ```
 
 ### Mapa de Archivos Clave
 - **Ingesta y Sincronización**:
-  - `ingestion/scrape_29nov.py`: extrae 715 bloques temáticos (21 materias) de `29nov.es`.
-  - `ingestion/sync_postgres_and_qdrant.py`: descarga los 5 PDFs oficiales completos (**PP** 82 págs., **PSOE** 114 págs., **VOX** 55 págs., **Frente Amplio** 151 págs., **SALF** 42 págs.), los divide en fragmentos con página exacta y sincroniza **1.961 registros** 1:1 entre `postgres_29n` (`proposals`) y `qdrant_29n` (`programas_29n`).
+  - `ingestion/scrape_29nov.py`: extrae **931 bloques temáticos** (21 materias) de `29nov.es` incluyendo el alias `sumar -> frente-amplio` (`pp`: 205, `psoe`: 201, `frente-amplio`: 216, `vox`: 174, `salf`: 135).
+  - `ingestion/sync_postgres_and_qdrant.py`: descarga los 5 PDFs oficiales completos (**PP** 82 págs., **PSOE** 114 págs., **VOX** 55 págs., **Frente Amplio** 151 págs., **SALF** 42 págs.) y sincroniza **2.177 registros** 1:1 entre `postgres_29n` (`proposals`) y `qdrant_29n` (`programas_29n`).
 - **Backend (`backend/app/`)**:
   - `core/config.py` y `core/security.py`: configuración estricta desde `.env` (`pydantic-settings`), sanitización Unicode y bloqueo de *prompt injection*.
   - `services/qdrant_service.py`: embeddings locales en CPU (`FastEmbed` ONNX, 0 gasto de API) y búsqueda equilibrada por partido (`search_balanced`).
