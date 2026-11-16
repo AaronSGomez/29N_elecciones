@@ -40,7 +40,7 @@
       <div class="panel-header-tag">HERRAMIENTA CÍVICA INDEPENDIENTE · ELECCIONES 29N</div>
       <h2 class="hero-title" style="font-size: 1.85rem; margin-bottom: 0.6rem;">Entiende los programas del 29N y aclara tus ideas con datos oficiales</h2>
       <p class="hero-subtitle" style="margin-top: 0; max-width: 920px;">
-        <strong>En ningún momento facilitamos ni recomendamos votos.</strong> Esta plataforma solo ofrece un análisis orientativo de tus preferencias según tus ideas y prioridades, junto con acceso directo a los documentos oficiales de <strong>PP, PSOE, VOX, Frente Amplio y SALF</strong>.
+        <strong>La plataforma no recomienda, predice ni facilita el voto.</strong> Su finalidad es ayudarte a comprender tus propias posiciones y contrastarlas con las propuestas publicadas por los partidos (<strong>PP, PSOE, VOX, Frente Amplio y SALF</strong>, programas de 2026).
       </p>
 
       <div class="home-section-block" style="margin-top: 1.1rem; padding-top: 1rem;">
@@ -48,16 +48,16 @@
           <div class="home-rule-card">
             <strong style="font-family:var(--font-mono); font-size:0.8rem;">1. QUÉ HACEMOS Y CÓMO LO HACEMOS</strong>
             <ul>
-              <li>Indexamos los <strong>5 programas electorales oficiales íntegros</strong> (444 páginas en PDF + 931 bloques temáticos) en PostgreSQL y Qdrant.</li>
-              <li>Cada dato mostrado incluye su cita literal y enlace directo a la página exacta del programa oficial.</li>
-              <li>Tu perfil y tu test se calculan <strong>100 % en tu navegador</strong>, sin cuentas ni cookies de seguimiento.</li>
+              <li>Indexamos los <strong>5 programas electorales oficiales de 2026</strong> (PP 82 págs., PSOE 114 págs., VOX 55 págs., Frente Amplio 151 págs., SALF 42 págs.) en PostgreSQL y Qdrant.</li>
+              <li>Cada dato mostrado incluye su cita literal, el documento de origen, su año y enlace directo a la página exacta.</li>
+              <li>Tu perfil y tu test se calculan <strong>en tu navegador</strong>, sin cuentas ni cookies de seguimiento.</li>
             </ul>
           </div>
           <div class="home-rule-card">
             <strong style="font-family:var(--font-mono); font-size:0.8rem;">2. QUÉ OBTENDRÁS AL FINALIZAR</strong>
             <ul>
-              <li><strong>En Programas:</strong> comparativa lado a lado por subtemas y asistente de chat que responde solo con evidencia oficial.</li>
-              <li><strong>En Mi espacio:</strong> un mapa visual de tus ideas en <strong>12 ejes</strong>, detección de matices y el diagrama orientativo <strong>«Uno a uno»</strong> ponderado por los temas que más te importan.</li>
+              <li><strong>En Programas:</strong> comparativa lado a lado por subtemas, asistente de chat basado solo en documentos oficiales y sección independiente de <em>Promesas y cumplimiento</em>.</li>
+              <li><strong>En Mi espacio:</strong> mapa orientativo de tus ideas en <strong>12 ejes</strong> y comparación de tus respuestas con las posiciones documentadas de los partidos, dando más peso a los temas que hayas marcado como prioritarios.</li>
               <li><strong>Decisión tuya:</strong> tú decides qué peso darle a cada tema y contrastas las medidas reales.</li>
             </ul>
           </div>
@@ -84,14 +84,16 @@
     </div>
   </section>
 
-  <!-- APARTADO 2: PROGRAMAS (COMPARAR + PREGUNTAR) -->
+  <!-- APARTADO 2: PROGRAMAS (COMPARAR + PREGUNTAR + PROMESAS Y CUMPLIMIENTO) -->
   <section class="section-shell hidden-panel" id="view-programs" aria-label="Programas Electorales">
     <div class="subnav-bar" role="tablist" aria-label="Herramientas de Programas">
       <button type="button" class="subnav-btn active" id="subtab-comparator-btn">A. COMPARAR PROGRAMAS</button>
       <button type="button" class="subnav-btn" id="subtab-chat-btn">B. PREGUNTAR AL ASISTENTE</button>
+      <button type="button" class="subnav-btn" id="subtab-promises-btn">C. PROMESAS Y CUMPLIMIENTO</button>
     </div>
 
     <div id="subview-comparator"></div>
+    <div id="subview-promises" class="hidden-panel"></div>
 
     <main class="app-shell hidden-panel" id="view-chat" style="padding: 0; max-width: 100%;">
       <aside class="sidebar-panel">
@@ -268,6 +270,7 @@
   <script src="/js/ideology_test.js"></script>
   <script src="/js/results_view.js"></script>
   <script src="/js/comparator_view.js"></script>
+  <script src="/js/promises_view.js"></script>
   <script src="/js/chat.js"></script>
 </body>
 </html>

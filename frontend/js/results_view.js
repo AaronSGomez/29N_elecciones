@@ -254,7 +254,7 @@
             : `con igual peso en ${matchData.usedAxesCount} ejes respondidos`;
       const leadText = document.createElement("p");
       leadText.className = "hero-subtitle";
-      leadText.textContent = `Calculado ${modeDesc}: tus respuestas se aproximan más a ${top.name} (${top.pct}% · ${top.closeAxes} de ${top.totalAnsweredAxes} ejes coincidentes).`;
+      leadText.textContent = `Calculado ${modeDesc}: cercanía geométrica orientativa mayor con ${top.name} (${top.pct}% de cercanía sobre distancia de ejes · ${top.closeAxes} de ${top.totalAnsweredAxes} ejes próximos). No indica qué % del programa compartes ni recomienda el voto.`;
       matchSection.appendChild(leadText);
 
       const list = document.createElement("div");

@@ -258,6 +258,7 @@
   const viewMyspace = document.getElementById("view-myspace");
   const subviewComparator = document.getElementById("subview-comparator");
   const subviewChat = document.getElementById("view-chat");
+  const subviewPromises = document.getElementById("subview-promises");
   const myspaceContent = document.getElementById("myspace-content");
 
   const mainNavBtns = {
@@ -269,6 +270,7 @@
   const progSubBtns = {
     comparator: document.getElementById("subtab-comparator-btn"),
     chat: document.getElementById("subtab-chat-btn"),
+    promises: document.getElementById("subtab-promises-btn"),
   };
 
   const spaceSubBtns = {
@@ -330,10 +332,13 @@
       });
       subviewComparator?.classList.toggle("hidden-panel", activeProgramSub !== "comparator");
       subviewChat?.classList.toggle("hidden-panel", activeProgramSub !== "chat");
+      subviewPromises?.classList.toggle("hidden-panel", activeProgramSub !== "promises");
 
       if (activeProgramSub === "comparator" && !comparatorInitialized) {
         comparatorInitialized = true;
         window.ComparatorView29N?.render(subviewComparator, { onAskChat: openPreparedChat });
+      } else if (activeProgramSub === "promises") {
+        window.PromisesView29N?.render(subviewPromises);
       }
     } else if (mainView === "myspace") {
       activeSpaceSub = subView || activeSpaceSub || "context";
@@ -357,6 +362,7 @@
 
   progSubBtns.comparator?.addEventListener("click", () => navigateTo("programs", "comparator"));
   progSubBtns.chat?.addEventListener("click", () => navigateTo("programs", "chat"));
+  progSubBtns.promises?.addEventListener("click", () => navigateTo("programs", "promises"));
 
   spaceSubBtns.context?.addEventListener("click", () => navigateTo("myspace", "context"));
   spaceSubBtns.ideas?.addEventListener("click", () => navigateTo("myspace", "ideas"));
