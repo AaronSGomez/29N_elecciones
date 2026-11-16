@@ -185,6 +185,24 @@
   color: #FFFFFF;
 }
 
+.d-pill.pp { background: #1D4ED8; }
+.d-pill.psoe { background: #D92B2B; }
+.d-pill.vox { background: #16A34A; }
+.d-pill.fa { background: #7C3AED; }
+.d-pill.salf { background: #17161C; }
+
+.dot-p68 { left: 68%; }
+.dot-p32 { left: 32%; }
+.dot-p78 { left: 78%; }
+.dot-p55 { left: 55%; }
+.dot-p72 { left: 72%; }
+.dot-p36 { left: 36%; }
+.dot-p61 { left: 61%; }
+
+.fill-w74 { width: 74%; background: #1D4ED8; }
+.fill-w63 { width: 63%; background: #16A34A; }
+.fill-w51 { width: 51%; background: #D92B2B; }
+
 /* --- BLOQUE 1B: DOS FORMAS DE ENTRAR (SPLIT CONTRASTADO) --- */
 .paths-band {
   background: var(--bg-surface);
