@@ -241,3 +241,111 @@
   border: 2px solid var(--border-strong);
   transform: translateX(-50%);
 }
+
+/* --- DIAGRAMA DE BARRAS "UNO A UNO" (APROXIMACIÓN POR PROGRAMA) --- */
+.uno-a-uno-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0 1.25rem;
+}
+
+.party-match-row {
+  background: var(--bg-surface);
+  border: 3px solid var(--border-strong);
+  border-radius: 16px;
+  padding: 0.7rem 1rem;
+  box-shadow: 4px 4px 0px var(--border-strong);
+  display: grid;
+  grid-template-columns: 76px 1fr auto;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.party-match-logo {
+  width: 72px;
+  height: 44px;
+  border: 2.5px solid var(--border-strong);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 900;
+  background: #FFFFFF;
+}
+
+.party-match-logo.pp { color: #1D4ED8; }
+.party-match-logo.psoe { background: #D92B2B; color: #FFFFFF; }
+.party-match-logo.vox { color: #16A34A; }
+.party-match-logo.frente-amplio { color: #7C3AED; font-size: 0.72rem; }
+.party-match-logo.salf { background: #17161C; color: #FFFFFF; }
+
+.party-match-mid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.party-match-name {
+  font-family: var(--font-display);
+  font-size: 0.94rem;
+  font-weight: 800;
+  color: var(--ink-primary);
+}
+
+.party-match-track {
+  width: 100%;
+  height: 14px;
+  background: #EFE7CE;
+  border: 2px solid var(--border-strong);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.party-match-fill {
+  height: 100%;
+  border-radius: 999px;
+  border-right: 2px solid var(--border-strong);
+  transition: width 300ms ease;
+}
+
+.party-match-fill.pp { background: #1D4ED8; }
+.party-match-fill.psoe { background: #D92B2B; }
+.party-match-fill.vox { background: #16A34A; }
+.party-match-fill.frente-amplio { background: #7C3AED; }
+.party-match-fill.salf { background: #17161C; }
+
+.party-match-score {
+  font-family: var(--font-display);
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: var(--ink-primary);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.party-match-score small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+
+@media (max-width: 640px) {
+  .party-match-row {
+    grid-template-columns: 58px 1fr;
+  }
+  .party-match-logo {
+    width: 56px;
+    height: 38px;
+    font-size: 0.72rem;
+  }
+  .party-match-score {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+}

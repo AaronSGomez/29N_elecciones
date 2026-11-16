@@ -87,6 +87,54 @@
     },
   };
 
+  const PARTY_PROFILES = [
+    {
+      id: "vox", name: "VOX", short: "VOX",
+      axes: { eje1: 78, eje2: 35, eje3: 10, eje4: 92, eje5: 25, eje6: 12, eje7: 18, eje8: 22, eje9: 30, eje10: 22, eje11: 75, eje12: 82 },
+    },
+    {
+      id: "pp", name: "PP (Partido Popular)", short: "PP",
+      axes: { eje1: 72, eje2: 48, eje3: 35, eje4: 78, eje5: 48, eje6: 45, eje7: 42, eje8: 28, eje9: 35, eje10: 30, eje11: 65, eje12: 72 },
+    },
+    {
+      id: "salf", name: "SALF (Se Acabó La Fiesta)", short: "SALF",
+      axes: { eje1: 82, eje2: 30, eje3: 15, eje4: 88, eje5: 55, eje6: 25, eje7: 22, eje8: 35, eje9: 25, eje10: 25, eje11: 45, eje12: 92 },
+    },
+    {
+      id: "psoe", name: "PSOE", short: "PSOE",
+      axes: { eje1: 30, eje2: 82, eje3: 72, eje4: 45, eje5: 78, eje6: 70, eje7: 78, eje8: 75, eje9: 78, eje10: 76, eje11: 78, eje12: 60 },
+    },
+    {
+      id: "frente-amplio", name: "Frente Amplio", short: "F. AMPLIO",
+      axes: { eje1: 15, eje2: 90, eje3: 88, eje4: 25, eje5: 85, eje6: 82, eje7: 92, eje8: 90, eje9: 90, eje10: 92, eje11: 85, eje12: 75 },
+    },
+  ];
+
+  function computePartyMatches(axisResults) {
+    const answered = axisResults.filter((a) => a.score !== null);
+    if (answered.length === 0) return { answeredCount: 0, ranking: [] };
+
+    const ranking = PARTY_PROFILES.map((party) => {
+      let sumSim = 0;
+      let closeAxes = 0;
+      answered.forEach((ax) => {
+        const pScore = party.axes[ax.id];
+        const diff = Math.abs(ax.score - pScore);
+        sumSim += Math.max(0, 100 - diff);
+        if (diff <= 25) closeAxes += 1;
+      });
+      const pct = Math.round(sumSim / answered.length);
+      return {
+        ...party,
+        pct,
+        closeAxes,
+        totalAnsweredAxes: answered.length,
+      };
+    }).sort((a, b) => b.pct - a.pct);
+
+    return { answeredCount: answered.length, ranking };
+  }
+
   function describeScore(axisId, score) {
     const d = AXIS_DETAILS[axisId];
     if (!d || score === null) return "";
@@ -173,13 +221,71 @@
       });
       prioBox.appendChild(topicWrap);
 
-      // 2. Resultados de los 12 ejes con explicación específica
+      // 2. Diagrama de barras "Uno a uno" (aproximación por programa)
+      const results = global.IdeologyTest29N.computeAxisResults(profile.ideology?.answers || {});
+      const matchData = computePartyMatches(results);
+
+      const matchSection = document.createElement("div");
+      matchSection.style.marginTop = "1.5rem";
+      const matchTitle = document.createElement("div");
+      matchTitle.className = "filter-group-title";
+      matchTitle.textContent = "Uno a uno · Aproximación según tus respuestas del test (solo en tu navegador)";
+      matchSection.appendChild(matchTitle);
+
+      if (matchData.answeredCount === 0) {
+        const emptyMatch = document.createElement("div");
+        emptyMatch.className = "security-notice";
+        emptyMatch.textContent = "Aún no has respondido preguntas en 'B. Mis ideas (Test 12 ejes)'. Contesta al menos un eje para ver el diagrama comparativo.";
+        matchSection.appendChild(emptyMatch);
+      } else {
+        const top = matchData.ranking[0];
+        const leadText = document.createElement("p");
+        leadText.className = "hero-subtitle";
+        leadText.textContent = `Con ${matchData.answeredCount} de 12 ejes respondidos, tus respuestas se aproximan más a ${top.name} (${top.pct}% de cercanía media · ${top.closeAxes} de ${top.totalAnsweredAxes} ejes coincidentes). Compruébalo leyendo las medidas reales en Programas.`;
+        matchSection.appendChild(leadText);
+
+        const list = document.createElement("div");
+        list.className = "uno-a-uno-list";
+        matchData.ranking.forEach((p) => {
+          const row = document.createElement("div");
+          row.className = "party-match-row";
+
+          const logo = document.createElement("div");
+          logo.className = `party-match-logo ${p.id}`;
+          logo.textContent = p.short;
+
+          const mid = document.createElement("div");
+          mid.className = "party-match-mid";
+          const name = document.createElement("div");
+          name.className = "party-match-name";
+          name.textContent = p.name;
+          const track = document.createElement("div");
+          track.className = "party-match-track";
+          const fill = document.createElement("div");
+          fill.className = `party-match-fill ${p.id}`;
+          fill.style.width = `${p.pct}%`;
+          track.appendChild(fill);
+          mid.append(name, track);
+
+          const score = document.createElement("div");
+          score.className = "party-match-score";
+          score.textContent = `${p.pct}%`;
+          const sub = document.createElement("small");
+          sub.textContent = `${p.closeAxes} de ${p.totalAnsweredAxes} ejes`;
+          score.appendChild(sub);
+
+          row.append(logo, mid, score);
+          list.appendChild(row);
+        });
+        matchSection.appendChild(list);
+      }
+
+      // 3. Resultados de los 12 ejes con explicación específica
       const axesTitle = document.createElement("div");
       axesTitle.className = "filter-group-title";
       axesTitle.style.marginTop = "1.5rem";
       axesTitle.textContent = "Interpretación por eje (escala 0-100)";
 
-      const results = global.IdeologyTest29N.computeAxisResults(profile.ideology?.answers || {});
       const axesContainer = document.createElement("div");
 
       results.forEach((ax) => {
@@ -261,7 +367,7 @@
       goComp.addEventListener("click", () => onNavigate("programs", "comparator"));
 
       actions.append(backTest, goComp);
-      card.append(tag, h2, methodNotice, prioBox, axesTitle, axesContainer);
+      card.append(tag, h2, methodNotice, prioBox, matchSection, axesTitle, axesContainer);
       if (tensions.length > 0) card.appendChild(tensionBox);
       card.appendChild(actions);
       container.appendChild(card);
