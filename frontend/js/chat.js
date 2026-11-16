@@ -133,18 +133,7 @@
     const { card: assistantCard, body: assistantBody } = createMessageCard("assistant", "Consultando PostgreSQL + Qdrant...");
 
     try {
-      const profile = {
-        sex: document.getElementById("prof-sex")?.value || "",
-        age_range: document.getElementById("prof-age")?.value || "",
-        salary_range: document.getElementById("prof-salary")?.value || "",
-        family_type: document.getElementById("prof-family")?.value || "",
-        housing_status: document.getElementById("prof-housing")?.value || "",
-        employment_status: document.getElementById("prof-employment")?.value || "",
-        has_pets: document.getElementById("prof-pets")?.value || "",
-        autonomous_community: document.getElementById("prof-ccaa")?.value || "",
-        immigration_status: document.getElementById("prof-immigration")?.value || "",
-      };
-
+      // Privacidad Local-First: NUNCA se envía el perfil ciudadano ni el test al backend
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -152,7 +141,6 @@
           query,
           parties: selectedParties,
           topic: selectedTopic || null,
-          profile,
         }),
       });
 

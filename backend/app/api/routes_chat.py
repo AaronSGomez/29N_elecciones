@@ -21,28 +21,10 @@ PARTIES_CATALOG = [
 ]
 
 
-class CitizenProfile(BaseModel):
-    sex: Literal["", "mujer", "hombre", "otro"] = ""
-    age_range: Literal["", "<25", "25-35", "36-50", "51-65", ">65"] = ""
-    salary_range: Literal["", "<15k", "15k-28k", "28k-50k", ">50k"] = ""
-    family_type: Literal["", "sin_hijos", "con_hijos", "familia_numerosa", "monoparental"] = ""
-    housing_status: Literal["", "alquiler", "hipoteca", "propiedad", "busca_primera_vivienda"] = ""
-    employment_status: Literal["", "trabajador", "autonomo", "desempleado", "estudiante", "jubilado", "funcionario"] = ""
-    has_pets: Literal["", "si", "no"] = ""
-    autonomous_community: Literal[
-        "", "Andalucía", "Aragón", "Asturias", "Baleares", "Canarias", "Cantabria",
-        "Castilla-La Mancha", "Castilla y León", "Cataluña", "Comunidad Valenciana",
-        "Extremadura", "Galicia", "Madrid", "Murcia", "Navarra", "País Vasco",
-        "La Rioja", "Ceuta/Melilla"
-    ] = ""
-    immigration_status: Literal["", "nacional", "residente_legal", "en_regularizacion"] = ""
-
-
 class ChatRequest(BaseModel):
     query: str = Field(..., min_length=2, max_length=1000)
     parties: list[str] = Field(default_factory=list)
     topic: str | None = Field(default=None, max_length=80)
-    profile: CitizenProfile | None = None
 
 
 @router.get("/health")
@@ -83,15 +65,12 @@ async def chat_stream(body: ChatRequest, request: Request) -> StreamingResponse:
     allowed_party_ids = {p["id"] for p in PARTIES_CATALOG}
     clean_parties = [p.lower() for p in body.parties if p.lower() in allowed_party_ids]
 
-    profile_dict = body.profile.model_dump() if body.profile else None
-
     async def event_generator():
         try:
             async for event in rag.answer_stream(
                 query=clean_query,
                 parties=clean_parties,
                 topic=body.topic,
-                profile=profile_dict,
             ):
                 yield f"data: {json.dumps(event, ensure_ascii=False)}\n\n"
         except Exception:
