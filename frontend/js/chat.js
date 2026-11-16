@@ -252,10 +252,12 @@
     });
   });
 
-  // Navegación entre módulos (Chat / Perfil / Test 12 Ejes / Resultados / Comparador)
+  // Navegación entre módulos (Inicio / Chat / Perfil / Test 12 Ejes / Resultados / Comparador)
+  const viewHome = document.getElementById("view-home");
   const viewChat = document.getElementById("view-chat");
   const viewWizard = document.getElementById("view-wizard");
   const navButtons = {
+    home: document.getElementById("tab-home-btn"),
     chat: document.getElementById("tab-chat-btn"),
     profile: document.getElementById("tab-profile-btn"),
     ideology: document.getElementById("tab-ideology-btn"),
@@ -267,13 +269,10 @@
     Object.entries(navButtons).forEach(([k, btn]) => {
       if (btn) btn.classList.toggle("active", k === view);
     });
-    if (view === "chat") {
-      viewChat?.classList.remove("hidden-panel");
-      viewWizard?.classList.add("hidden-panel");
-      return;
-    }
-    viewChat?.classList.add("hidden-panel");
-    viewWizard?.classList.remove("hidden-panel");
+    viewHome?.classList.toggle("hidden-panel", view !== "home");
+    viewChat?.classList.toggle("hidden-panel", view !== "chat");
+    const isWizard = ["profile", "ideology", "results", "comparator"].includes(view);
+    viewWizard?.classList.toggle("hidden-panel", !isWizard);
 
     if (view === "profile") window.ProfileWizard29N?.render(viewWizard, navigateTo);
     else if (view === "ideology") window.IdeologyTest29N?.render(viewWizard, navigateTo);
@@ -283,6 +282,13 @@
 
   Object.entries(navButtons).forEach(([view, btn]) => {
     btn?.addEventListener("click", () => navigateTo(view));
+  });
+
+  document.querySelectorAll(".home-go-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const target = btn.dataset.go;
+      if (target) navigateTo(target);
+    });
   });
 
   // Preguntas sugeridas

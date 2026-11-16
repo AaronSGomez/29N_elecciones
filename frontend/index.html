@@ -24,7 +24,8 @@
     </div>
 
     <nav class="masthead-nav" aria-label="Menú principal">
-      <button type="button" class="nav-tab-btn active" id="tab-chat-btn">1. CHAT ELECTORAL</button>
+      <button type="button" class="nav-tab-btn active" id="tab-home-btn">0. INICIO</button>
+      <button type="button" class="nav-tab-btn" id="tab-chat-btn">1. CHAT ELECTORAL</button>
       <button type="button" class="nav-tab-btn" id="tab-comparator-btn">2. COMPARADOR</button>
       <button type="button" class="nav-tab-btn" id="tab-profile-btn">3. MI PERFIL (6 BLOQUES)</button>
       <button type="button" class="nav-tab-btn" id="tab-ideology-btn">4. TEST (12 EJES)</button>
@@ -33,36 +34,42 @@
     </nav>
   </header>
 
-  <!-- PORTADA EXPLICATIVA Y GUÍA DE USO -->
-  <section class="hero-intro-band" aria-label="Qué es y cómo usar la plataforma">
+  <!-- VISTA 0: PORTADA INICIAL (NO ENTRA AL CHAT DIRECTO) -->
+  <section class="hero-intro-band" id="view-home" aria-label="Portada y guía de uso">
     <div class="hero-intro-card">
       <div class="panel-header-tag">HERRAMIENTA CÍVICA INDEPENDIENTE · ELECCIONES GENERALES 29N</div>
-      <p class="hero-subtitle" style="margin-top: 0;">
-        <strong>Qué hacemos y cómo:</strong> Reunimos los programas electorales oficiales íntegros (<strong>PP, PSOE, VOX, Frente Amplio y SALF</strong>) en PostgreSQL y Qdrant para que consultes medidas reales con cita textual y enlace directo a cada página. <strong>No recomendamos el voto</strong> ni asignamos partidos: tú decides con datos verificables.
+      <h2 class="hero-title" style="font-size: 1.85rem; margin-bottom: 0.5rem;">A quién votar estas elecciones 29N</h2>
+      <p class="hero-subtitle" style="margin-top: 0; max-width: 860px;">
+        <strong>Qué hacemos y cómo lo hacemos:</strong> Hemos indexado los programas electorales oficiales íntegros de <strong>PP, PSOE, VOX, Frente Amplio y SALF</strong> en PostgreSQL y Qdrant. Aquí puedes consultar medidas reales con su texto original y página exacta, explorar tus propias preferencias y comparar propuestas en igualdad de condiciones. <strong>No recomendamos el voto ni clasificamos partidos como mejores o peores.</strong>
       </p>
-      <div class="hero-steps-grid">
-        <div class="hero-step-box">
+
+      <div class="hero-steps-grid" style="margin-top: 1.25rem;">
+        <article class="hero-step-box">
           <strong>01 · CHAT ELECTORAL</strong>
-          Pregunta sobre cualquier tema arriba y consulta debajo los bloques por partido con su color y enlace al PDF oficial.
-        </div>
-        <div class="hero-step-box">
+          <p>Responde preguntas libres sobre los programas (vivienda, impuestos, pensiones, sanidad...). Muestra cuántos partidos hablan del tema, bloques por color y enlace directo al PDF.</p>
+          <button type="button" class="w-btn primary home-go-btn" data-go="chat">ABRIR CHAT ELECTORAL &rarr;</button>
+        </article>
+        <article class="hero-step-box">
           <strong>02 · COMPARADOR DIRECTO</strong>
-          Explora las 21 materias en igualdad de condiciones entre partidos, sin necesidad de rellenar ningún perfil.
-        </div>
-        <div class="hero-step-box">
-          <strong>03 · PERFIL LOCAL-FIRST</strong>
-          Define opcionalmente tu situación en 6 bloques. Todo se guarda solo en tu navegador (nunca en el servidor).
-        </div>
-        <div class="hero-step-box">
-          <strong>04 · TEST (12 EJES)</strong>
-          Evalúa tus prioridades y matices en 12 ejes independientes para visualizar tu mapa de preferencias.
-        </div>
+          <p>Explora las 21 materias oficiales partido a partido sin necesidad de rellenar perfil ni test. Ideal para ver propuestas concretas lado a lado.</p>
+          <button type="button" class="w-btn home-go-btn" data-go="comparator">ABRIR COMPARADOR &rarr;</button>
+        </article>
+        <article class="hero-step-box">
+          <strong>03 · PERFIL CIUDADANO (6 BLOQUES)</strong>
+          <p>Define opcionalmente tu situación personal, familiar, laboral, económica y de vivienda. Se guarda solo en tu navegador (Local-First) y nunca se envía al servidor.</p>
+          <button type="button" class="w-btn home-go-btn" data-go="profile">CONFIGURAR PERFIL &rarr;</button>
+        </article>
+        <article class="hero-step-box">
+          <strong>04 · TEST IDEOLÓGICO (12 EJES)</strong>
+          <p>Cuestionario dividido en 12 ejes con explicaciones sencillas en cada pregunta y 10 preguntas de control para visualizar tu mapa de prioridades.</p>
+          <button type="button" class="w-btn home-go-btn" data-go="ideology">HACER EL TEST &rarr;</button>
+        </article>
       </div>
     </div>
   </section>
 
   <!-- VISTA 1: SOLO CHAT -->
-  <main class="app-shell" id="view-chat">
+  <main class="app-shell hidden-panel" id="view-chat">
     <aside class="sidebar-panel">
       <div>
         <div class="panel-header-tag" id="status-text">CARGANDO ÍNDICE QDRANT...</div>
