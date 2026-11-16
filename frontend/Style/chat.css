@@ -46,6 +46,74 @@
   color: var(--accent-vermilion);
 }
 
+.home-section-block {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--border-strong);
+}
+
+.home-section-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.home-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.75rem;
+}
+
+.home-stat-card {
+  background: var(--bg-primary);
+  border: 2px solid var(--border-strong);
+  border-top-width: 5px;
+  padding: 0.75rem 0.9rem;
+  box-shadow: var(--shadow-flat);
+}
+
+.home-stat-num {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.home-stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-secondary);
+  margin-top: 0.2rem;
+}
+
+.home-rules-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.home-rule-card {
+  background: var(--bg-primary);
+  border: 2px solid var(--border-strong);
+  padding: 1rem 1.15rem;
+}
+
+.home-rule-card ul {
+  padding-left: 1.2rem;
+  margin-top: 0.5rem;
+  font-size: 0.86rem;
+  color: var(--ink-secondary);
+}
+
+.home-rule-card li {
+  margin-bottom: 0.35rem;
+}
+
+@media (max-width: 768px) {
+  .home-rules-grid { grid-template-columns: 1fr; }
+}
+
 .ideology-q-help {
   font-size: 0.78rem;
   color: var(--ink-secondary);
@@ -704,6 +772,74 @@
   font-family: var(--font-mono);
   font-size: 0.76rem;
   color: var(--accent-vermilion);
+}
+
+.home-section-block {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--border-strong);
+}
+
+.home-section-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.home-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.75rem;
+}
+
+.home-stat-card {
+  background: var(--bg-primary);
+  border: 2px solid var(--border-strong);
+  border-top-width: 5px;
+  padding: 0.75rem 0.9rem;
+  box-shadow: var(--shadow-flat);
+}
+
+.home-stat-num {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.home-stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-secondary);
+  margin-top: 0.2rem;
+}
+
+.home-rules-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.home-rule-card {
+  background: var(--bg-primary);
+  border: 2px solid var(--border-strong);
+  padding: 1rem 1.15rem;
+}
+
+.home-rule-card ul {
+  padding-left: 1.2rem;
+  margin-top: 0.5rem;
+  font-size: 0.86rem;
+  color: var(--ink-secondary);
+}
+
+.home-rule-card li {
+  margin-bottom: 0.35rem;
+}
+
+@media (max-width: 768px) {
+  .home-rules-grid { grid-template-columns: 1fr; }
 }
 
 .ideology-q-help {

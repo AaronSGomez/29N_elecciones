@@ -36,36 +36,99 @@
     </nav>
   </header>
 
-  <!-- VISTA 0: PORTADA INICIAL (NO ENTRA AL CHAT DIRECTO) -->
+  <!-- VISTA 0: PORTADA INICIAL (GUÍA COMPLETA Y TUTORIAL CLARO) -->
   <section class="hero-intro-band" id="view-home" aria-label="Portada y guía de uso">
     <div class="hero-intro-card">
-      <div class="panel-header-tag">HERRAMIENTA CÍVICA INDEPENDIENTE · ELECCIONES GENERALES 29N</div>
-      <h2 class="hero-title" style="font-size: 1.85rem; margin-bottom: 0.5rem;">A quién votar estas elecciones 29N</h2>
-      <p class="hero-subtitle" style="margin-top: 0; max-width: 860px;">
-        <strong>Qué hacemos y cómo lo hacemos:</strong> Hemos indexado los programas electorales oficiales íntegros de <strong>PP, PSOE, VOX, Frente Amplio y SALF</strong> en PostgreSQL y Qdrant. Aquí puedes consultar medidas reales con su texto original y página exacta, explorar tus propias preferencias y comparar propuestas en igualdad de condiciones. <strong>No recomendamos el voto ni clasificamos partidos como mejores o peores.</strong>
+      <div class="panel-header-tag">GUÍA DE USO · ELECCIONES GENERALES 29N · SIN MANIPULACIÓN</div>
+      <h2 class="hero-title" style="font-size: 1.95rem; margin-bottom: 0.6rem;">¿No sabes qué propone cada partido? Aquí lo ves claro y sin rollos.</h2>
+      <p class="hero-subtitle" style="margin-top: 0; max-width: 920px; font-size: 0.96rem;">
+        Hemos cogido los <strong>programas oficiales completos</strong> que han publicado los partidos para el 29 de noviembre y los hemos ordenado por temas. <strong>No te vamos a decir a quién votar</strong> ni qué partido es mejor o peor. Solo te enseñamos lo que pone en sus papeles oficiales, con la cita literal y el enlace a la página exacta para que lo compruebes con tus propios ojos.
       </p>
 
-      <div class="hero-steps-grid" style="margin-top: 1.25rem;">
-        <article class="hero-step-box">
-          <strong>01 · CHAT ELECTORAL</strong>
-          <p>Responde preguntas libres sobre los programas (vivienda, impuestos, pensiones, sanidad...). Muestra cuántos partidos hablan del tema, bloques por color y enlace directo al PDF.</p>
-          <button type="button" class="w-btn primary home-go-btn" data-go="chat">ABRIR CHAT ELECTORAL &rarr;</button>
-        </article>
-        <article class="hero-step-box">
-          <strong>02 · COMPARADOR DIRECTO</strong>
-          <p>Explora las 21 materias oficiales partido a partido sin necesidad de rellenar perfil ni test. Ideal para ver propuestas concretas lado a lado.</p>
-          <button type="button" class="w-btn home-go-btn" data-go="comparator">ABRIR COMPARADOR &rarr;</button>
-        </article>
-        <article class="hero-step-box">
-          <strong>03 · PERFIL CIUDADANO (6 BLOQUES)</strong>
-          <p>Define opcionalmente tu situación personal, familiar, laboral, económica y de vivienda. Se guarda solo en tu navegador (Local-First) y nunca se envía al servidor.</p>
-          <button type="button" class="w-btn home-go-btn" data-go="profile">CONFIGURAR PERFIL &rarr;</button>
-        </article>
-        <article class="hero-step-box">
-          <strong>04 · TEST IDEOLÓGICO (12 EJES)</strong>
-          <p>Cuestionario dividido en 12 ejes con explicaciones sencillas en cada pregunta y 10 preguntas de control para visualizar tu mapa de prioridades.</p>
-          <button type="button" class="w-btn home-go-btn" data-go="ideology">HACER EL TEST &rarr;</button>
-        </article>
+      <!-- BLOQUE DE DATOS REALES CARGADOS -->
+      <div class="home-section-block">
+        <h3 class="home-section-title">1. Qué hay cargado aquí ahora mismo</h3>
+        <div class="home-stats-grid">
+          <div class="home-stat-card" style="border-top-color: #1D4ED8;">
+            <div class="home-stat-num">PP</div>
+            <div class="home-stat-label">82 páginas oficiales indexadas</div>
+          </div>
+          <div class="home-stat-card" style="border-top-color: #D92B2B;">
+            <div class="home-stat-num">PSOE</div>
+            <div class="home-stat-label">114 páginas oficiales indexadas</div>
+          </div>
+          <div class="home-stat-card" style="border-top-color: #16A34A;">
+            <div class="home-stat-num">VOX</div>
+            <div class="home-stat-label">55 páginas oficiales indexadas</div>
+          </div>
+          <div class="home-stat-card" style="border-top-color: #7C3AED;">
+            <div class="home-stat-num">F. AMPLIO</div>
+            <div class="home-stat-label">151 páginas oficiales indexadas</div>
+          </div>
+          <div class="home-stat-card" style="border-top-color: #111111;">
+            <div class="home-stat-num">SALF</div>
+            <div class="home-stat-label">42 páginas oficiales indexadas</div>
+          </div>
+          <div class="home-stat-card" style="border-top-color: #1D4ED8;">
+            <div class="home-stat-num">1.961</div>
+            <div class="home-stat-label">Bloques y fragmentos verificados en 21 temas</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TUTORIAL PASO A PASO DE CADA SECCIÓN -->
+      <div class="home-section-block">
+        <h3 class="home-section-title">2. Tutorial rápido: cómo usar cada apartado</h3>
+        <div class="hero-steps-grid">
+          <article class="hero-step-box">
+            <strong>1 · CHAT ELECTORAL (PREGUNTA LO QUE QUIERAS)</strong>
+            <p><strong>Cómo se usa:</strong> Escribe una duda normal arriba (por ejemplo: <em>"¿Qué proponen sobre el alquiler?"</em> o <em>"¿Qué pasa con los autónomos?"</em>).<br><strong>Qué te da:</strong> Un resumen directo y, debajo, tarjetas con el color de cada partido, su frase exacta y el enlace a esa página del PDF.</p>
+            <button type="button" class="w-btn primary home-go-btn" data-go="chat">IR AL CHAT ELECTORAL &rarr;</button>
+          </article>
+
+          <article class="hero-step-box">
+            <strong>2 · COMPARADOR POR TEMAS (SIN PREGUNTAR NADA)</strong>
+            <p><strong>Cómo se usa:</strong> Elige un tema de la lista (Vivienda, Sanidad, Impuestos, Pensiones...) y, si quieres, filtra por partido.<br><strong>Qué te da:</strong> Todas las propuestas oficiales puestas una al lado de la otra para compararlas a simple vista.</p>
+            <button type="button" class="w-btn home-go-btn" data-go="comparator">IR AL COMPARADOR &rarr;</button>
+          </article>
+
+          <article class="hero-step-box">
+            <strong>3 · MI PERFIL (OPCIONAL Y SOLO EN TU MÓVIL/PC)</strong>
+            <p><strong>Cómo se usa:</strong> Son 6 bloques fáciles sobre tu situación (edad, si tienes hijos, vivienda, trabajo...). Puedes saltarte cualquier pregunta.<br><strong>Privacidad:</strong> Se guarda solo en tu navegador. Nosotros no vemos ni guardamos nada.</p>
+            <button type="button" class="w-btn home-go-btn" data-go="profile">CONFIGURAR MI PERFIL &rarr;</button>
+          </article>
+
+          <article class="hero-step-box">
+            <strong>4 · TEST DE 12 EJES Y RESULTADOS</strong>
+            <p><strong>Cómo se usa:</strong> Responde si estás de acuerdo o no con frases sobre economía, sanidad, vivienda o seguridad. Cada frase lleva una explicación sencilla debajo.<br><strong>Qué te da:</strong> Un dibujo de tus propias ideas en 12 barras (de 0 a 100), sin decirte qué partido votar.</p>
+            <button type="button" class="w-btn home-go-btn" data-go="ideology">EMPEZAR EL TEST &rarr;</button>
+          </article>
+        </div>
+      </div>
+
+      <!-- COMPROMISO ANTI-MANIPULACIÓN -->
+      <div class="home-section-block">
+        <h3 class="home-section-title">3. Reglas claras: sin trampa ni manipulación</h3>
+        <div class="home-rules-grid">
+          <div class="home-rule-card" style="border-left: 6px solid #16A34A;">
+            <strong style="font-family:var(--font-mono); font-size:0.78rem;">LO QUE SÍ HACEMOS</strong>
+            <ul>
+              <li>Mostramos el texto literal del programa oficial y el número de página.</li>
+              <li>Si un partido no dice nada sobre un tema, te decimos claro que no consta.</li>
+              <li>Puedes usar toda la web sin registrarte ni dar tu correo o teléfono.</li>
+              <li>Puedes exportar, importar o borrar tu perfil y tu test en 1 clic.</li>
+            </ul>
+          </div>
+          <div class="home-rule-card" style="border-left: 6px solid #D92B2B;">
+            <strong style="font-family:var(--font-mono); font-size:0.78rem;">LO QUE NUNCA HACEMOS</strong>
+            <ul>
+              <li>Nunca te diremos "vota a este partido" ni haremos un ranking de ganadores.</li>
+              <li>Nunca mezclamos tu perfil ni tus respuestas del test con las preguntas del chat.</li>
+              <li>Nunca guardamos tus datos personales en bases de datos ni ponemos cookies de rastreo.</li>
+              <li>Nunca inventamos medidas: si no está en el PDF oficial, no se muestra.</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </section>
