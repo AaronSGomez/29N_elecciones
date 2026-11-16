@@ -12,6 +12,7 @@ from app.api.routes_chat import router as chat_router
 from app.core.config import get_settings
 from app.core.security import SlidingWindowRateLimiter
 from app.services.llm_service import LLMService
+from app.services.postgres_service import PostgresService
 from app.services.qdrant_service import QdrantRAGService
 from app.services.rag_service import RAGService
 from app.services.telegram_service import TelegramBotWorker
@@ -20,12 +21,15 @@ from app.services.telegram_service import TelegramBotWorker
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings = get_settings()
+    postgres = PostgresService(settings)
+    await postgres.connect()
     qdrant = QdrantRAGService(settings)
     llm = LLMService(settings)
-    rag = RAGService(settings, qdrant, llm)
+    rag = RAGService(settings, qdrant, postgres, llm)
     telegram = TelegramBotWorker(settings, rag)
 
     app.state.settings = settings
+    app.state.postgres = postgres
     app.state.qdrant = qdrant
     app.state.llm = llm
     app.state.rag = rag
@@ -37,6 +41,7 @@ async def lifespan(app: FastAPI):
     finally:
         await telegram.stop()
         await llm.close()
+        await postgres.close()
 
 
 settings = get_settings()

@@ -129,9 +129,13 @@
     try {
       const profile = {
         sex: document.getElementById("prof-sex")?.value || "",
+        age_range: document.getElementById("prof-age")?.value || "",
         salary_range: document.getElementById("prof-salary")?.value || "",
-        has_children: document.getElementById("prof-children")?.value || "",
+        family_type: document.getElementById("prof-family")?.value || "",
+        housing_status: document.getElementById("prof-housing")?.value || "",
         employment_status: document.getElementById("prof-employment")?.value || "",
+        has_pets: document.getElementById("prof-pets")?.value || "",
+        autonomous_community: document.getElementById("prof-ccaa")?.value || "",
         immigration_status: document.getElementById("prof-immigration")?.value || "",
       };
 

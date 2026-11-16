@@ -71,17 +71,10 @@ class QdrantRAGService:
             for pt in res.points:
                 payload = pt.payload or {}
                 hits.append({
+                    "id": str(pt.id),
                     "score": round(float(pt.score), 4),
                     "party_id": payload.get("party_id", ""),
-                    "party_name": payload.get("party_name", ""),
                     "topic": payload.get("topic", ""),
-                    "subtopic": payload.get("subtopic", ""),
-                    "title": payload.get("title", ""),
-                    "quote": payload.get("quote", ""),
-                    "explanation": payload.get("explanation", ""),
-                    "source_ref": payload.get("source_ref", ""),
-                    "source_url": payload.get("source_url", ""),
-                    "text": payload.get("text", ""),
                 })
         return hits
 
@@ -128,16 +121,9 @@ class QdrantRAGService:
         for pt in results.points:
             payload = pt.payload or {}
             hits.append({
+                "id": str(pt.id),
                 "score": round(float(pt.score), 4),
                 "party_id": payload.get("party_id", ""),
-                "party_name": payload.get("party_name", ""),
                 "topic": payload.get("topic", ""),
-                "subtopic": payload.get("subtopic", ""),
-                "title": payload.get("title", ""),
-                "quote": payload.get("quote", ""),
-                "explanation": payload.get("explanation", ""),
-                "source_ref": payload.get("source_ref", ""),
-                "source_url": payload.get("source_url", ""),
-                "text": payload.get("text", ""),
             })
         return hits

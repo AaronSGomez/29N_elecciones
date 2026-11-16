@@ -23,9 +23,18 @@ PARTIES_CATALOG = [
 
 class CitizenProfile(BaseModel):
     sex: Literal["", "mujer", "hombre", "otro"] = ""
+    age_range: Literal["", "<25", "25-35", "36-50", "51-65", ">65"] = ""
     salary_range: Literal["", "<15k", "15k-28k", "28k-50k", ">50k"] = ""
-    has_children: Literal["", "si", "no"] = ""
-    employment_status: Literal["", "trabajador", "autonomo", "desempleado", "estudiante", "jubilado"] = ""
+    family_type: Literal["", "sin_hijos", "con_hijos", "familia_numerosa", "monoparental"] = ""
+    housing_status: Literal["", "alquiler", "hipoteca", "propiedad", "busca_primera_vivienda"] = ""
+    employment_status: Literal["", "trabajador", "autonomo", "desempleado", "estudiante", "jubilado", "funcionario"] = ""
+    has_pets: Literal["", "si", "no"] = ""
+    autonomous_community: Literal[
+        "", "Andalucía", "Aragón", "Asturias", "Baleares", "Canarias", "Cantabria",
+        "Castilla-La Mancha", "Castilla y León", "Cataluña", "Comunidad Valenciana",
+        "Extremadura", "Galicia", "Madrid", "Murcia", "Navarra", "País Vasco",
+        "La Rioja", "Ceuta/Melilla"
+    ] = ""
     immigration_status: Literal["", "nacional", "residente_legal", "en_regularizacion"] = ""
 
 
@@ -39,7 +48,19 @@ class ChatRequest(BaseModel):
 @router.get("/health")
 async def health(request: Request) -> dict[str, Any]:
     qdrant = request.app.state.qdrant
-    return await qdrant.health()
+    postgres = request.app.state.postgres
+    q_info = await qdrant.health()
+    pg_count = await postgres.count_proposals()
+    return {**q_info, "postgres_proposals": pg_count}
+
+
+@router.get("/proposals/{proposal_id}")
+async def get_proposal(proposal_id: str, request: Request) -> dict[str, Any]:
+    from fastapi import HTTPException
+    row = await request.app.state.postgres.get_proposal_by_id(proposal_id)
+    if not row:
+        raise HTTPException(status_code=404, detail="Propuesta no encontrada.")
+    return row
 
 
 @router.get("/parties")

@@ -29,6 +29,13 @@ class Settings(BaseSettings):
     QDRANT_TOP_K: int = Field(default=5, ge=1, le=20)
     QDRANT_SCORE_THRESHOLD: float = Field(default=0.45, ge=0.0, le=1.0)
 
+    # PostgreSQL dedicado
+    POSTGRES_HOST: str = Field(min_length=1)
+    POSTGRES_PORT: int = Field(default=5432, gt=0, lt=65536)
+    POSTGRES_DB: str = Field(min_length=1)
+    POSTGRES_USER: str = Field(min_length=1)
+    POSTGRES_PASSWORD: str = Field(min_length=1)
+
     # Embeddings locales
     EMBEDDING_MODEL: str = Field(min_length=1)
     EMBEDDING_DIM: int = Field(gt=0)

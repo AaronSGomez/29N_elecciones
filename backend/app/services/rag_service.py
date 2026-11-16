@@ -9,6 +9,7 @@ from cachetools import TTLCache
 
 from app.core.config import Settings
 from app.services.llm_service import LLMService
+from app.services.postgres_service import PostgresService
 from app.services.qdrant_service import QdrantRAGService
 
 STRICT_SYSTEM_PROMPT = """Eres un asistente informativo neutral especializado EXCLUSIVAMENTE en los programas electorales de las elecciones del 29 de noviembre (29N).
@@ -30,9 +31,10 @@ OUT_OF_SCOPE_MSG = (
 
 
 class RAGService:
-    def __init__(self, settings: Settings, qdrant: QdrantRAGService, llm: LLMService) -> None:
+    def __init__(self, settings: Settings, qdrant: QdrantRAGService, postgres: PostgresService, llm: LLMService) -> None:
         self.settings = settings
         self.qdrant = qdrant
+        self.postgres = postgres
         self.llm = llm
         self.cache: TTLCache[str, dict[str, Any]] = TTLCache(
             maxsize=256,
@@ -104,8 +106,24 @@ class RAGService:
             yield {"type": "done"}
             return
 
+        # Hidratar registros completos desde PostgreSQL usando los IDs devueltos por Qdrant
+        hit_ids = [h["id"] for h in hits]
+        pg_rows = await self.postgres.get_proposals_by_ids(hit_ids)
+        enriched_hits: list[dict[str, Any]] = []
+        for h in hits:
+            row = pg_rows.get(h["id"])
+            if row:
+                enriched_hits.append({**row, "score": h["score"]})
+
+        if not enriched_hits:
+            yield {"type": "token", "content": OUT_OF_SCOPE_MSG}
+            yield {"type": "sources", "sources": []}
+            yield {"type": "done"}
+            return
+
         sources = [
             {
+                "id": h["id"],
                 "party_id": h["party_id"],
                 "party_name": h["party_name"],
                 "topic": h["topic"],
@@ -116,10 +134,10 @@ class RAGService:
                 "source_url": h.get("source_url", ""),
                 "score": h["score"],
             }
-            for h in hits
+            for h in enriched_hits
         ]
 
-        user_prompt = self._build_user_prompt(query, hits, profile)
+        user_prompt = self._build_user_prompt(query, enriched_hits, profile)
         full_answer: list[str] = []
 
         async for token in self.llm.stream_chat(STRICT_SYSTEM_PROMPT, user_prompt):

@@ -76,6 +76,14 @@
             <option value="hombre">Hombre</option>
             <option value="otro">Otro</option>
           </select>
+          <select id="prof-age" class="profile-select" aria-label="Edad">
+            <option value="">Edad (No indicar)</option>
+            <option value="<25">&lt; 25 años</option>
+            <option value="25-35">25 - 35 años</option>
+            <option value="36-50">36 - 50 años</option>
+            <option value="51-65">51 - 65 años</option>
+            <option value=">65">&gt; 65 años</option>
+          </select>
           <select id="prof-salary" class="profile-select" aria-label="Tramo salarial">
             <option value="">Salario (No indicar)</option>
             <option value="<15k">&lt; 15.000 €/año</option>
@@ -83,10 +91,19 @@
             <option value="28k-50k">28k - 50k €/año</option>
             <option value=">50k">&gt; 50.000 €/año</option>
           </select>
-          <select id="prof-children" class="profile-select" aria-label="Hijos">
-            <option value="">Hijos (No indicar)</option>
-            <option value="si">Con hijos a cargo</option>
-            <option value="no">Sin hijos</option>
+          <select id="prof-family" class="profile-select" aria-label="Situación familiar">
+            <option value="">Familia / Hijos</option>
+            <option value="sin_hijos">Sin hijos</option>
+            <option value="con_hijos">Con hijos (1-2)</option>
+            <option value="familia_numerosa">Familia numerosa (3+)</option>
+            <option value="monoparental">Familia monoparental</option>
+          </select>
+          <select id="prof-housing" class="profile-select" aria-label="Vivienda">
+            <option value="">Vivienda</option>
+            <option value="alquiler">De alquiler</option>
+            <option value="hipoteca">Con hipoteca</option>
+            <option value="propiedad">En propiedad</option>
+            <option value="busca_primera_vivienda">Busca 1ª vivienda</option>
           </select>
           <select id="prof-employment" class="profile-select" aria-label="Situación laboral">
             <option value="">Situación laboral</option>
@@ -95,6 +112,33 @@
             <option value="desempleado">Desempleado</option>
             <option value="estudiante">Estudiante</option>
             <option value="jubilado">Jubilado</option>
+            <option value="funcionario">Funcionario</option>
+          </select>
+          <select id="prof-pets" class="profile-select" aria-label="Mascotas">
+            <option value="">Mascotas</option>
+            <option value="si">Con mascotas</option>
+            <option value="no">Sin mascotas</option>
+          </select>
+          <select id="prof-ccaa" class="profile-select" aria-label="Comunidad Autónoma">
+            <option value="">Comunidad Autónoma</option>
+            <option value="Andalucía">Andalucía</option>
+            <option value="Aragón">Aragón</option>
+            <option value="Asturias">Asturias</option>
+            <option value="Baleares">Baleares</option>
+            <option value="Canarias">Canarias</option>
+            <option value="Cantabria">Cantabria</option>
+            <option value="Castilla-La Mancha">Castilla-La Mancha</option>
+            <option value="Castilla y León">Castilla y León</option>
+            <option value="Cataluña">Cataluña</option>
+            <option value="Comunidad Valenciana">C. Valenciana</option>
+            <option value="Extremadura">Extremadura</option>
+            <option value="Galicia">Galicia</option>
+            <option value="Madrid">Madrid</option>
+            <option value="Murcia">Murcia</option>
+            <option value="Navarra">Navarra</option>
+            <option value="País Vasco">País Vasco</option>
+            <option value="La Rioja">La Rioja</option>
+            <option value="Ceuta/Melilla">Ceuta / Melilla</option>
           </select>
           <select id="prof-immigration" class="profile-select full-width" aria-label="Situación residencia">
             <option value="">Residencia / Inmigración (No indicar)</option>
