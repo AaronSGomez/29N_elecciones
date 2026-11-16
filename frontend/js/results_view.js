@@ -110,29 +110,77 @@
     },
   ];
 
-  function computePartyMatches(axisResults) {
+  const TOPIC_TO_AXIS = {
+    "Economía e impuestos": "eje1",
+    "Sanidad": "eje2",
+    "Pensiones": "eje2",
+    "Dependencia": "eje2",
+    "Inmigración": "eje3",
+    "Seguridad": "eje4",
+    "Igualdad": "eje5",
+    "Libertades individuales": "eje5",
+    "Organización territorial": "eje6",
+    "Despoblación": "eje6",
+    "Medioambiente": "eje7",
+    "Energía": "eje7",
+    "Agricultura y ganadería": "eje7",
+    "Transporte": "eje7",
+    "Educación": "eje8",
+    "Investigación e innovación": "eje8",
+    "Empleo": "eje9",
+    "Industria": "eje9",
+    "Vivienda": "eje10",
+    "Familia": "eje11",
+    "Administración pública": "eje12",
+  };
+
+  function computePartyMatches(axisResults, selectedTopics, weightMode) {
     const answered = axisResults.filter((a) => a.score !== null);
-    if (answered.length === 0) return { answeredCount: 0, ranking: [] };
+    if (answered.length === 0) return { answeredCount: 0, usedAxesCount: 0, ranking: [] };
+
+    const priorityAxisSet = new Set(
+      (selectedTopics || []).map((t) => TOPIC_TO_AXIS[t]).filter(Boolean)
+    );
+
+    const activeAxes =
+      weightMode === "only_priorities" && priorityAxisSet.size > 0
+        ? answered.filter((a) => priorityAxisSet.has(a.id))
+        : answered;
+
+    if (activeAxes.length === 0) {
+      return { answeredCount: answered.length, usedAxesCount: 0, ranking: [] };
+    }
 
     const ranking = PARTY_PROFILES.map((party) => {
-      let sumSim = 0;
+      let weightedSum = 0;
+      let totalWeight = 0;
       let closeAxes = 0;
-      answered.forEach((ax) => {
+
+      activeAxes.forEach((ax) => {
+        const w =
+          weightMode === "weighted" && priorityAxisSet.has(ax.id) ? 3 : 1;
         const pScore = party.axes[ax.id];
         const diff = Math.abs(ax.score - pScore);
-        sumSim += Math.max(0, 100 - diff);
+        weightedSum += Math.max(0, 100 - diff) * w;
+        totalWeight += w;
         if (diff <= 25) closeAxes += 1;
       });
-      const pct = Math.round(sumSim / answered.length);
+
+      const pct = totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 0;
       return {
         ...party,
         pct,
         closeAxes,
-        totalAnsweredAxes: answered.length,
+        totalAnsweredAxes: activeAxes.length,
       };
     }).sort((a, b) => b.pct - a.pct);
 
-    return { answeredCount: answered.length, ranking };
+    return {
+      answeredCount: answered.length,
+      usedAxesCount: activeAxes.length,
+      priorityAxesCount: priorityAxisSet.size,
+      ranking,
+    };
   }
 
   function describeScore(axisId, score) {
@@ -157,6 +205,7 @@
 
   function renderResultsView(container, onNavigate) {
     const profile = global.ProfileStore29N.loadProfile();
+    let weightMode = (profile.priorities?.selectedTopics || []).length > 0 ? "weighted" : "equal";
 
     function render() {
       container.textContent = "";
@@ -211,6 +260,7 @@
           }
           profile.priorities.selectedTopics = arr;
           profile.priorities.orderedTopics = arr;
+          if (arr.length > 0 && weightMode === "equal") weightMode = "weighted";
           global.ProfileStore29N.saveProfile(profile);
           render();
         });
@@ -221,27 +271,64 @@
       });
       prioBox.appendChild(topicWrap);
 
-      // 2. Diagrama de barras "Uno a uno" (aproximación por programa)
+      // 2. Diagrama de barras "Uno a uno" (aproximación ponderada por prioridades)
       const results = global.IdeologyTest29N.computeAxisResults(profile.ideology?.answers || {});
-      const matchData = computePartyMatches(results);
+      const selectedTopics = profile.priorities.selectedTopics || [];
+      if (selectedTopics.length === 0 && weightMode !== "equal") {
+        weightMode = "equal";
+      }
+      const matchData = computePartyMatches(results, selectedTopics, weightMode);
 
       const matchSection = document.createElement("div");
       matchSection.style.marginTop = "1.5rem";
       const matchTitle = document.createElement("div");
       matchTitle.className = "filter-group-title";
-      matchTitle.textContent = "Uno a uno · Aproximación según tus respuestas del test (solo en tu navegador)";
+      matchTitle.textContent = "Uno a uno · Aproximación según tus prioridades y respuestas (solo en tu navegador)";
       matchSection.appendChild(matchTitle);
+
+      // Selector de ponderación
+      const modeRow = document.createElement("div");
+      modeRow.className = "w-btn-group";
+      modeRow.style.margin = "0.5rem 0 0.75rem";
+      [
+        ["weighted", "PONDERADO POR PRIORIDADES (3x)"],
+        ["only_priorities", "SOLO MIS PRIORIDADES"],
+        ["equal", "TODOS LOS EJES POR IGUAL"],
+      ].forEach(([mKey, mLabel]) => {
+        const mBtn = document.createElement("button");
+        mBtn.type = "button";
+        mBtn.className = `step-pill ${weightMode === mKey ? "active" : ""}`;
+        mBtn.textContent = mLabel;
+        mBtn.disabled = mKey !== "equal" && selectedTopics.length === 0;
+        mBtn.addEventListener("click", () => {
+          weightMode = mKey;
+          render();
+        });
+        modeRow.appendChild(mBtn);
+      });
+      matchSection.appendChild(modeRow);
 
       if (matchData.answeredCount === 0) {
         const emptyMatch = document.createElement("div");
         emptyMatch.className = "security-notice";
         emptyMatch.textContent = "Aún no has respondido preguntas en 'B. Mis ideas (Test 12 ejes)'. Contesta al menos un eje para ver el diagrama comparativo.";
         matchSection.appendChild(emptyMatch);
+      } else if (matchData.usedAxesCount === 0) {
+        const emptyPrio = document.createElement("div");
+        emptyPrio.className = "security-notice";
+        emptyPrio.textContent = "No has respondido todavía en el test a los ejes correspondientes a tus prioridades seleccionadas. Responde esos ejes o cambia a 'Todos los ejes por igual'.";
+        matchSection.appendChild(emptyPrio);
       } else {
         const top = matchData.ranking[0];
+        const modeDesc =
+          weightMode === "only_priorities"
+            ? `usando únicamente tus ${matchData.usedAxesCount} ejes prioritarios`
+            : weightMode === "weighted" && selectedTopics.length > 0
+              ? `ponderando 3x tus prioridades sobre ${matchData.usedAxesCount} ejes respondidos`
+              : `con igual peso en ${matchData.usedAxesCount} ejes respondidos`;
         const leadText = document.createElement("p");
         leadText.className = "hero-subtitle";
-        leadText.textContent = `Con ${matchData.answeredCount} de 12 ejes respondidos, tus respuestas se aproximan más a ${top.name} (${top.pct}% de cercanía media · ${top.closeAxes} de ${top.totalAnsweredAxes} ejes coincidentes). Compruébalo leyendo las medidas reales en Programas.`;
+        leadText.textContent = `Calculado ${modeDesc}: tus respuestas se aproximan más a ${top.name} (${top.pct}% · ${top.closeAxes} de ${top.totalAnsweredAxes} ejes coincidentes). Compruébalo leyendo las medidas reales en Programas.`;
         matchSection.appendChild(leadText);
 
         const list = document.createElement("div");
