@@ -17,7 +17,8 @@ from fastembed import TextEmbedding
 from qdrant_client import QdrantClient, models
 
 ROOT = Path(__file__).resolve().parent.parent
-load_dotenv(ROOT / ".env")
+if (ROOT / ".env").exists():
+    load_dotenv(ROOT / ".env")
 
 
 def require_env(key: str) -> str:

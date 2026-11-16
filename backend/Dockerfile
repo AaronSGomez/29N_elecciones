@@ -16,6 +16,7 @@ RUN pip install --upgrade pip && pip install -r /app/requirements.txt
 
 COPY backend/app /app/app
 COPY frontend /app/frontend
+COPY ingestion /app/ingestion
 
 # Usuario sin privilegios
 RUN useradd -m -u 10001 appuser && chown -R appuser:appuser /app
