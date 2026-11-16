@@ -1,30 +1,28 @@
 /* ==============================================================================
-   29N ELECCIONES — SWISS INDUSTRIAL ENGINEERING & DATA-DRIVEN PRECISION
-   PRINT//CORE 5 Design Tokens & Core Canvases (heredado de portal_guia)
+   A QUIÉN VOTAR ESTAS ELECCIONES 29N — ESTÉTICA EGB AÑOS 90 (SOLO COLORES CLAROS)
+   Negro · Rojo · Azul sobre papel claro (PRINT//CORE 5)
    ============================================================================== */
 
 :root {
-  /* Paleta Técnica "Warm Paper & Precision Ink" */
-  --bg-primary: #FAF8F5;
-  --bg-secondary: #F0EDE6;
+  --bg-primary: #F7F5F0;
+  --bg-secondary: #ECE8DF;
   --bg-surface: #FFFFFF;
-  --bg-code: #141519;
+  --bg-code: #111111;
 
-  --ink-primary: #121316;
-  --ink-secondary: #4A4D55;
-  --ink-muted: #7A7E89;
-  --ink-inverse: #FAF8F5;
+  --ink-primary: #111111;
+  --ink-secondary: #333740;
+  --ink-muted: #5C6270;
+  --ink-inverse: #FFFFFF;
 
-  --accent-vermilion: #7C3AED;
-  --accent-vermilion-hover: #6D28D9;
-  --accent-amber: #F09A1A;
+  /* Paleta EGB 90s: Azul bolígrafo BIC, Rojo corrección, Negro tinta */
+  --accent-vermilion: #1D4ED8;
+  --accent-vermilion-hover: #1E40AF;
+  --accent-red: #D92B2B;
   --accent-green: #10B981;
-  --accent-blue: #0284C7;
-  --accent-red: #DC2626;
 
-  --border-strong: #121316;
-  --border-subtle: #DFD9CE;
-  --border-grid: rgba(18, 19, 22, 0.08);
+  --border-strong: #111111;
+  --border-subtle: #D5CFC2;
+  --border-grid: rgba(29, 78, 216, 0.08);
 
   /* Tipografía */
   --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -36,35 +34,9 @@
   --radius-md: 4px;
 
   --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-smooth: 250ms cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Elevation & Shadows: Sharp industrial offsets, zero diffuse blur */
-  --shadow-flat: 2px 2px 0px var(--border-strong);
-  --shadow-card: 4px 4px 0px var(--border-strong);
-  --shadow-hover: 6px 6px 0px var(--accent-vermilion);
-}
-
-[data-theme="dark"] {
-  --bg-primary: #0C0D10;
-  --bg-secondary: #14161B;
-  --bg-surface: #191B22;
-  --bg-code: #070709;
-
-  --ink-primary: #F4F3EF;
-  --ink-secondary: #A6AAB5;
-  --ink-muted: #6B7080;
-  --ink-inverse: #0C0D10;
-
-  --border-strong: #F4F3EF;
-  --border-subtle: #272B36;
-  --border-grid: rgba(244, 243, 239, 0.06);
-
-  --accent-vermilion: #8B5CF6;
-  --accent-vermilion-hover: #A78BFA;
-
-  --shadow-flat: 2px 2px 0px var(--border-subtle);
-  --shadow-card: 4px 4px 0px rgba(0, 0, 0, 0.6);
-  --shadow-hover: 6px 6px 0px var(--accent-vermilion);
+  --shadow-flat: 2px 2px 0px #111111;
+  --shadow-card: 4px 4px 0px #111111;
 }
 
 *, *::before, *::after {
@@ -90,12 +62,11 @@ body {
   background-color: var(--bg-primary);
   color: var(--ink-primary);
   font-family: var(--font-body);
+  /* Cuadrícula tipo cuaderno EGB */
   background-image:
     linear-gradient(var(--border-grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--border-grid) 1px, transparent 1px);
-  background-size: 40px 40px;
-  background-position: -1px -1px;
-  transition: background-color var(--transition-smooth), color var(--transition-smooth);
+  background-size: 32px 32px;
 }
 
 button, input, textarea, select {

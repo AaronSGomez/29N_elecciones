@@ -80,6 +80,7 @@ class QdrantRAGService:
                     "quote": payload.get("quote", ""),
                     "explanation": payload.get("explanation", ""),
                     "source_ref": payload.get("source_ref", ""),
+                    "source_url": payload.get("source_url", ""),
                     "text": payload.get("text", ""),
                 })
         return hits
@@ -136,6 +137,7 @@ class QdrantRAGService:
                 "quote": payload.get("quote", ""),
                 "explanation": payload.get("explanation", ""),
                 "source_ref": payload.get("source_ref", ""),
+                "source_url": payload.get("source_url", ""),
                 "text": payload.get("text", ""),
             })
         return hits

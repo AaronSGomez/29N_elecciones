@@ -49,20 +49,58 @@
 
   function appendSources(card, sources) {
     if (!Array.isArray(sources) || sources.length === 0) return;
-    const box = document.createElement("div");
-    box.className = "sources-box";
+    const grid = document.createElement("div");
+    grid.className = "sources-blocks";
 
     sources.forEach((src) => {
-      const tag = document.createElement("span");
-      tag.className = "source-tag";
-      const party = src.party_name || src.party_id || "Programa";
-      const topic = src.topic || "";
-      const ref = src.source_ref || "";
-      tag.textContent = `[${party}${topic ? " · " + topic : ""}${ref ? " · " + ref : ""}]`;
-      box.appendChild(tag);
+      const partyId = (src.party_id || "").toLowerCase();
+      const block = document.createElement("article");
+      block.className = `proposal-block party-${partyId}`;
+
+      const header = document.createElement("div");
+      header.className = "proposal-header";
+      const pSpan = document.createElement("span");
+      pSpan.textContent = src.party_name || partyId.toUpperCase();
+      const tSpan = document.createElement("span");
+      tSpan.textContent = src.topic || "";
+      header.appendChild(pSpan);
+      header.appendChild(tSpan);
+      block.appendChild(header);
+
+      if (src.title) {
+        const title = document.createElement("h4");
+        title.className = "proposal-title";
+        title.textContent = src.title;
+        block.appendChild(title);
+      }
+
+      if (src.quote) {
+        const quote = document.createElement("blockquote");
+        quote.className = "proposal-quote";
+        const snippet = src.quote.length > 260 ? src.quote.slice(0, 260) + "..." : src.quote;
+        quote.textContent = `«${snippet}»`;
+        block.appendChild(quote);
+      }
+
+      if (src.source_url && src.source_url.startsWith("https://")) {
+        const link = document.createElement("a");
+        link.className = "proposal-link";
+        link.href = src.source_url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = `${src.source_ref || "Ver en programa oficial"} ↗`;
+        block.appendChild(link);
+      } else if (src.source_ref) {
+        const ref = document.createElement("span");
+        ref.className = "proposal-link";
+        ref.textContent = src.source_ref;
+        block.appendChild(ref);
+      }
+
+      grid.appendChild(block);
     });
 
-    card.appendChild(box);
+    card.appendChild(grid);
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
 
@@ -191,6 +229,29 @@
       }
       updateScopeBadge();
     });
+  });
+
+  // Pestañas menú superior: Chat vs Configura tu perfil de votante
+  const tabChatBtn = document.getElementById("tab-chat-btn");
+  const tabProfileBtn = document.getElementById("tab-profile-btn");
+  const filtersSec = document.getElementById("filters-section");
+  const topicsSec = document.getElementById("topics-section");
+  const profileSec = document.getElementById("profile-section");
+
+  tabChatBtn?.addEventListener("click", () => {
+    tabChatBtn.classList.add("active");
+    tabProfileBtn?.classList.remove("active");
+    filtersSec?.classList.remove("hidden-panel");
+    topicsSec?.classList.remove("hidden-panel");
+    profileSec?.classList.add("hidden-panel");
+  });
+
+  tabProfileBtn?.addEventListener("click", () => {
+    tabProfileBtn.classList.add("active");
+    tabChatBtn?.classList.remove("active");
+    filtersSec?.classList.add("hidden-panel");
+    topicsSec?.classList.add("hidden-panel");
+    profileSec?.classList.remove("hidden-panel");
   });
 
   // Botón de análisis imparcial por perfil ciudadano

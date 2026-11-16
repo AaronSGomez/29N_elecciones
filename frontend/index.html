@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>29N · Chat Electoral RAG — Programas Comparados</title>
-  <meta name="description" content="Consulta rápida sobre los programas electorales del 29 de noviembre mediante RAG en Qdrant y FastAPI.">
+  <title>A quién votar estas elecciones 29N</title>
+  <meta name="description" content="Consulta y compara los programas electorales del 29N por bloques temáticos con enlace directo a la página oficial.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,39 +13,31 @@
   <link rel="stylesheet" href="/Style/base.css">
   <link rel="stylesheet" href="/Style/navbar.css">
   <link rel="stylesheet" href="/Style/chat.css">
-
-  <script>
-    (function () {
-      const t = localStorage.getItem("29n-theme") ||
-        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-      if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
-    })();
-  </script>
 </head>
 <body>
 
   <header class="masthead-bar">
-    <div class="system-status-indicator">
+    <div class="masthead-brand">
       <span class="status-dot" id="status-dot"></span>
-      <span id="status-text">STATUS: CONECTANDO // QDRANT // FASTAPI</span>
+      <h1 class="brand-title">A quién votar estas elecciones 29N</h1>
     </div>
 
-    <div class="masthead-controls">
-      <span class="brand-badge">29N // RAG</span>
-      <button class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Cambiar tema visual">[ DARK THEME ]</button>
-    </div>
+    <nav class="masthead-nav" aria-label="Menú principal">
+      <button type="button" class="nav-tab-btn active" id="tab-chat-btn">CHAT</button>
+      <button type="button" class="nav-tab-btn" id="tab-profile-btn">CONFIGURA TU PERFIL DE VOTANTE</button>
+      <span class="nav-privacy-note">NOTA: NO RECABAMOS DATOS</span>
+    </nav>
   </header>
 
   <main class="app-shell">
-    <!-- SIDEBAR DE CONTROL Y FILTROS -->
+    <!-- SIDEBAR DE FILTROS Y PERFIL -->
     <aside class="sidebar-panel">
       <div>
-        <div class="panel-header-tag">ELECCIONES 29 NOVIEMBRE</div>
-        <h1 class="hero-title">Programas Electorales 29N</h1>
-        <p class="hero-subtitle">Consulta directa sobre propuestas oficiales indexadas por bloques temáticos en Qdrant.</p>
+        <div class="panel-header-tag" id="status-text">CARGANDO ÍNDICE QDRANT...</div>
+        <p class="hero-subtitle">Consulta los programas oficiales de <strong>PP, PSOE, VOX, Frente Amplio y SALF</strong> en bloques verificados con enlace directo a cada página.</p>
       </div>
 
-      <div>
+      <div id="filters-section">
         <div class="filter-group-title">01. Filtrar Partidos</div>
         <div class="party-grid">
           <button type="button" class="party-chip full-width active" data-party="all">
@@ -59,7 +51,7 @@
         </div>
       </div>
 
-      <div>
+      <div id="topics-section">
         <div class="filter-group-title">02. Bloque Temático (Opcional)</div>
         <div class="topic-list">
           <button type="button" class="topic-pill" data-topic="Vivienda">Vivienda</button>
@@ -75,8 +67,8 @@
         </div>
       </div>
 
-      <div>
-        <div class="filter-group-title">03. Perfil Ciudadano (Opcional)</div>
+      <div id="profile-section" class="hidden-panel">
+        <div class="filter-group-title">Configura tu perfil de votante (Nota: no recabamos datos)</div>
         <div class="profile-form">
           <select id="prof-sex" class="profile-select" aria-label="Sexo">
             <option value="">Sexo (No indicar)</option>
@@ -117,7 +109,7 @@
       </div>
 
       <div class="security-notice">
-        <strong>MODO ESTRICTO ACTIVO:</strong> El asistente solo responde con información verificada de los programas cargados en Qdrant y cita la página exacta. Consultas fuera de ámbito son bloqueadas automáticamente.
+        <strong>TRANSPARENCIA 29N:</strong> No guardamos ni recabamos datos personales. El perfil se usa solo en tu consulta actual para comparar medidas imparcialmente.
       </div>
     </aside>
 
@@ -134,7 +126,7 @@
             <span>SISTEMA // RAG 29N</span>
             <span>LISTO</span>
           </div>
-          <div class="msg-body">Bienvenido al consultor de programas electorales del 29N. Selecciona uno o varios partidos en el panel izquierdo o pregunta directamente para comparar propuestas sobre vivienda, impuestos, sanidad, pensiones, empleo o cualquier bloque cargado.</div>
+          <div class="msg-body">Bienvenido a "A quién votar estas elecciones 29N". Pregunta cualquier tema o configura tu perfil de votante en el menú superior. Verás la respuesta acompañada de bloques por partido con la cita textual y el enlace directo a la página exacta del programa oficial.</div>
         </article>
       </div>
 
@@ -159,7 +151,6 @@
     </section>
   </main>
 
-  <script src="/js/theme.js"></script>
   <script src="/js/chat.js"></script>
 </body>
 </html>

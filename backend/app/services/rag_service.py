@@ -109,7 +109,11 @@ class RAGService:
                 "party_id": h["party_id"],
                 "party_name": h["party_name"],
                 "topic": h["topic"],
+                "subtopic": h.get("subtopic", ""),
+                "title": h.get("title", ""),
+                "quote": h.get("quote", ""),
                 "source_ref": h["source_ref"],
+                "source_url": h.get("source_url", ""),
                 "score": h["score"],
             }
             for h in hits
