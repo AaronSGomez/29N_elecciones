@@ -79,7 +79,7 @@
 
       if (!cachedVeracityData) {
         try {
-          const vRes = await fetch("/data/veracidad_2026.json?v=20261117d");
+          const vRes = await fetch("/data/veracidad_2026.json?v=20261117f");
           cachedVeracityData = await vRes.json();
         } catch {
           cachedVeracityData = [];
@@ -144,11 +144,24 @@
           qt.textContent = `«${ex.quote}»`;
           blk.appendChild(qt);
         }
-        if (ex.detail && !ex.detail.startsWith("Incluye instrumento normativo")) {
+        if (
+          ex.detail &&
+          !ex.detail.startsWith("Incluye instrumento normativo") &&
+          !ex.detail.startsWith("Declaración de intenciones sin cuantía")
+        ) {
           const det = document.createElement("div");
           det.className = "w-field-desc";
           det.textContent = ex.detail;
           blk.appendChild(det);
+        }
+        if (ex.url && ex.url.startsWith("https://")) {
+          const link = document.createElement("a");
+          link.className = "proposal-link";
+          link.href = ex.url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = "Leer en programa oficial ↗";
+          blk.appendChild(link);
         }
         return blk;
       }
