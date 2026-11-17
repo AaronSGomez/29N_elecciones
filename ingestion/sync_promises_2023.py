@@ -112,12 +112,12 @@ RECORDS = [
         "status": "parcial",
         "evidence_url": "https://www.bocm.es",
     },
-    # --- ANDALUCÍA (PP) ---
+    # --- ANDALUCÍA (PP + VOX) ---
     {
         "id": "and_rebaja_irpf_boja",
         "scope": "andalucia",
         "scope_name": "Andalucía",
-        "governing_party": "PP",
+        "governing_party": "PP + VOX",
         "party_id": "pp",
         "topic": "Impuestos",
         "commitment_text": "Aplicar rebajas escalonadas y deflactación en los tramos autonómicos del IRPF.",
