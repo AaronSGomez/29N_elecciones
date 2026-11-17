@@ -409,20 +409,36 @@
 
       card.append(tag, h2, intro);
 
-      // 1. RESUMEN COMPARATIVO DE VERACIDAD (5 PARTIDOS)
+      // 1. RESUMEN COMPARATIVO DE VERACIDAD (DIAGRAMA DE BARRAS CON LOGOS)
       const gridTitle = document.createElement("div");
       gridTitle.className = "filter-group-title";
       gridTitle.style.marginTop = "1.25rem";
-      gridTitle.textContent = "1. Comparativa por partido (pulsa un partido para inspeccionar ejemplos y explicaciones)";
+      gridTitle.textContent = "1. Diagrama de veracidad y viabilidad por partido (pulsa un partido para ver sus ejemplos)";
       card.appendChild(gridTitle);
+
+      const barLegend = document.createElement("div");
+      barLegend.className = "map-legend";
+      barLegend.style.marginTop = "0.45rem";
+      [
+        ["status-green", "Medidas concretas aplicables (%)"],
+        ["status-amber", "Brindis al sol / promesas vacías (%)"],
+        ["status-red", "Reforma CE / Conflicto UE (n.º de medidas)"],
+      ].forEach(([cls, txt]) => {
+        const span = document.createElement("span");
+        const dot = document.createElement("span");
+        dot.className = `legend-dot ${cls}`;
+        span.append(dot, document.createTextNode(txt));
+        barLegend.appendChild(span);
+      });
+      card.appendChild(barLegend);
 
       const partyList = document.createElement("div");
       partyList.className = "uno-a-uno-list";
-      partyList.style.marginTop = "0.6rem";
+      partyList.style.marginTop = "0.65rem";
 
       PROGRAM_VERACITY.forEach((p) => {
         const row = document.createElement("div");
-        row.className = `party-match-row`;
+        row.className = "party-match-row";
         row.style.cursor = "pointer";
         row.style.outline = selectedPartyId === p.id ? "2px solid var(--accent-primary, #111)" : "none";
 
@@ -434,14 +450,29 @@
         mid.className = "party-match-mid";
         const name = document.createElement("div");
         name.className = "party-match-name";
-        name.textContent = `${p.name} · ${p.uniqueCount} medidas únicas · ${p.constCount} reforma CE · ${p.euCount} conflicto UE`;
+        name.textContent = `${p.name} (${p.uniqueCount} medidas únicas)`;
+
         const track = document.createElement("div");
         track.className = "party-match-track";
+        track.style.display = "flex";
         const fill = document.createElement("div");
         fill.className = `party-match-fill ${p.id}`;
         fill.style.width = `${p.concretePct}%`;
-        track.appendChild(fill);
-        mid.append(name, track);
+        fill.title = `${p.concretePct}% medidas concretas`;
+        const fillVague = document.createElement("div");
+        fillVague.style.width = `${p.vaguePct}%`;
+        fillVague.style.height = "100%";
+        fillVague.style.background = "#F59E0B";
+        fillVague.style.opacity = "0.55";
+        fillVague.title = `${p.vaguePct}% brindis al sol`;
+        track.append(fill, fillVague);
+
+        const meta = document.createElement("div");
+        meta.className = "w-field-desc";
+        meta.style.marginTop = "0.25rem";
+        meta.textContent = `Reforma CE: ${p.constCount} · Ilegal / conflicto UE: ${p.euCount}`;
+
+        mid.append(name, track, meta);
 
         const score = document.createElement("div");
         score.className = "party-match-score";
