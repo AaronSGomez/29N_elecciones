@@ -181,7 +181,7 @@
           const exGrid = document.createElement("div");
           exGrid.className = "sources-blocks";
           exGrid.style.marginTop = "0.5rem";
-          exGrid.style.gridTemplateColumns = "repeat(auto-fill, minmax(320px, 1fr))";
+          exGrid.style.gridTemplateColumns = "repeat(auto-fill, minmax(min(100%, 320px), 1fr))";
           allMatched.forEach(({ party, ex }) => exGrid.appendChild(buildExampleCard(party, ex)));
           veracityBody.append(countInfo, exGrid);
           return;
@@ -265,7 +265,7 @@
 
             const exGrid = document.createElement("div");
             exGrid.className = "sources-blocks";
-            exGrid.style.gridTemplateColumns = "repeat(auto-fill, minmax(320px, 1fr))";
+            exGrid.style.gridTemplateColumns = "repeat(auto-fill, minmax(min(100%, 320px), 1fr))";
 
             const catDefs = [
               ["brindis", `BRINDIS AL SOL (${p.vagueCount})`],
