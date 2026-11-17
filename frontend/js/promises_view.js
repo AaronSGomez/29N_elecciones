@@ -135,10 +135,6 @@
         title.className = "proposal-title";
         title.textContent = ex.title;
 
-        const det = document.createElement("div");
-        det.className = "w-field-desc";
-        det.textContent = ex.detail;
-
         blk.append(hdr, title);
         if (ex.quote) {
           const qt = document.createElement("div");
@@ -148,7 +144,12 @@
           qt.textContent = `«${ex.quote}»`;
           blk.appendChild(qt);
         }
-        blk.appendChild(det);
+        if (ex.detail && !ex.detail.startsWith("Incluye instrumento normativo")) {
+          const det = document.createElement("div");
+          det.className = "w-field-desc";
+          det.textContent = ex.detail;
+          blk.appendChild(det);
+        }
         return blk;
       }
 
@@ -167,6 +168,7 @@
           const exGrid = document.createElement("div");
           exGrid.className = "sources-blocks";
           exGrid.style.marginTop = "0.5rem";
+          exGrid.style.gridTemplateColumns = "repeat(auto-fill, minmax(320px, 1fr))";
           allMatched.forEach(({ party, ex }) => exGrid.appendChild(buildExampleCard(party, ex)));
           veracityBody.append(countInfo, exGrid);
           return;
@@ -250,6 +252,7 @@
 
             const exGrid = document.createElement("div");
             exGrid.className = "sources-blocks";
+            exGrid.style.gridTemplateColumns = "repeat(auto-fill, minmax(320px, 1fr))";
 
             const catDefs = [
               ["brindis", `BRINDIS AL SOL (${p.vagueCount})`],
