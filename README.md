@@ -12,7 +12,7 @@
 
 > **Resumen Ejecutivo**:  
 > Plataforma RAG (*Retrieval-Augmented Generation*) de alta velocidad y bajo consumo diseñada para ejecutarse de forma **totalmente aislada en una Raspberry Pi 5 (8 GB RAM, ARM64)** junto a otros servicios existentes. Permite consultar y comparar las propuestas oficiales de los programas electorales del **29 de noviembre (29N)** —**PP, PSOE, VOX, Frente Amplio y SALF**— mediante una interfaz clara organizada en **3 apartados principales** (**Inicio**, **Programas** [Comparador + Chat SSE] y **Mi espacio** [Perfil de 6 bloques + Test de 12 ejes + Resultados]), además de soporte opcional para Bot de Telegram.  
-> Implementa embeddings locales **FastEmbed (ONNX)** para no consumir cuota de API en búsquedas, **PostgreSQL** como fuente de verdad estructurada (`2.177` registros: `931` bloques temáticos + `1.246` fragmentos PDF), protección estricta contra *prompt injection* y XSS, y un **Gate obligatorio de secretos** (`verify_env.py`) que prohíbe cualquier despliegue sin validar `.env`.
+> Implementa embeddings locales **FastEmbed (ONNX)** para no consumir cuota de API en búsquedas, **PostgreSQL** como fuente de verdad estructurada (`2.179` registros sincronizados con Qdrant), búsqueda híbrida con diccionario electoral y expansión de consultas, protección estricta contra *prompt injection* y XSS, y un **Gate obligatorio de secretos** (`verify_env.py`) que prohíbe cualquier despliegue sin validar `.env`.
 
 ---
 
@@ -113,4 +113,4 @@ FastAPI Middleware (backend_29n)
 - **Estructura actual (`frontend/js/ideology_test.js`):** **86 preguntas** distribuidas en **12 ejes** (`49` directas y `37` inversas) más **4 matices de priorización presupuestaria** (`ctrl_1`, `ctrl_2`, `ctrl_7`, `ctrl_10`), sin puntuación global izquierda–derecha ni recomendación de voto.
 - **Baremos trazables (`PARTY_QUESTION_SCORES` + `frontend/js/results_view.js`):** Cada pregunta incluida cuenta con al menos **2 partidos** con posición documentada en `ingestion/data/programas_29n.json`. Las ausencias (`SIN MENCIÓN`) quedan como `null` (no evaluables) y se excluyen del cálculo por eje sin inventar puntuaciones.
 - **Migración local (`frontend/js/profile_store.js`):** `schemaVersion: 2` conserva las respuestas `v1` compatibles y limpia los ítems sustituidos o con polaridad modificada.
-- **Documentación completa:** [frontend/metodologia.html](frontend/metodologia.html) y carpeta [docs/auditoria_fase2/](docs/auditoria_fase2/).
+- **Documentación completa:** [frontend/metodologia.html](frontend/metodologia.html), [docs/GUIA_PRUEBAS_Y_DESPLIEGUE.md](docs/GUIA_PRUEBAS_Y_DESPLIEGUE.md) y carpeta [docs/auditoria_fase2/](docs/auditoria_fase2/).
