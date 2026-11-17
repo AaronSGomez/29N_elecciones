@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Allow: /metodologia.html
+Allow: /og-29n.png
+Allow: /favicon.svg
+Disallow: /api/
+
+Sitemap: https://elecciones29n.duckdns.org/sitemap.xml
