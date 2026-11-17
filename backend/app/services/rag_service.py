@@ -142,6 +142,8 @@ class RAGService:
                 per_party_count[pid] = per_party_count.get(pid, 0) + 1
 
         if not enriched_hits:
+            if self.settings.CACHE_TTL_SECONDS > 0:
+                self.cache[key] = {"answer": OUT_OF_SCOPE_MSG, "sources": []}
             yield {"type": "token", "content": OUT_OF_SCOPE_MSG}
             yield {"type": "sources", "sources": []}
             yield {"type": "done"}

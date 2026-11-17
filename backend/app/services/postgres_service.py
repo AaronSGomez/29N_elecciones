@@ -101,7 +101,13 @@ class PostgresService:
         """Búsqueda léxica exacta en PostgreSQL usando términos del diccionario y expansión LLM."""
         if not self.pool or not terms:
             return []
-        patterns = [f"%{t}%" for t in terms if len(t.strip()) >= 2]
+        clean_terms: list[str] = []
+        for t in terms:
+            st = t.strip()
+            if len(st) >= 2:
+                escaped = st.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+                clean_terms.append(escaped)
+        patterns = [f"%{t}%" for t in clean_terms[:16]]
         if not patterns:
             return []
 

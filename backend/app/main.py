@@ -34,6 +34,7 @@ async def lifespan(app: FastAPI):
     app.state.llm = llm
     app.state.rag = rag
     app.state.rate_limiter = SlidingWindowRateLimiter(settings.RATE_LIMIT_PER_MIN)
+    app.state.read_rate_limiter = SlidingWindowRateLimiter(max(120, settings.RATE_LIMIT_PER_MIN * 6))
 
     telegram.start()
     try:
@@ -70,11 +71,14 @@ async def security_headers_middleware(request: Request, call_next):
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["Content-Security-Policy"] = (
         "default-src 'self'; "
-        "script-src 'self' 'unsafe-inline'; "
-        "style-src 'self' https://fonts.googleapis.com; "
+        "script-src 'self'; "
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
         "font-src 'self' https://fonts.gstatic.com; "
         "connect-src 'self'; "
-        "img-src 'self' data:;"
+        "img-src 'self' data:; "
+        "frame-ancestors 'none'; "
+        "base-uri 'self'; "
+        "form-action 'self';"
     )
     return response
 

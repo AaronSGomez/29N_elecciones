@@ -27,8 +27,15 @@ class ChatRequest(BaseModel):
     topic: str | None = Field(default=None, max_length=80)
 
 
+def _get_client_ip(request: Request) -> str:
+    return request.headers.get("X-Real-IP") or (
+        request.client.host if request.client else "unknown"
+    )
+
+
 @router.get("/health")
 async def health(request: Request) -> dict[str, Any]:
+    request.app.state.read_rate_limiter.check(_get_client_ip(request))
     qdrant = request.app.state.qdrant
     postgres = request.app.state.postgres
     q_info = await qdrant.health()
@@ -38,6 +45,7 @@ async def health(request: Request) -> dict[str, Any]:
 
 @router.get("/topics")
 async def list_topics(request: Request) -> dict[str, Any]:
+    request.app.state.read_rate_limiter.check(_get_client_ip(request))
     topics = await request.app.state.postgres.list_topics()
     return {"topics": topics}
 
@@ -50,8 +58,11 @@ async def list_proposals(
     limit: int = 120,
     offset: int = 0,
 ) -> dict[str, Any]:
+    request.app.state.read_rate_limiter.check(_get_client_ip(request))
+    safe_topic = topic[:80] if topic else None
+    safe_party = party_id[:30] if party_id else None
     rows, total = await request.app.state.postgres.list_proposals(
-        topic=topic, party_id=party_id, limit=limit, offset=offset
+        topic=safe_topic, party_id=safe_party, limit=limit, offset=offset
     )
     return {
         "proposals": rows,
@@ -64,7 +75,8 @@ async def list_proposals(
 @router.get("/proposals/{proposal_id}")
 async def get_proposal(proposal_id: str, request: Request) -> dict[str, Any]:
     from fastapi import HTTPException
-    row = await request.app.state.postgres.get_proposal_by_id(proposal_id)
+    request.app.state.read_rate_limiter.check(_get_client_ip(request))
+    row = await request.app.state.postgres.get_proposal_by_id(proposal_id[:80])
     if not row:
         raise HTTPException(status_code=404, detail="Propuesta no encontrada.")
     return row
@@ -77,13 +89,16 @@ async def list_parties() -> dict[str, Any]:
 
 @router.get("/promises/summary")
 async def promises_summary(request: Request) -> dict[str, Any]:
+    request.app.state.read_rate_limiter.check(_get_client_ip(request))
     rows = await request.app.state.postgres.get_promises_summary()
     return {"summary": rows}
 
 
 @router.get("/promises")
 async def list_promises(request: Request, scope: str | None = None) -> dict[str, Any]:
-    rows = await request.app.state.postgres.list_promises(scope=scope)
+    request.app.state.read_rate_limiter.check(_get_client_ip(request))
+    safe_scope = scope[:40] if scope else None
+    rows = await request.app.state.postgres.list_promises(scope=safe_scope)
     return {"promises": rows}
 
 
@@ -93,9 +108,7 @@ async def chat_stream(body: ChatRequest, request: Request) -> StreamingResponse:
     rate_limiter = request.app.state.rate_limiter
     rag = request.app.state.rag
 
-    client_ip = request.headers.get("X-Real-IP") or (
-        request.client.host if request.client else "unknown"
-    )
+    client_ip = _get_client_ip(request)
     rate_limiter.check(client_ip)
 
     clean_query = sanitize_query(body.query, settings.MAX_QUERY_LENGTH)

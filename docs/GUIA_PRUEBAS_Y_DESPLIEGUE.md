@@ -6,7 +6,7 @@
 
 ## 1. Estado actual del sistema
 
-- **Contenedores activos en Raspberry Pi (`192.168.1.40`, ruta `/opt/29n_elecciones`):**
+- **Contenedores activos en Raspberry Pi (`${PI_HOST}`, ruta `/opt/29n_elecciones`):**
   - `postgres_29n`: PostgreSQL con **2.179** registros sincronizados.
   - `qdrant_29n`: Qdrant vectorial (`programas_29n`) con **2.179** puntos vectoriales.
   - `backend_29n`: FastAPI + Uvicorn sirviendo API y frontend estático en `127.0.0.1:8029`.
