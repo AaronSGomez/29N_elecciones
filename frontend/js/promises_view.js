@@ -330,23 +330,35 @@
 
       card.append(globalFilterRow, veracityBody);
       renderVeracityBody();
+      container.appendChild(card);
+    }
 
-      // 3. ARCHIVO DOCUMENTAL POR PARTIDO / COALICIÓN (SIN MAPA NI % DE CUMPLIMIENTO)
-      const archTitle = document.createElement("div");
-      archTitle.className = "filter-group-title";
-      archTitle.style.marginTop = "1.75rem";
-      archTitle.textContent = "3. Archivo documental de gestión 2023 por partido o coalición (pulsa para abrir)";
-      card.appendChild(archTitle);
+    loadAndRender();
+  }
 
-      const bigNotice = document.createElement("div");
-      bigNotice.className = "security-notice";
-      bigNotice.style.marginTop = "0.65rem";
-      bigNotice.style.padding = "1.1rem 1.25rem";
-      bigNotice.style.fontSize = "1.06rem";
-      bigNotice.style.lineHeight = "1.55";
-      bigNotice.textContent =
-        "Ningún partido informa del cumplimiento de sus programas anteriores. No existen fuentes de control que regulen la obligación de cumplir el programa electoral: esto es lo que votamos, pero no lo que cumplen. No es posible obtener un porcentaje exacto dado que las fuentes son alteradas continuamente, y no pretendemos mostrar un sesgo o inclinación partidista.";
-      card.appendChild(bigNotice);
+  async function renderArchive2023View(container) {
+    container.textContent = "";
+    const card = document.createElement("div");
+    card.className = "wizard-card";
+
+    const tag = document.createElement("div");
+    tag.className = "panel-header-tag";
+    tag.textContent = "ARCHIVO INFORMATIVO · GESTIÓN 2023 (BOE / BOLETINES)";
+
+    const h2 = document.createElement("h2");
+    h2.className = "hero-title";
+    h2.textContent = "Archivo documental de gestión 2023 por partido o coalición";
+
+    const bigNotice = document.createElement("div");
+    bigNotice.className = "security-notice";
+    bigNotice.style.marginTop = "0.75rem";
+    bigNotice.style.padding = "1.1rem 1.25rem";
+    bigNotice.style.fontSize = "1.06rem";
+    bigNotice.style.lineHeight = "1.55";
+    bigNotice.textContent =
+      "Ningún partido informa del cumplimiento de sus programas anteriores. No existen fuentes de control que regulen la obligación de cumplir el programa electoral: esto es lo que votamos, pero no lo que cumplen. No es posible obtener un porcentaje exacto dado que las fuentes son alteradas continuamente, y no pretendemos mostrar un sesgo o inclinación partidista.";
+
+    card.append(tag, h2, bigNotice);
 
       try {
         const sumRes = await fetch("/api/promises/summary");
@@ -554,9 +566,10 @@
         listEl.textContent = "Error al cargar las medidas verificadas.";
       }
     }
-
-    loadAndRender();
   }
 
-  global.PromisesView29N = { render: renderPromisesView };
+  global.PromisesView29N = {
+    render: renderPromisesView,
+    renderArchive: renderArchive2023View,
+  };
 })(window);

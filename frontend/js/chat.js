@@ -259,6 +259,7 @@
   const subviewComparator = document.getElementById("subview-comparator");
   const subviewChat = document.getElementById("view-chat");
   const subviewPromises = document.getElementById("subview-promises");
+  const subviewArchive = document.getElementById("subview-archive");
   const myspaceContent = document.getElementById("myspace-content");
 
   const mainNavBtns = {
@@ -271,6 +272,7 @@
     comparator: document.getElementById("subtab-comparator-btn"),
     chat: document.getElementById("subtab-chat-btn"),
     promises: document.getElementById("subtab-promises-btn"),
+    archive: document.getElementById("subtab-archive-btn"),
   };
 
   const spaceSubBtns = {
@@ -333,12 +335,15 @@
       subviewComparator?.classList.toggle("hidden-panel", activeProgramSub !== "comparator");
       subviewChat?.classList.toggle("hidden-panel", activeProgramSub !== "chat");
       subviewPromises?.classList.toggle("hidden-panel", activeProgramSub !== "promises");
+      subviewArchive?.classList.toggle("hidden-panel", activeProgramSub !== "archive");
 
       if (activeProgramSub === "comparator" && !comparatorInitialized) {
         comparatorInitialized = true;
         window.ComparatorView29N?.render(subviewComparator, { onAskChat: openPreparedChat });
       } else if (activeProgramSub === "promises") {
         window.PromisesView29N?.render(subviewPromises);
+      } else if (activeProgramSub === "archive") {
+        window.PromisesView29N?.renderArchive(subviewArchive);
       }
     } else if (mainView === "myspace") {
       activeSpaceSub = subView || activeSpaceSub || "context";
@@ -363,6 +368,7 @@
   progSubBtns.comparator?.addEventListener("click", () => navigateTo("programs", "comparator"));
   progSubBtns.chat?.addEventListener("click", () => navigateTo("programs", "chat"));
   progSubBtns.promises?.addEventListener("click", () => navigateTo("programs", "promises"));
+  progSubBtns.archive?.addEventListener("click", () => navigateTo("programs", "archive"));
 
   spaceSubBtns.context?.addEventListener("click", () => navigateTo("myspace", "context"));
   spaceSubBtns.ideas?.addEventListener("click", () => navigateTo("myspace", "ideas"));
