@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Space+Grotesk:wght@600;700;800&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/Style/base.css">
-  <link rel="stylesheet" href="/Style/navbar.css">
+  <link rel="stylesheet" href="/Style/navbar.css?v=20261117l">
   <link rel="stylesheet" href="/Style/chat.css">
   <link rel="stylesheet" href="/Style/wizard.css?v=20261117k">
   <link rel="stylesheet" href="/Style/home.css">
@@ -23,15 +23,20 @@
       <span class="status-dot" id="status-dot"></span>
       <div class="masthead-title-stack">
         <h1 class="brand-title">A quién votar estas elecciones 29N</h1>
-        <span class="nav-privacy-note">PERFIL Y TEST EN TU NAVEGADOR · CONSULTAS LIBRES ENVIADAS AL CHAT</span>
+        <span class="nav-privacy-note">NO USAMOS NI GUARDAMOS TUS DATOS</span>
       </div>
     </div>
 
+    <button type="button" class="nav-hamburger-btn" id="nav-hamburger-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="masthead-nav">
+      <span></span><span></span><span></span>
+    </button>
+
     <!-- NAVEGACIÓN PRINCIPAL: EXACTAMENTE 3 APARTADOS -->
-    <nav class="masthead-nav" aria-label="Menú principal">
+    <nav class="masthead-nav" id="masthead-nav" aria-label="Menú principal">
       <button type="button" class="nav-tab-btn active" id="tab-home-btn">INICIO</button>
       <button type="button" class="nav-tab-btn" id="tab-programs-btn">PROGRAMAS</button>
       <button type="button" class="nav-tab-btn" id="tab-myspace-btn">MI ESPACIO</button>
+      <span class="nav-privacy-note mobile-only-note">NO USAMOS NI GUARDAMOS TUS DATOS</span>
     </nav>
   </header>
 
@@ -438,6 +443,6 @@
   <script src="/js/results_view.js?v=20261117"></script>
   <script src="/js/comparator_view.js"></script>
   <script src="/js/promises_view.js?v=20261117k"></script>
-  <script src="/js/chat.js?v=20261117g"></script>
+  <script src="/js/chat.js?v=20261117l"></script>
 </body>
 </html>

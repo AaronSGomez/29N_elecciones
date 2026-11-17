@@ -86,23 +86,96 @@
 
 .nav-privacy-note {
   font-family: var(--font-mono);
-  font-size: 0.92rem;
-  font-weight: 800;
-  color: #FFFFFF;
-  border: 2px solid var(--border-strong);
-  border-radius: 8px;
-  padding: 0.22rem 0.55rem;
-  background: var(--accent-red);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink-secondary);
+  border: 1.5px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 0.1rem 0.45rem;
+  background: var(--bg-paper);
+  letter-spacing: 0.02em;
+}
+
+.mobile-only-note {
+  display: none;
+}
+
+.nav-hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  background: var(--bg-surface);
+  border: 2.5px solid var(--border-strong);
+  border-radius: 10px;
   box-shadow: 2px 2px 0px var(--border-strong);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.nav-hamburger-btn span {
+  display: block;
+  width: 18px;
+  height: 2.5px;
+  background: var(--ink-primary);
+  border-radius: 2px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.nav-hamburger-btn.is-open {
+  background: var(--accent-yellow);
 }
 
 @media (max-width: 900px) {
   .masthead-bar {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0.75rem 1rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.9rem;
+    gap: 0.5rem;
+    border-bottom-width: 3px;
+  }
+  .masthead-brand {
+    flex: 1;
+    min-width: 0;
+    gap: 0.55rem;
+  }
+  .brand-title {
+    font-size: 0.95rem;
+    line-height: 1.15;
+  }
+  .masthead-title-stack .nav-privacy-note {
+    display: none;
+  }
+  .nav-hamburger-btn {
+    display: flex;
   }
   .masthead-nav {
-    flex-wrap: wrap;
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.45rem;
+    padding-top: 0.55rem;
+    border-top: 2px dashed var(--border-strong);
+  }
+  .masthead-nav.is-open {
+    display: flex;
+  }
+  .nav-tab-btn {
+    width: 100%;
+    text-align: left;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.85rem;
+  }
+  .mobile-only-note {
+    display: block;
+    text-align: center;
+    margin-top: 0.15rem;
   }
 }

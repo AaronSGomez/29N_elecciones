@@ -268,6 +268,21 @@
     myspace: document.getElementById("tab-myspace-btn"),
   };
 
+  const navHamburgerBtn = document.getElementById("nav-hamburger-btn");
+  const mastheadNav = document.getElementById("masthead-nav");
+
+  function closeMobileNav() {
+    mastheadNav?.classList.remove("is-open");
+    navHamburgerBtn?.classList.remove("is-open");
+    navHamburgerBtn?.setAttribute("aria-expanded", "false");
+  }
+
+  navHamburgerBtn?.addEventListener("click", () => {
+    const isOpen = mastheadNav?.classList.toggle("is-open");
+    navHamburgerBtn.classList.toggle("is-open", Boolean(isOpen));
+    navHamburgerBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  });
+
   const progSubBtns = {
     comparator: document.getElementById("subtab-comparator-btn"),
     chat: document.getElementById("subtab-chat-btn"),
@@ -301,6 +316,7 @@
   }
 
   function navigateTo(mainView, subView) {
+    closeMobileNav();
     // Compatibilidad si un subcomponente llama con un alias antiguo
     if (mainView === "ideology") {
       mainView = "myspace";
