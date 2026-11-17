@@ -241,7 +241,7 @@
     if (matchData.answeredCount === 0) {
       const emptyMatch = document.createElement("div");
       emptyMatch.className = "security-notice";
-      emptyMatch.textContent = "Aún no has respondido preguntas en 'B. Mis ideas (Test 12 ejes)'. Contesta al menos un eje para ver el diagrama comparativo.";
+      emptyMatch.textContent = "Para ver tu afinidad con cada partido debes seguir antes los 2 primeros pasos: 1º Rellenar tus datos en '1. Mi contexto' y 2º Responder las preguntas en '2. Mis ideas (Test 12 ejes)'. Cuantos más campos y preguntas completes, mayor precisión tendrá tu porcentaje de afinidad con un partido u otro.";
       matchSection.appendChild(emptyMatch);
     } else if (matchData.usedAxesCount === 0) {
       const emptyPrio = document.createElement("div");

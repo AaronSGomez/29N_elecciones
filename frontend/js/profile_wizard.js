@@ -287,13 +287,18 @@
       if (activeScreen === "intro") {
         const tag = document.createElement("div");
         tag.className = "panel-header-tag";
-        tag.textContent = "PRIVACIDAD LOCAL-FIRST · NOTA: NO RECABAMOS DATOS";
+        tag.textContent = "PASO 1 DE 3 · MI CONTEXTO ELECTORAL (100 % EN TU NAVEGADOR)";
         const h2 = document.createElement("h2");
         h2.className = "hero-title";
-        h2.textContent = "Conoce tu contexto electoral";
+        h2.textContent = "Empieza aquí tu encuesta: rellena primero tus datos";
         const p = document.createElement("p");
         p.className = "hero-subtitle";
-        p.textContent = "Explora las políticas públicas que pueden afectar a tu situación, conoce tus propias prioridades y compara las propuestas de los partidos. Tus respuestas permanecen exclusivamente en tu navegador.";
+        p.textContent = "Sigue los 3 pasos en orden: 1º Rellena tus 6 bloques de contexto aquí abajo, 2º Responde la encuesta de 12 ejes (86 preguntas) y 3º Marca tus prioridades y mira tus resultados. Cuantos más campos y preguntas completes, mayor precisión tendrá el cálculo de tu afinidad con un partido u otro.";
+
+        const guideBox = document.createElement("div");
+        guideBox.className = "ideology-q-help";
+        guideBox.style.marginTop = "0.75rem";
+        guideBox.textContent = "Importante: Si entras directamente a '3. Mis prioridades y resultados' sin haber rellenado antes tus datos y la encuesta, la comparativa aparecerá vacía. Pulsa 'EMPEZAR PASO 1: RELLENAR MIS DATOS' para comenzar.";
 
         // Resumen visual con check verde de pruebas contestadas
         const checklistTitle = document.createElement("div");
@@ -381,7 +386,7 @@
         const startBtn = document.createElement("button");
         startBtn.type = "button";
         startBtn.className = "w-btn primary";
-        startBtn.textContent = "CREAR / CONTINUAR MI PERFIL (6 BLOQUES)";
+        startBtn.textContent = "1. EMPEZAR A RELLENAR MIS DATOS (BLOQUES A–F) →";
         startBtn.addEventListener("click", () => {
           activeScreen = "block";
           render();
@@ -390,13 +395,13 @@
         const testBtn = document.createElement("button");
         testBtn.type = "button";
         testBtn.className = "w-btn";
-        testBtn.textContent = "IR AL TEST IDEOLÓGICO (12 EJES)";
+        testBtn.textContent = "2. IR A LA ENCUESTA (12 EJES) →";
         testBtn.addEventListener("click", () => onNavigate("ideology"));
 
         const compBtn = document.createElement("button");
         compBtn.type = "button";
         compBtn.className = "w-btn";
-        compBtn.textContent = "EXPLORAR SIN PERFIL (COMPARADOR)";
+        compBtn.textContent = "EXPLORAR SIN ENCUESTA (COMPARADOR)";
         compBtn.addEventListener("click", () => onNavigate("comparator"));
 
         leftBtns.append(startBtn, testBtn, compBtn);
@@ -443,11 +448,15 @@
 
         rightBtns.append(expBtn, impBtn, impInput, delBtn);
         actions.append(leftBtns, rightBtns);
-        card.append(tag, h2, p, checklistTitle, checklist);
+        card.append(tag, h2, p, guideBox, checklistTitle, checklist);
         if (selectedTopics.length > 0) card.appendChild(prioSummary);
 
-        // Diagrama de barras "Uno a uno" directamente visible al cargar Mi espacio
-        if (global.ResultsView29N && typeof global.ResultsView29N.renderUnoAUnoWidget === "function") {
+        // Solo mostrar el resumen "Uno a uno" en la portada del perfil si ya ha respondido al menos 1 eje
+        if (
+          answeredAxesCount > 0 &&
+          global.ResultsView29N &&
+          typeof global.ResultsView29N.renderUnoAUnoWidget === "function"
+        ) {
           global.ResultsView29N.renderUnoAUnoWidget(card, profile, weightMode, (newMode) => {
             weightMode = newMode;
             render();

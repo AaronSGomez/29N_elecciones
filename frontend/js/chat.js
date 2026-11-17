@@ -274,9 +274,18 @@
     programs: document.getElementById("tab-programs-btn"),
     myspace: document.getElementById("tab-myspace-btn"),
   };
+  const tabSurveyBtn = document.getElementById("tab-survey-btn");
 
   const navHamburgerBtn = document.getElementById("nav-hamburger-btn");
   const mastheadNav = document.getElementById("masthead-nav");
+
+  function triggerHaptic(ms = 18) {
+    try {
+      if (navigator.vibrate) navigator.vibrate(ms);
+    } catch {
+      // Ignorar en navegadores sin soporte de vibración
+    }
+  }
 
   function closeMobileNav() {
     mastheadNav?.classList.remove("is-open");
@@ -285,6 +294,7 @@
   }
 
   navHamburgerBtn?.addEventListener("click", () => {
+    triggerHaptic(22);
     const isOpen = mastheadNav?.classList.toggle("is-open");
     navHamburgerBtn.classList.toggle("is-open", Boolean(isOpen));
     navHamburgerBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
@@ -384,9 +394,22 @@
     }
   }
 
-  mainNavBtns.home?.addEventListener("click", () => navigateTo("home"));
-  mainNavBtns.programs?.addEventListener("click", () => navigateTo("programs", activeProgramSub));
-  mainNavBtns.myspace?.addEventListener("click", () => navigateTo("myspace", activeSpaceSub));
+  mainNavBtns.home?.addEventListener("click", () => {
+    triggerHaptic(15);
+    navigateTo("home");
+  });
+  tabSurveyBtn?.addEventListener("click", () => {
+    triggerHaptic(20);
+    navigateTo("myspace", "context");
+  });
+  mainNavBtns.programs?.addEventListener("click", () => {
+    triggerHaptic(15);
+    navigateTo("programs", activeProgramSub);
+  });
+  mainNavBtns.myspace?.addEventListener("click", () => {
+    triggerHaptic(15);
+    navigateTo("myspace", activeSpaceSub);
+  });
 
   progSubBtns.comparator?.addEventListener("click", () => navigateTo("programs", "comparator"));
   progSubBtns.chat?.addEventListener("click", () => navigateTo("programs", "chat"));
