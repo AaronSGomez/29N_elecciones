@@ -23,6 +23,26 @@ CREATE TABLE IF NOT EXISTS proposals (
 );
 CREATE INDEX IF NOT EXISTS idx_proposals_party ON proposals (party_id);
 CREATE INDEX IF NOT EXISTS idx_proposals_topic ON proposals (topic);
+
+CREATE TABLE IF NOT EXISTS promises_2023 (
+    id TEXT PRIMARY KEY,
+    scope TEXT NOT NULL,
+    scope_name TEXT NOT NULL,
+    governing_party TEXT NOT NULL,
+    party_id TEXT NOT NULL,
+    topic TEXT NOT NULL,
+    commitment_text TEXT NOT NULL,
+    source_doc_2023 TEXT NOT NULL DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS promise_audits (
+    promise_id TEXT PRIMARY KEY REFERENCES promises_2023(id) ON DELETE CASCADE,
+    competence_level TEXT NOT NULL,
+    action_taken TEXT NOT NULL,
+    execution_evidence TEXT NOT NULL,
+    status TEXT NOT NULL,
+    evidence_url TEXT NOT NULL DEFAULT ''
+);
 """
 
 
@@ -136,3 +156,47 @@ class PostgresService:
                 safe_offset,
             )
         return [dict(r) for r in rows], int(total or 0)
+
+    async def get_promises_summary(self) -> list[dict[str, Any]]:
+        if not self.pool:
+            return []
+        async with self.pool.acquire() as conn:
+            rows = await conn.fetch(
+                """
+                SELECT p.scope, p.scope_name, p.governing_party,
+                       COUNT(*) AS total,
+                       COUNT(*) FILTER (WHERE a.status = 'cumplida') AS cumplidas,
+                       COUNT(*) FILTER (WHERE a.status = 'parcial') AS parciales,
+                       COUNT(*) FILTER (WHERE a.status = 'incumplida') AS incumplidas,
+                       COUNT(*) FILTER (WHERE a.status = 'bloqueada') AS bloqueadas
+                FROM promises_2023 p
+                JOIN promise_audits a ON a.promise_id = p.id
+                GROUP BY p.scope, p.scope_name, p.governing_party
+                ORDER BY p.scope
+                """
+            )
+        return [dict(r) for r in rows]
+
+    async def list_promises(self, scope: str | None = None) -> list[dict[str, Any]]:
+        if not self.pool:
+            return []
+        params: list[Any] = []
+        where_sql = ""
+        if scope:
+            params.append(scope)
+            where_sql = "WHERE p.scope = $1"
+        async with self.pool.acquire() as conn:
+            rows = await conn.fetch(
+                f"""
+                SELECT p.id, p.scope, p.scope_name, p.governing_party, p.party_id,
+                       p.topic, p.commitment_text, p.source_doc_2023,
+                       a.competence_level, a.action_taken, a.execution_evidence,
+                       a.status, a.evidence_url
+                FROM promises_2023 p
+                JOIN promise_audits a ON a.promise_id = p.id
+                {where_sql}
+                ORDER BY p.scope, p.topic, p.id
+                """,
+                *params,
+            )
+        return [dict(r) for r in rows]

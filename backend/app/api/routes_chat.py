@@ -75,6 +75,18 @@ async def list_parties() -> dict[str, Any]:
     return {"parties": PARTIES_CATALOG}
 
 
+@router.get("/promises/summary")
+async def promises_summary(request: Request) -> dict[str, Any]:
+    rows = await request.app.state.postgres.get_promises_summary()
+    return {"summary": rows}
+
+
+@router.get("/promises")
+async def list_promises(request: Request, scope: str | None = None) -> dict[str, Any]:
+    rows = await request.app.state.postgres.list_promises(scope=scope)
+    return {"promises": rows}
+
+
 @router.post("/chat")
 async def chat_stream(body: ChatRequest, request: Request) -> StreamingResponse:
     settings = request.app.state.settings
