@@ -138,7 +138,7 @@
         blk.append(hdr, title);
         if (ex.quote) {
           const qt = document.createElement("div");
-          qt.className = "w-field-desc";
+          qt.className = "w-field-desc veracity-quote";
           qt.style.fontStyle = "italic";
           qt.style.marginBottom = "0.25rem";
           qt.textContent = `«${ex.quote}»`;
@@ -150,7 +150,7 @@
           !ex.detail.startsWith("Declaración de intenciones sin cuantía")
         ) {
           const det = document.createElement("div");
-          det.className = "w-field-desc";
+          det.className = "w-field-desc veracity-detail";
           det.textContent = ex.detail;
           blk.appendChild(det);
         }

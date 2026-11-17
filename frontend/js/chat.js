@@ -430,6 +430,18 @@
     if (e.target === privacyModal) privacyModal.classList.add("hidden-panel");
   });
 
+  const scrollTopBtn = document.getElementById("scroll-top-btn");
+  if (scrollTopBtn) {
+    const toggleScrollTop = () => {
+      scrollTopBtn.classList.toggle("is-visible", window.scrollY > 280);
+    };
+    window.addEventListener("scroll", toggleScrollTop, { passive: true });
+    scrollTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    toggleScrollTop();
+  }
+
   updateScopeBadge();
   checkHealth();
 })();
