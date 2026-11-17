@@ -5479,13 +5479,13 @@
     "id": "frente-amplio",
     "name": "Frente Amplio",
     "short": "F. AMPLIO",
-    "uniqueCount": 194,
-    "concreteCount": 172,
+    "uniqueCount": 196,
+    "concreteCount": 174,
     "vagueCount": 22,
     "concretePct": 89,
     "vaguePct": 11,
-    "constCount": 16,
-    "euCount": 4,
+    "constCount": 17,
+    "euCount": 5,
     "items": {
       "aplicable": [
         {
@@ -7207,6 +7207,26 @@
           "cat": "aplicable",
           "catLabel": "Medida concreta",
           "detail": "Incluye instrumento normativo, cifra, impuesto o medida operativa verificable."
+        },
+        {
+          "topic": "Impuestos",
+          "page": "Programa de 2026, pág. 46",
+          "title": "Limitar las herencias de los ultrarricos a un máximo de 10 millones de euros por heredero",
+          "quote": "Limitaremos las herencias de los ultrarricos a un máximo de 10 millones de euros por heredero. Esta limitación se implementará estableciendo un tipo impositivo marginal del 100 % sobre el tramo de la base imponible que supere esa cifra en el Impuesto sobre Sucesiones y Donaciones. En el importe total se tendrán en cuenta las donaciones recibidas en vida y no se permitirán las bonificaciones autonómicas. No obstante, quedará exenta una vivienda por heredero hasta un máximo de 5.",
+          "url": "https://frenteamplio.info/pdf/ProgramaFrenteAmplio.pdf#page=46",
+          "cat": "aplicable",
+          "catLabel": "Medida concreta",
+          "detail": "Incluye instrumento normativo, cifra, impuesto o medida operativa verificable."
+        },
+        {
+          "topic": "Impuestos",
+          "page": "Programa de 2026, pág. 46",
+          "title": "Crear un impuesto estatal sobre las grandes herencias de más de un millón de euros",
+          "quote": "Crearemos un impuesto estatal sobre las grandes herencias, de más de un millón de euros. Será estatal y complementario del Impuesto sobre Sucesiones y Donaciones y gravará las adquisiciones gratuitas de riqueza de más de un millón de euros netos por beneficiario. Aplicaremos una tarifa progresiva que alcanza un marginal del 34 % y deduciremos el impuesto autonómico efectivamente satisfecho.",
+          "url": "https://frenteamplio.info/pdf/ProgramaFrenteAmplio.pdf#page=46",
+          "cat": "aplicable",
+          "catLabel": "Medida concreta",
+          "detail": "Incluye instrumento normativo, cifra, impuesto o medida operativa verificable."
         }
       ],
       "brindis": [
@@ -7591,6 +7611,16 @@
           "cat": "const",
           "catLabel": "Reforma CE / Fricción",
           "detail": "Fricción CE (art. 33 CE): expropiación masiva por umbral de stock (>1.000 pisos) tensiona la garantía de propiedad privada e indemnización."
+        },
+        {
+          "topic": "Impuestos",
+          "page": "Programa de 2026, pág. 46",
+          "title": "Limitar las herencias de los ultrarricos a un máximo de 10 millones de euros por heredero",
+          "quote": "Limitaremos las herencias de los ultrarricos a un máximo de 10 millones de euros por heredero. Esta limitación se implementará estableciendo un tipo impositivo marginal del 100 % sobre el tramo de la base imponible que supere esa cifra en el Impuesto sobre Sucesiones y Donaciones. En el importe total se tendrán en cuenta las donaciones recibidas en vida y no se permitirán las bonificaciones autonómicas. No obstante, quedará exenta una vivienda por heredero hasta un máximo de 5.",
+          "url": "https://frenteamplio.info/pdf/ProgramaFrenteAmplio.pdf#page=46",
+          "cat": "const",
+          "catLabel": "Reforma CE / Fricción",
+          "detail": "Fricción CE (arts. 31.1 y 33.1 CE): un tipo marginal del 100 % sobre el tramo superior a 10 M€ en Sucesiones choca con la prohibición constitucional de alcance confiscatorio (art. 31.1 CE) y el derecho a la herencia (art. 33.1 CE)."
         }
       ],
       "eu": [
@@ -7633,6 +7663,16 @@
           "cat": "eu",
           "catLabel": "Ilegal / Conflicto UE",
           "detail": "Conflicto UE (art. 63 TFUE y Carta DDFF art. 17): las expropiaciones masivas de fondos comunitarios chocan con libre circulación de capitales."
+        },
+        {
+          "topic": "Impuestos",
+          "page": "Programa de 2026, pág. 46",
+          "title": "Limitar las herencias de los ultrarricos a un máximo de 10 millones de euros por heredero",
+          "quote": "Limitaremos las herencias de los ultrarricos a un máximo de 10 millones de euros por heredero. Esta limitación se implementará estableciendo un tipo impositivo marginal del 100 % sobre el tramo de la base imponible que supere esa cifra en el Impuesto sobre Sucesiones y Donaciones. En el importe total se tendrán en cuenta las donaciones recibidas en vida y no se permitirán las bonificaciones autonómicas. No obstante, quedará exenta una vivienda por heredero hasta un máximo de 5.",
+          "url": "https://frenteamplio.info/pdf/ProgramaFrenteAmplio.pdf#page=46",
+          "cat": "eu",
+          "catLabel": "Ilegal / Conflicto UE",
+          "detail": "Conflicto UE (art. 63 TFUE y art. 17 Carta DDFF UE): un gravamen marginal del 100 % sobre transmisiones patrimoniales y donaciones tensiona la libre circulación de capitales y el derecho de propiedad en la UE."
         }
       ]
     }

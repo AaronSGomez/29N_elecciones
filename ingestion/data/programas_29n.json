@@ -10239,5 +10239,27 @@
     "explanation": "Propone medidas de apoyo a la familia para facilitar su acceso a la vivienda.",
     "source_ref": "Programa de 2026, pág. 44",
     "source_url": "https://www.democrata.es/uploads/s1/35/26/90/2/programa-elecct-vox.pdf#page=44"
+  },
+  {
+    "party_id": "frente-amplio",
+    "party_name": "Frente Amplio",
+    "topic": "Impuestos",
+    "subtopic": "Patrimonio, sucesiones y grandes fortunas",
+    "title": "Limitar las herencias de los ultrarricos a un máximo de 10 millones de euros por heredero",
+    "quote": "Limitaremos las herencias de los ultrarricos a un máximo de 10 millones de euros por heredero. Esta limitación se implementará estableciendo un tipo impositivo marginal del 100 % sobre el tramo de la base imponible que supere esa cifra en el Impuesto sobre Sucesiones y Donaciones. En el importe total se tendrán en cuenta las donaciones recibidas en vida y no se permitirán las bonificaciones autonómicas. No obstante, quedará exenta una vivienda por heredero hasta un máximo de 5.",
+    "explanation": "Establece un tipo marginal del 100 % sobre la base imponible que supere los 10 millones de euros por heredero en el Impuesto sobre Sucesiones y Donaciones, sumando donaciones en vida y suprimiendo bonificaciones autonómicas.",
+    "source_ref": "Programa de 2026, pág. 46",
+    "source_url": "https://frenteamplio.info/pdf/ProgramaFrenteAmplio.pdf#page=46"
+  },
+  {
+    "party_id": "frente-amplio",
+    "party_name": "Frente Amplio",
+    "topic": "Impuestos",
+    "subtopic": "Patrimonio, sucesiones y grandes fortunas",
+    "title": "Crear un impuesto estatal sobre las grandes herencias de más de un millón de euros",
+    "quote": "Crearemos un impuesto estatal sobre las grandes herencias, de más de un millón de euros. Será estatal y complementario del Impuesto sobre Sucesiones y Donaciones y gravará las adquisiciones gratuitas de riqueza de más de un millón de euros netos por beneficiario. Aplicaremos una tarifa progresiva que alcanza un marginal del 34 % y deduciremos el impuesto autonómico efectivamente satisfecho.",
+    "explanation": "Crea un impuesto estatal complementario sobre herencias y donaciones superiores a un millón de euros netos por beneficiario con tarifa progresiva hasta el 34 %.",
+    "source_ref": "Programa de 2026, pág. 46",
+    "source_url": "https://frenteamplio.info/pdf/ProgramaFrenteAmplio.pdf#page=46"
   }
 ]

@@ -79,7 +79,7 @@
 
       if (!cachedVeracityData) {
         try {
-          const vRes = await fetch("/data/veracidad_2026.json?v=20261117f");
+          const vRes = await fetch("/data/veracidad_2026.json?v=20261117j");
           cachedVeracityData = await vRes.json();
         } catch {
           cachedVeracityData = [];
