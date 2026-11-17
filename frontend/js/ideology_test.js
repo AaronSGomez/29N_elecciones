@@ -446,7 +446,16 @@
     const profile = global.ProfileStore29N.loadProfile();
     let stepIndex = 0; // 0..11 = 12 ejes, 12 = matices presupuestarios
 
-    function render() {
+    function scrollToTopOfTest() {
+      if (typeof container.scrollIntoView === "function") {
+        container.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      if (typeof global.scrollTo === "function") {
+        global.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
+    function render(shouldScroll = false) {
       container.textContent = "";
       const card = document.createElement("div");
       card.className = "wizard-card";
@@ -488,7 +497,7 @@
         pill.textContent = `E${idx + 1}`;
         pill.addEventListener("click", () => {
           stepIndex = idx;
-          render();
+          render(true);
         });
         tabs.appendChild(pill);
       });
@@ -498,7 +507,7 @@
       ctrlPill.textContent = "MATICES";
       ctrlPill.addEventListener("click", () => {
         stepIndex = AXES.length;
-        render();
+        render(true);
       });
       tabs.appendChild(ctrlPill);
 
@@ -555,7 +564,7 @@
         prev.textContent = "← ANTERIOR";
         prev.addEventListener("click", () => {
           stepIndex -= 1;
-          render();
+          render(true);
         });
         left.appendChild(prev);
       }
@@ -569,7 +578,7 @@
         profile.ideology.controlAnswers = {};
         global.ProfileStore29N.saveProfile(profile);
         stepIndex = 0;
-        render();
+        render(true);
       });
       left.appendChild(resetBtn);
 
@@ -582,17 +591,21 @@
         next.textContent = "SIGUIENTE EJE →";
         next.addEventListener("click", () => {
           stepIndex += 1;
-          render();
+          render(true);
         });
       } else {
         next.textContent = "PRIORIDADES Y RESULTADOS →";
-        next.addEventListener("click", () => onNavigate("results"));
+        next.addEventListener("click", () => {
+          scrollToTopOfTest();
+          onNavigate("results");
+        });
       }
       right.appendChild(next);
 
       actions.append(left, right);
       card.append(tag, h2, progWrap, tabs, qList, actions);
       container.appendChild(card);
+      if (shouldScroll) scrollToTopOfTest();
     }
 
     render();

@@ -409,11 +409,11 @@
 
       card.append(tag, h2, intro);
 
-      // 1. RESUMEN COMPARATIVO DE VERACIDAD (DIAGRAMA DE BARRAS CON LOGOS)
+      // 1. RESUMEN COMPARATIVO DE VERACIDAD (DIAGRAMA DE BARRAS CON LOGOS + DESPLIEGUE POR PARTIDO)
       const gridTitle = document.createElement("div");
       gridTitle.className = "filter-group-title";
       gridTitle.style.marginTop = "1.25rem";
-      gridTitle.textContent = "1. Diagrama de veracidad y viabilidad por partido (pulsa un partido para ver sus ejemplos)";
+      gridTitle.textContent = "1. Diagrama de veracidad y viabilidad por partido (pulsa un partido para desplegar su auditoría)";
       card.appendChild(gridTitle);
 
       const barLegend = document.createElement("div");
@@ -432,114 +432,22 @@
       });
       card.appendChild(barLegend);
 
-      const partyList = document.createElement("div");
-      partyList.className = "uno-a-uno-list";
-      partyList.style.marginTop = "0.65rem";
+      // Filtros globales sin recargar ni mover el scroll
+      let globalMode = "by_party"; // "by_party" | "brindis" | "const" | "eu"
+      const globalFilterRow = document.createElement("div");
+      globalFilterRow.className = "w-btn-group";
+      globalFilterRow.style.margin = "0.75rem 0 0.5rem";
 
-      PROGRAM_VERACITY.forEach((p) => {
-        const row = document.createElement("div");
-        row.className = "party-match-row";
-        row.style.cursor = "pointer";
-        row.style.outline = selectedPartyId === p.id ? "2px solid var(--accent-primary, #111)" : "none";
+      const veracityBody = document.createElement("div");
 
-        const logo = document.createElement("div");
-        logo.className = `party-match-logo ${p.id}`;
-        logo.textContent = p.short;
-
-        const mid = document.createElement("div");
-        mid.className = "party-match-mid";
-        const name = document.createElement("div");
-        name.className = "party-match-name";
-        name.textContent = `${p.name} (${p.uniqueCount} medidas únicas)`;
-
-        const track = document.createElement("div");
-        track.className = "party-match-track";
-        track.style.display = "flex";
-        const fill = document.createElement("div");
-        fill.className = `party-match-fill ${p.id}`;
-        fill.style.width = `${p.concretePct}%`;
-        fill.title = `${p.concretePct}% medidas concretas`;
-        const fillVague = document.createElement("div");
-        fillVague.style.width = `${p.vaguePct}%`;
-        fillVague.style.height = "100%";
-        fillVague.style.background = "#F59E0B";
-        fillVague.style.opacity = "0.55";
-        fillVague.title = `${p.vaguePct}% brindis al sol`;
-        track.append(fill, fillVague);
-
-        const meta = document.createElement("div");
-        meta.className = "w-field-desc";
-        meta.style.marginTop = "0.25rem";
-        meta.textContent = `Reforma CE: ${p.constCount} · Ilegal / conflicto UE: ${p.euCount}`;
-
-        mid.append(name, track, meta);
-
-        const score = document.createElement("div");
-        score.className = "party-match-score";
-        score.textContent = `${p.concretePct}%`;
-        const sub = document.createElement("small");
-        sub.textContent = `${p.vaguePct}% brindis`;
-        score.appendChild(sub);
-
-        row.append(logo, mid, score);
-        row.addEventListener("click", () => {
-          selectedPartyId = p.id;
-          loadAndRender();
-        });
-        partyList.appendChild(row);
-      });
-      card.appendChild(partyList);
-
-      // 2. DETALLE DE EJEMPLOS Y EXPLICACIONES DEL PARTIDO SELECCIONADO
-      const activeParty = PROGRAM_VERACITY.find((p) => p.id === selectedPartyId) || PROGRAM_VERACITY[0];
-      const detailTitle = document.createElement("div");
-      detailTitle.className = "filter-group-title";
-      detailTitle.style.marginTop = "1.35rem";
-      detailTitle.textContent = `2. Auditoría detallada: ${activeParty.name}`;
-      card.appendChild(detailTitle);
-
-      const pSummary = document.createElement("div");
-      pSummary.className = "security-notice";
-      pSummary.style.marginTop = "0.5rem";
-      pSummary.textContent = activeParty.summary;
-      card.appendChild(pSummary);
-
-      const filterRow = document.createElement("div");
-      filterRow.className = "w-btn-group";
-      filterRow.style.margin = "0.75rem 0";
-      [
-        ["all", "TODOS LOS EJEMPLOS"],
-        ["aplicable", "MEDIDAS APLICABLES"],
-        ["brindis", "BRINDIS AL SOL"],
-        ["const", `REFORMA CE (${activeParty.constCount})`],
-        ["eu", `ILEGALES / CONFLICTO UE (${activeParty.euCount})`],
-      ].forEach(([catKey, catText]) => {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = `step-pill ${selectedCategory === catKey ? "active" : ""}`;
-        b.textContent = catText;
-        b.addEventListener("click", () => {
-          selectedCategory = catKey;
-          loadAndRender();
-        });
-        filterRow.appendChild(b);
-      });
-      card.appendChild(filterRow);
-
-      const exGrid = document.createElement("div");
-      exGrid.className = "sources-blocks";
-      const filteredExamples = selectedCategory === "all"
-        ? activeParty.examples
-        : activeParty.examples.filter((e) => e.cat === selectedCategory);
-
-      filteredExamples.forEach((ex) => {
+      function buildExampleCard(party, ex) {
         const blk = document.createElement("article");
-        blk.className = `proposal-block party-${activeParty.id}`;
+        blk.className = `proposal-block party-${party.id}`;
 
         const hdr = document.createElement("div");
         hdr.className = "proposal-header";
         const s1 = document.createElement("span");
-        s1.textContent = `${activeParty.short} · ${ex.page}`;
+        s1.textContent = `${party.short} · ${ex.page}`;
         const pill = document.createElement("span");
         pill.className = `promise-status-pill ${catBadgeClass(ex.cat)}`;
         pill.textContent = ex.catLabel;
@@ -554,9 +462,170 @@
         det.textContent = ex.detail;
 
         blk.append(hdr, title, det);
-        exGrid.appendChild(blk);
+        return blk;
+      }
+
+      function renderVeracityBody() {
+        veracityBody.textContent = "";
+
+        if (globalMode !== "by_party") {
+          const allMatched = [];
+          PROGRAM_VERACITY.forEach((p) => {
+            p.examples
+              .filter((ex) => ex.cat === globalMode)
+              .forEach((ex) => allMatched.push({ party: p, ex }));
+          });
+          const exGrid = document.createElement("div");
+          exGrid.className = "sources-blocks";
+          exGrid.style.marginTop = "0.65rem";
+          allMatched.forEach(({ party, ex }) => exGrid.appendChild(buildExampleCard(party, ex)));
+          veracityBody.appendChild(exGrid);
+          return;
+        }
+
+        const partyList = document.createElement("div");
+        partyList.className = "uno-a-uno-list";
+        partyList.style.marginTop = "0.65rem";
+
+        PROGRAM_VERACITY.forEach((p) => {
+          const isOpen = selectedPartyId === p.id;
+          const wrap = document.createElement("div");
+
+          const row = document.createElement("div");
+          row.className = "party-match-row";
+          row.style.cursor = "pointer";
+          row.style.outline = isOpen ? "2px solid var(--accent-primary, #111)" : "none";
+
+          const logo = document.createElement("div");
+          logo.className = `party-match-logo ${p.id}`;
+          logo.textContent = p.short;
+
+          const mid = document.createElement("div");
+          mid.className = "party-match-mid";
+          const name = document.createElement("div");
+          name.className = "party-match-name";
+          name.textContent = `${p.name} (${p.uniqueCount} medidas únicas) ${isOpen ? "▾" : "▸"}`;
+
+          const track = document.createElement("div");
+          track.className = "party-match-track";
+          track.style.display = "flex";
+          const fill = document.createElement("div");
+          fill.className = `party-match-fill ${p.id}`;
+          fill.style.width = `${p.concretePct}%`;
+          fill.title = `${p.concretePct}% medidas concretas`;
+          const fillVague = document.createElement("div");
+          fillVague.style.width = `${p.vaguePct}%`;
+          fillVague.style.height = "100%";
+          fillVague.style.background = "#F59E0B";
+          fillVague.style.opacity = "0.55";
+          fillVague.title = `${p.vaguePct}% brindis al sol`;
+          track.append(fill, fillVague);
+
+          const meta = document.createElement("div");
+          meta.className = "w-field-desc";
+          meta.style.marginTop = "0.25rem";
+          meta.textContent = `Reforma CE: ${p.constCount} · Ilegal / conflicto UE: ${p.euCount}`;
+
+          mid.append(name, track, meta);
+
+          const score = document.createElement("div");
+          score.className = "party-match-score";
+          score.textContent = `${p.concretePct}%`;
+          const sub = document.createElement("small");
+          sub.textContent = `${p.vaguePct}% brindis`;
+          score.appendChild(sub);
+
+          row.append(logo, mid, score);
+          row.addEventListener("click", () => {
+            selectedPartyId = isOpen ? null : p.id;
+            renderVeracityBody();
+          });
+          wrap.appendChild(row);
+
+          if (isOpen) {
+            const drawer = document.createElement("div");
+            drawer.style.padding = "0.85rem 1rem";
+            drawer.style.marginTop = "0.35rem";
+            drawer.style.marginBottom = "0.65rem";
+            drawer.style.borderLeft = "3px solid var(--border-strong, #222)";
+            drawer.style.background = "var(--bg-secondary, rgba(0,0,0,0.03))";
+
+            const pSummary = document.createElement("div");
+            pSummary.className = "security-notice";
+            pSummary.textContent = p.summary;
+            drawer.appendChild(pSummary);
+
+            const filterRow = document.createElement("div");
+            filterRow.className = "w-btn-group";
+            filterRow.style.margin = "0.65rem 0";
+
+            const exGrid = document.createElement("div");
+            exGrid.className = "sources-blocks";
+
+            function renderDrawerExamples() {
+              exGrid.textContent = "";
+              const filtered = selectedCategory === "all"
+                ? p.examples
+                : p.examples.filter((e) => e.cat === selectedCategory);
+              filtered.forEach((ex) => exGrid.appendChild(buildExampleCard(p, ex)));
+            }
+
+            [
+              ["all", "TODOS"],
+              ["aplicable", "APLICABLES"],
+              ["brindis", "BRINDIS AL SOL"],
+              ["const", `REFORMA CE (${p.constCount})`],
+              ["eu", `ILEGALES / UE (${p.euCount})`],
+            ].forEach(([catKey, catText]) => {
+              const b = document.createElement("button");
+              b.type = "button";
+              b.className = `step-pill ${selectedCategory === catKey ? "active" : ""}`;
+              b.textContent = catText;
+              b.addEventListener("click", () => {
+                selectedCategory = catKey;
+                Array.from(filterRow.children).forEach((btn, idx) => {
+                  const keyAtIdx = ["all", "aplicable", "brindis", "const", "eu"][idx];
+                  btn.classList.toggle("active", keyAtIdx === selectedCategory);
+                });
+                renderDrawerExamples();
+              });
+              filterRow.appendChild(b);
+            });
+
+            renderDrawerExamples();
+            drawer.append(filterRow, exGrid);
+            wrap.appendChild(drawer);
+          }
+
+          partyList.appendChild(wrap);
+        });
+
+        veracityBody.appendChild(partyList);
+      }
+
+      const globalFilters = [
+        ["by_party", "POR PARTIDO (DESPLEGABLE)"],
+        ["brindis", "TODOS LOS BRINDIS AL SOL"],
+        ["const", "TODAS LAS INCONSTITUCIONALES (CE)"],
+        ["eu", "TODAS LAS ILEGALES / UE"],
+      ];
+      globalFilters.forEach(([gKey, gLabel]) => {
+        const gb = document.createElement("button");
+        gb.type = "button";
+        gb.className = `step-pill ${globalMode === gKey ? "active" : ""}`;
+        gb.textContent = gLabel;
+        gb.addEventListener("click", () => {
+          globalMode = gKey;
+          Array.from(globalFilterRow.children).forEach((btn, idx) => {
+            btn.classList.toggle("active", globalFilters[idx][0] === globalMode);
+          });
+          renderVeracityBody();
+        });
+        globalFilterRow.appendChild(gb);
       });
-      card.appendChild(exGrid);
+
+      card.append(globalFilterRow, veracityBody);
+      renderVeracityBody();
 
       // 3. ARCHIVO DOCUMENTAL POR PARTIDO / COALICIÓN (SIN MAPA NI % DE CUMPLIMIENTO)
       const archTitle = document.createElement("div");
