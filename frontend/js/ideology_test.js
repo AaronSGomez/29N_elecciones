@@ -447,11 +447,21 @@
     let stepIndex = 0; // 0..11 = 12 ejes, 12 = matices presupuestarios
 
     function scrollToTopOfTest() {
-      if (typeof container.scrollIntoView === "function") {
-        container.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-      if (typeof global.scrollTo === "function") {
-        global.scrollTo({ top: 0, behavior: "smooth" });
+      const doScroll = () => {
+        if (typeof global.scrollTo === "function") {
+          global.scrollTo({ top: 0, behavior: "auto" });
+        }
+        if (global.document?.documentElement) {
+          global.document.documentElement.scrollTop = 0;
+        }
+        if (global.document?.body) {
+          global.document.body.scrollTop = 0;
+        }
+      };
+      if (typeof global.requestAnimationFrame === "function") {
+        global.requestAnimationFrame(doScroll);
+      } else {
+        doScroll();
       }
     }
 
