@@ -558,95 +558,113 @@
       });
       card.appendChild(exGrid);
 
-      // 3. ARCHIVO SECUNDARIO: REGISTROS PUNTUALES VERIFICADOS DE GESTIÓN 2023 (SIN MAPA DE CUMPLIMIENTO)
+      // 3. ARCHIVO DOCUMENTAL POR PARTIDO / COALICIÓN (SIN MAPA NI % DE CUMPLIMIENTO)
       const archTitle = document.createElement("div");
       archTitle.className = "filter-group-title";
       archTitle.style.marginTop = "1.75rem";
-      archTitle.textContent = "3. Archivo documental puntual de gestión 2023 (referencia BOE / boletines)";
+      archTitle.textContent = "3. Archivo documental de gestión 2023 por partido o coalición (pulsa para abrir)";
       card.appendChild(archTitle);
 
-      const archNote = document.createElement("p");
-      archNote.className = "hero-subtitle";
-      archNote.textContent =
-        "Nota metodológica: No existe trazabilidad homogénea suficiente para construir un mapa nacional completo de cumplimiento sobre programas de 2023. Se conservan aquí únicamente las fichas ya verificadas con BOE o boletín oficial.";
-      card.appendChild(archNote);
+      const bigNotice = document.createElement("div");
+      bigNotice.className = "security-notice";
+      bigNotice.style.marginTop = "0.65rem";
+      bigNotice.style.padding = "1.1rem 1.25rem";
+      bigNotice.style.fontSize = "1.06rem";
+      bigNotice.style.lineHeight = "1.55";
+      bigNotice.textContent =
+        "Ningún partido informa del cumplimiento de sus programas anteriores. No existen fuentes de control que regulen la obligación de cumplir el programa electoral: esto es lo que votamos, pero no lo que cumplen. No es posible obtener un porcentaje exacto dado que las fuentes son alteradas continuamente, y no pretendemos mostrar un sesgo o inclinación partidista.";
+      card.appendChild(bigNotice);
 
       try {
-        const [sumRes, listRes] = await Promise.all([
-          fetch("/api/promises/summary"),
-          fetch(`/api/promises?scope=${encodeURIComponent(selectedScope)}`),
-        ]);
+        const sumRes = await fetch("/api/promises/summary");
         const sumData = await sumRes.json();
-        const listData = await listRes.json();
-        const byScope = new Map((sumData.summary || []).map((r) => [r.scope, r]));
+        const rows = sumData.summary || [];
 
-        const scopeRow = document.createElement("div");
-        scopeRow.className = "w-btn-group";
-        scopeRow.style.margin = "0.5rem 0 0.75rem";
-        const scopesWithData = [{ scope: "espana", name: "España (Central)" }, ...REGIONS_ARCHIVE]
-          .filter((r) => byScope.has(r.scope));
+        const COALITION_GROUPS = [
+          {
+            id: "psoe-sumar",
+            short: "PSOE+",
+            logoClass: "psoe",
+            label: "PSOE + Sumar (Gobierno Central)",
+            match: (gp) => gp.includes("Sumar"),
+          },
+          {
+            id: "psoe-ccaa",
+            short: "PSOE",
+            logoClass: "psoe",
+            label: "PSOE / PSC / PSOE + IU (CC. AA.)",
+            match: (gp) => (gp.startsWith("PSOE") || gp.startsWith("PSC")) && !gp.includes("Sumar"),
+          },
+          {
+            id: "pp-solo",
+            short: "PP",
+            logoClass: "pp",
+            label: "PP (Gobiernos en solitario)",
+            match: (gp) => gp === "PP",
+          },
+          {
+            id: "pp-vox",
+            short: "PP+VOX",
+            logoClass: "vox",
+            label: "PP + VOX (Gobiernos en coalición)",
+            match: (gp) => gp.includes("PP") && gp.includes("VOX"),
+          },
+          {
+            id: "otras",
+            short: "OTRAS",
+            logoClass: "salf",
+            label: "Otras coaliciones autonómicas (PNV+PSE, PSN+GB, CCa+PP)",
+            match: (gp) =>
+              !gp.includes("Sumar") &&
+              !gp.startsWith("PSOE") &&
+              !gp.startsWith("PSC") &&
+              gp !== "PP" &&
+              !(gp.includes("PP") && gp.includes("VOX")),
+          },
+        ];
 
-        scopesWithData.forEach((reg) => {
-          const s = byScope.get(reg.scope);
-          const rate = computeRate(s);
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = `step-pill ${statusClass(rate)} ${selectedScope === reg.scope ? "active" : ""}`;
-          btn.textContent = `${reg.name} (${s.total} fichas)`;
-          btn.addEventListener("click", () => {
-            selectedScope = reg.scope;
-            loadAndRender();
-          });
-          scopeRow.appendChild(btn);
+        const groupWrap = document.createElement("div");
+        groupWrap.className = "uno-a-uno-list";
+        groupWrap.style.marginTop = "0.75rem";
+
+        COALITION_GROUPS.forEach((grp) => {
+          const matchedScopes = rows.filter((r) => grp.match(r.governing_party || ""));
+          if (matchedScopes.length === 0) return;
+
+          const totalMedidas = matchedScopes.reduce((acc, r) => acc + Number(r.total || 0), 0);
+          const totalAprobadas = matchedScopes.reduce((acc, r) => acc + Number(r.cumplidas || 0) + Number(r.parciales || 0), 0);
+
+          const row = document.createElement("div");
+          row.className = "party-match-row";
+          row.style.cursor = "pointer";
+
+          const logo = document.createElement("div");
+          logo.className = `party-match-logo ${grp.logoClass}`;
+          logo.textContent = grp.short;
+
+          const mid = document.createElement("div");
+          mid.className = "party-match-mid";
+          const name = document.createElement("div");
+          name.className = "party-match-name";
+          name.textContent = grp.label;
+          const desc = document.createElement("div");
+          desc.className = "w-field-desc";
+          desc.textContent = `${matchedScopes.map((m) => m.scope_name).join(", ")}`;
+          mid.append(name, desc);
+
+          const right = document.createElement("div");
+          right.className = "party-match-score";
+          right.textContent = `${totalAprobadas}`;
+          const sub = document.createElement("small");
+          sub.textContent = `de ${totalMedidas} fichas BOE`;
+          right.appendChild(sub);
+
+          row.append(logo, mid, right);
+          row.addEventListener("click", () => openPartyModal(grp, matchedScopes));
+          groupWrap.appendChild(row);
         });
-        if (scopesWithData.length > 0) card.appendChild(scopeRow);
 
-        const promises = listData.promises || [];
-        if (promises.length > 0) {
-          const grid = document.createElement("div");
-          grid.className = "sources-blocks";
-          grid.style.marginTop = "0.5rem";
-
-          promises.forEach((pr) => {
-            const blk = document.createElement("article");
-            blk.className = `proposal-block party-${(pr.party_id || "").toLowerCase()}`;
-
-            const hdr = document.createElement("div");
-            hdr.className = "proposal-header";
-            const s1 = document.createElement("span");
-            s1.textContent = `${pr.scope_name} · ${pr.governing_party}`;
-            const pill = document.createElement("span");
-            pill.className = `promise-status-pill ${pr.status}`;
-            pill.textContent = pr.status;
-            hdr.append(s1, pill);
-
-            const title = document.createElement("h4");
-            title.className = "proposal-title";
-            title.textContent = `[${pr.topic}] ${pr.commitment_text}`;
-
-            const act = document.createElement("div");
-            act.className = "w-field-desc";
-            act.textContent = `Acción: ${pr.action_taken}`;
-
-            const ev = document.createElement("div");
-            ev.className = "w-field-desc";
-            ev.textContent = `Ejecución: ${pr.execution_evidence}`;
-
-            blk.append(hdr, title, act, ev);
-
-            if (pr.evidence_url && pr.evidence_url.startsWith("https://")) {
-              const link = document.createElement("a");
-              link.className = "proposal-link";
-              link.href = pr.evidence_url;
-              link.target = "_blank";
-              link.rel = "noopener noreferrer";
-              link.textContent = "Fuente oficial verificada ↗";
-              blk.appendChild(link);
-            }
-            grid.appendChild(blk);
-          });
-          card.appendChild(grid);
-        }
+        card.appendChild(groupWrap);
       } catch {
         const err = document.createElement("div");
         err.className = "security-notice";
@@ -655,6 +673,113 @@
       }
 
       container.appendChild(card);
+    }
+
+    async function openPartyModal(grp, matchedScopes) {
+      const existing = document.getElementById("party-promises-modal");
+      if (existing) existing.remove();
+
+      const backdrop = document.createElement("div");
+      backdrop.id = "party-promises-modal";
+      backdrop.className = "privacy-modal-backdrop";
+      backdrop.setAttribute("role", "dialog");
+      backdrop.setAttribute("aria-modal", "true");
+
+      const modalCard = document.createElement("div");
+      modalCard.className = "privacy-modal-card";
+      modalCard.style.maxHeight = "85vh";
+      modalCard.style.overflowY = "auto";
+
+      const topBar = document.createElement("div");
+      topBar.style.display = "flex";
+      topBar.style.justifyContent = "space-between";
+      topBar.style.alignItems = "center";
+      topBar.style.marginBottom = "0.75rem";
+
+      const mTag = document.createElement("span");
+      mTag.className = "panel-header-tag";
+      mTag.style.margin = "0";
+      mTag.textContent = "MEDIDAS APROBADAS / VERIFICADAS CON BOE";
+
+      const closeBtn = document.createElement("button");
+      closeBtn.type = "button";
+      closeBtn.className = "clear-chat-btn";
+      closeBtn.textContent = "[ CERRAR ✕ ]";
+      closeBtn.addEventListener("click", () => backdrop.remove());
+      topBar.append(mTag, closeBtn);
+
+      const mTitle = document.createElement("h3");
+      mTitle.textContent = grp.label;
+
+      const mNote = document.createElement("p");
+      mNote.className = "w-field-desc";
+      mNote.style.marginBottom = "0.75rem";
+      mNote.textContent = "Fichas puntuales verificadas con BOE o boletines oficiales (en solitario o en coalición). No representa un porcentaje total de cumplimiento de programa.";
+
+      const listEl = document.createElement("div");
+      listEl.className = "sources-blocks";
+      listEl.textContent = "Cargando medidas verificadas...";
+
+      modalCard.append(topBar, mTitle, mNote, listEl);
+      backdrop.appendChild(modalCard);
+      backdrop.addEventListener("click", (ev) => {
+        if (ev.target === backdrop) backdrop.remove();
+      });
+      document.body.appendChild(backdrop);
+
+      try {
+        const responses = await Promise.all(
+          matchedScopes.map((s) => fetch(`/api/promises?scope=${encodeURIComponent(s.scope)}`).then((r) => r.json()))
+        );
+        const allItems = responses.flatMap((d) => d.promises || []);
+        listEl.textContent = "";
+
+        if (allItems.length === 0) {
+          listEl.textContent = "No hay medidas registradas.";
+          return;
+        }
+
+        allItems.forEach((pr) => {
+          const blk = document.createElement("article");
+          blk.className = `proposal-block party-${(pr.party_id || "").toLowerCase()}`;
+
+          const hdr = document.createElement("div");
+          hdr.className = "proposal-header";
+          const s1 = document.createElement("span");
+          s1.textContent = `${pr.scope_name} · ${pr.governing_party}`;
+          const pill = document.createElement("span");
+          pill.className = `promise-status-pill ${pr.status}`;
+          pill.textContent = pr.status;
+          hdr.append(s1, pill);
+
+          const title = document.createElement("h4");
+          title.className = "proposal-title";
+          title.textContent = `[${pr.topic}] ${pr.commitment_text}`;
+
+          const act = document.createElement("div");
+          act.className = "w-field-desc";
+          act.textContent = `Acción: ${pr.action_taken}`;
+
+          const ev = document.createElement("div");
+          ev.className = "w-field-desc";
+          ev.textContent = `Ejecución: ${pr.execution_evidence}`;
+
+          blk.append(hdr, title, act, ev);
+
+          if (pr.evidence_url && pr.evidence_url.startsWith("https://")) {
+            const link = document.createElement("a");
+            link.className = "proposal-link";
+            link.href = pr.evidence_url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = "Fuente oficial verificada ↗";
+            blk.appendChild(link);
+          }
+          listEl.appendChild(blk);
+        });
+      } catch {
+        listEl.textContent = "Error al cargar las medidas verificadas.";
+      }
     }
 
     loadAndRender();
