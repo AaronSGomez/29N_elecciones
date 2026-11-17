@@ -107,7 +107,8 @@
     });
 
     card.appendChild(grid);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
+    // Las respuestas más recientes se insertan arriba (prepend): mantener el scroll al inicio de la respuesta
+    messagesEl.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function checkHealth() {
@@ -131,6 +132,7 @@
 
     createMessageCard("user", query);
     const { card: assistantCard, body: assistantBody } = createMessageCard("assistant", "Consultando PostgreSQL + Qdrant...");
+    messagesEl.scrollTo({ top: 0, behavior: "smooth" });
 
     try {
       // Privacidad Local-First: NUNCA se envía el perfil ciudadano ni el test al backend
@@ -186,7 +188,12 @@
     } finally {
       isStreaming = false;
       sendBtn.disabled = false;
-      inputEl.focus();
+      messagesEl.scrollTo({ top: 0, behavior: "smooth" });
+      if (window.innerWidth > 768) {
+        inputEl.focus();
+      } else {
+        inputEl.blur();
+      }
     }
   }
 
