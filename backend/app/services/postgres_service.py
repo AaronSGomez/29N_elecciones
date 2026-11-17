@@ -91,6 +91,70 @@ class PostgresService:
             )
         return {r["id"]: dict(r) for r in rows}
 
+    async def search_proposals_lexical(
+        self,
+        terms: list[str],
+        parties: list[str] | None = None,
+        topic: str | None = None,
+        per_party: int = 2,
+    ) -> list[dict[str, Any]]:
+        """Búsqueda léxica exacta en PostgreSQL usando términos del diccionario y expansión LLM."""
+        if not self.pool or not terms:
+            return []
+        patterns = [f"%{t}%" for t in terms if len(t.strip()) >= 2]
+        if not patterns:
+            return []
+
+        where_parts = [
+            "(title ILIKE ANY($1::text[]) OR quote ILIKE ANY($1::text[]) "
+            "OR explanation ILIKE ANY($1::text[]) OR subtopic ILIKE ANY($1::text[]))"
+        ]
+        params: list[Any] = [patterns]
+        idx = 2
+        if parties:
+            where_parts.append(f"party_id = ANY(${idx}::text[])")
+            params.append(parties)
+            idx += 1
+        if topic:
+            where_parts.append(f"topic = ${idx}")
+            params.append(topic)
+            idx += 1
+
+        where_sql = " AND ".join(where_parts)
+        sql = f"""
+            SELECT id, party_id, party_name, topic, subtopic, title,
+                   quote, explanation, source_ref, source_url, source_type
+            FROM proposals
+            WHERE {where_sql}
+            ORDER BY (source_type = 'block') DESC, id ASC
+            LIMIT 80
+        """
+        async with self.pool.acquire() as conn:
+            rows = await conn.fetch(sql, *params)
+
+        lower_terms = [t.lower() for t in terms if len(t.strip()) >= 2]
+        scored: list[tuple[int, dict[str, Any]]] = []
+        for r in rows:
+            d = dict(r)
+            haystack = f"{d['title']} {d['quote']} {d['explanation']} {d['subtopic']}".lower()
+            hits_count = sum(1 for t in lower_terms if t in haystack)
+            if hits_count > 0:
+                score_val = hits_count * 10 + (3 if d["source_type"] == "block" else 0)
+                d["score"] = round(min(0.99, 0.70 + hits_count * 0.05), 3)
+                scored.append((score_val, d))
+
+        scored.sort(key=lambda x: -x[0])
+
+        per_p_count: dict[str, int] = {}
+        out: list[dict[str, Any]] = []
+        for _, d in scored:
+            pid = d["party_id"]
+            if per_p_count.get(pid, 0) >= per_party:
+                continue
+            per_p_count[pid] = per_p_count.get(pid, 0) + 1
+            out.append(d)
+        return out
+
     async def get_proposal_by_id(self, proposal_id: str) -> dict[str, Any] | None:
         if not self.pool:
             return None
