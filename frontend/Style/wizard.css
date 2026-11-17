@@ -514,42 +514,174 @@
 }
 
 @media (max-width: 640px) {
+  .wizard-shell {
+    margin: 0.75rem auto 1.5rem;
+    padding: 0 0.5rem;
+  }
   .wizard-card {
-    padding: 1rem;
+    padding: 0.8rem 0.75rem;
+    border-width: 2.5px;
+    border-radius: 12px;
+  }
+  .wizard-progress-meta {
+    font-size: 0.72rem;
+  }
+  .wizard-progress-bar {
+    height: 7px;
+  }
+  .wizard-step-tabs {
+    gap: 0.28rem;
+    margin-bottom: 0.75rem;
+  }
+  .step-pill {
+    padding: 0.2rem 0.44rem;
+    font-size: 0.7rem;
   }
   .subnav-bar {
     flex-wrap: wrap;
-    gap: 0.4rem;
+    gap: 0.35rem;
   }
   .subnav-btn {
-    flex: 1 1 calc(50% - 0.4rem);
-    font-size: 0.76rem;
-    padding: 0.55rem 0.5rem;
+    flex: 1 1 calc(50% - 0.35rem);
+    font-size: 0.72rem;
+    padding: 0.45rem 0.4rem;
     text-align: center;
+  }
+  .ideology-question-card {
+    padding: 0.65rem 0.65rem;
+    margin-bottom: 0.6rem;
+    border-width: 1.5px;
+  }
+  .ideology-q-text {
+    font-size: 0.84rem;
+    line-height: 1.32;
+    margin-bottom: 0.4rem;
+  }
+  .ideology-q-help {
+    font-size: 0.75rem !important;
+    line-height: 1.3;
+    padding: 0.25rem 0.45rem !important;
+    margin-bottom: 0.45rem !important;
+  }
+  .likert-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.3rem;
+  }
+  .likert-btn {
+    padding: 0.34rem 0.35rem;
+    font-size: 0.68rem;
+    line-height: 1.15;
+    text-align: center;
+    border-width: 1.5px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+  }
+  .w-check-chip {
+    font-size: 0.74rem;
+    padding: 0.18rem 0.4rem;
   }
   .w-actions-bar {
     flex-direction: column;
     align-items: stretch;
-    gap: 0.65rem;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
   }
   .w-btn-group {
     flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .w-btn {
+    padding: 0.42rem 0.75rem;
+    font-size: 0.76rem;
+    border-width: 2px;
+    border-radius: 8px;
   }
   .privacy-modal-card {
     width: calc(100vw - 1.5rem);
     max-height: 88vh;
     padding: 1rem;
   }
+  /* Diagramas de barras compactos para pantallas de ~370px */
+  .uno-a-uno-list {
+    gap: 0.45rem;
+    margin: 0.65rem 0 0.85rem;
+  }
   .party-match-row {
-    grid-template-columns: 58px 1fr;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    gap: 0.45rem;
+    padding: 0.45rem 0.55rem;
+    border-width: 2px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 0px var(--border-strong);
   }
   .party-match-logo {
-    width: 56px;
-    height: 38px;
-    font-size: 0.72rem;
+    width: 42px;
+    height: 28px;
+    font-size: 0.62rem;
+    border-width: 1.5px;
+    border-radius: 6px;
+  }
+  .party-match-logo.frente-amplio {
+    font-size: 0.52rem;
+  }
+  .party-match-mid {
+    gap: 0.18rem;
+  }
+  .party-match-name {
+    font-size: 0.74rem;
+    line-height: 1.15;
+  }
+  .party-match-mid .w-field-desc {
+    font-size: 0.66rem;
+    line-height: 1.2;
+    margin-top: 0.1rem !important;
+  }
+  .party-match-track {
+    height: 8px;
+    border-width: 1.5px;
   }
   .party-match-score {
-    grid-column: 1 / -1;
-    text-align: left;
+    grid-column: auto;
+    text-align: right;
+    font-size: 0.76rem;
+    line-height: 1.1;
+  }
+  .party-match-score small {
+    font-size: 0.58rem;
+  }
+  .axis-result-card {
+    padding: 0.55rem 0.65rem;
+    margin-bottom: 0.5rem;
+  }
+  .axis-result-card .proposal-header {
+    font-size: 0.74rem;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  .axis-result-card .w-field-desc {
+    font-size: 0.72rem;
+  }
+  .axis-poles {
+    font-size: 0.64rem;
+    line-height: 1.15;
+    gap: 0.45rem;
+    margin: 0.25rem 0;
+  }
+  .axis-poles span:last-child {
+    text-align: right;
+  }
+  .axis-scale-track {
+    height: 8px;
+  }
+  .axis-scale-marker {
+    top: -2px;
+    width: 10px;
+    height: 11px;
+    border-width: 1.5px;
   }
 }
