@@ -53,7 +53,7 @@
   }
 
   function renderPromisesView(container) {
-    let selectedPartyId = "pp";
+    let selectedPartyId = null;
     let selectedCategory = "all";
     let selectedScope = "espana";
 
@@ -73,7 +73,7 @@
       const intro = document.createElement("p");
       intro.className = "hero-subtitle";
       intro.textContent =
-        "Auditoría completa de las 831 medidas únicas de los cinco programas de 2026 (extraídas de programas_29n.json): cada porcentaje corresponde exactamente al recuento de medidas concretas frente a declaraciones genéricas («brindis al sol»), reformas constitucionales (CE 1978) y conflictos con el Derecho de la UE.";
+        "Auditoría completa de las 831 medidas únicas de los cinco programas oficiales de 2026: cada porcentaje corresponde exactamente al recuento de medidas concretas frente a declaraciones genéricas («brindis al sol»), reformas constitucionales (CE 1978) y conflictos con el Derecho de la UE.";
 
       card.append(tag, h2, intro);
 
