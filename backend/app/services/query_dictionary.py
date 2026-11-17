@@ -6,10 +6,10 @@ import re
 import unicodedata
 
 ELECTORAL_SYNONYMS: dict[str, list[str]] = {
-    "herencia": ["herencia", "herencias", "sucesiones", "donaciones", "heredero", "patrimonio", "grandes fortunas"],
-    "sucesiones": ["sucesiones", "herencia", "herencias", "donaciones", "heredero", "patrimonio"],
-    "donaciones": ["donaciones", "sucesiones", "herencia", "herencias", "patrimonio"],
-    "patrimonio": ["patrimonio", "grandes fortunas", "tasa zucman", "sucesiones", "herencias"],
+    "herencia": ["herencia", "herencias", "sucesiones", "donaciones", "heredero", "grandes patrimonios", "grandes fortunas"],
+    "sucesiones": ["sucesiones", "herencia", "herencias", "donaciones", "heredero", "grandes patrimonios"],
+    "donaciones": ["donaciones", "sucesiones", "herencia", "herencias", "grandes patrimonios"],
+    "patrimonio": ["grandes patrimonios", "patrimonio neto", "grandes fortunas", "tasa zucman", "sucesiones", "herencias"],
     "itp": ["itp", "transmisiones patrimoniales", "ajd", "primera vivienda", "vivienda usada", "segunda mano"],
     "transmisiones": ["transmisiones patrimoniales", "itp", "ajd", "vivienda usada"],
     "inmigracion": [
