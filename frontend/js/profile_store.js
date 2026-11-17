@@ -72,6 +72,7 @@
         territorialConcerns: [],
       },
       ideology: {
+        schemaVersion: 2,
         answers: {},
         controlAnswers: {},
       },
@@ -80,6 +81,44 @@
         orderedTopics: [],
         importance: {},
       },
+    };
+  }
+
+  function migrateIdeology(rawIdeology) {
+    const rawAnswers = rawIdeology?.answers || {};
+    const rawCtrl = rawIdeology?.controlAnswers || {};
+    const ver = rawIdeology?.schemaVersion || 1;
+    if (ver >= 2) {
+      return {
+        schemaVersion: 2,
+        answers: { ...rawAnswers },
+        controlAnswers: { ...rawCtrl },
+        migratedFromV1: Boolean(rawIdeology?.migratedFromV1),
+      };
+    }
+
+    const compat = new Set(global.IdeologyTest29N?.COMPATIBLE_V1_IDS || []);
+    const cleanAnswers = {};
+    let droppedAny = false;
+    Object.keys(rawAnswers).forEach((k) => {
+      if (compat.size === 0 || compat.has(k)) {
+        cleanAnswers[k] = rawAnswers[k];
+      } else {
+        droppedAny = true;
+      }
+    });
+
+    const activeCtrl = new Set(["ctrl_1", "ctrl_2", "ctrl_7", "ctrl_10"]);
+    const cleanCtrl = {};
+    Object.keys(rawCtrl).forEach((k) => {
+      if (activeCtrl.has(k)) cleanCtrl[k] = rawCtrl[k];
+    });
+
+    return {
+      schemaVersion: 2,
+      answers: cleanAnswers,
+      controlAnswers: cleanCtrl,
+      migratedFromV1: droppedAny,
     };
   }
 
@@ -96,10 +135,7 @@
       economy: { ...base.economy, ...(raw.economy || {}) },
       housing: { ...base.housing, ...(raw.housing || {}) },
       environment: { ...base.environment, ...(raw.environment || {}) },
-      ideology: {
-        answers: { ...(raw.ideology?.answers || {}) },
-        controlAnswers: { ...(raw.ideology?.controlAnswers || {}) },
-      },
+      ideology: migrateIdeology(raw.ideology),
       priorities: {
         selectedTopics: Array.isArray(raw.priorities?.selectedTopics) ? raw.priorities.selectedTopics.slice(0, 5) : [],
         orderedTopics: Array.isArray(raw.priorities?.orderedTopics) ? raw.priorities.orderedTopics.slice(0, 5) : [],

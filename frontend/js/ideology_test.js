@@ -1,5 +1,5 @@
 /* =============================================================================
-   29N ELECCIONES — FASE 3: TEST IDEOLÓGICO (12 EJES + 10 PREGUNTAS CONTROL)
+   29N ELECCIONES — TEST IDEOLÓGICO REVISADO (12 EJES · 86 PREGUNTAS + 4 MATICES)
    Cálculo 100% en navegador. Sin recomendación de voto ni puntuación global izq-der.
    ============================================================================= */
 
@@ -13,31 +13,43 @@
     { val: 0, label: "0. Sin info / No responder" },
   ];
 
+  // IDs de la v1 cuya redacción y polaridad no han cambiado (para migración segura)
+  const COMPATIBLE_V1_IDS = [
+    "e1_2", "e1_4", "e1_5", "e1_7", "e1_8",
+    "e2_5", "e2_6", "e2_7", "e2_8",
+    "e3_1", "e3_2", "e3_3", "e3_6", "e3_9",
+    "e4_1", "e4_2", "e4_5", "e4_6", "e4_7",
+    "e5_5", "e5_6",
+    "e6_1", "e6_2", "e6_5", "e6_7",
+    "e7_1", "e7_2", "e7_3", "e7_5", "e7_6",
+    "e8_1", "e8_2", "e8_3", "e8_8",
+    "e9_1", "e9_2", "e9_3", "e9_4", "e9_5", "e9_8",
+    "e10_1", "e10_2", "e10_3", "e10_4", "e10_8",
+    "e11_3", "e11_4",
+  ];
+
   const AXES = [
     {
       id: "eje1", title: "Eje 1. Economía y Mercado",
       poleA: "Intervención pública / Redistribución (0)", poleB: "Menor intervención / Libre mercado (100)",
       questions: [
-        { id: "e1_1", text: "El Estado debería reducir los impuestos aunque eso implique reducir determinados servicios públicos.", reverse: false },
+        { id: "e1_1", text: "Debería reducirse la presión fiscal general aunque eso obligue a limitar o reestructurar el gasto en determinados servicios públicos.", reverse: false },
         { id: "e1_2", text: "El mercado libre suele distribuir los recursos mejor que la intervención del Estado.", reverse: false },
-        { id: "e1_3", text: "Las grandes empresas deberían tener menos restricciones regulatorias.", reverse: false },
+        { id: "e1_3", text: "Las grandes empresas deberían estar sujetas a menos requisitos regulatorios y cargas administrativas.", reverse: false },
         { id: "e1_4", text: "Las rentas más elevadas deberían contribuir proporcionalmente más mediante impuestos.", reverse: true },
         { id: "e1_5", text: "El Estado debería intervenir para limitar los precios de determinados bienes esenciales.", reverse: true },
-        { id: "e1_6", text: "La empresa privada debería asumir un papel mayor en la prestación de servicios actualmente públicos.", reverse: false },
         { id: "e1_7", text: "El gasto público debería reducirse cuando existe déficit presupuestario.", reverse: false },
         { id: "e1_8", text: "El Estado debería proteger sectores estratégicos aunque suponga intervenir en el mercado.", reverse: true },
-        { id: "e1_9", text: "Los impuestos sobre el trabajo deberían reducirse.", reverse: false },
-        { id: "e1_10", text: "La redistribución de riqueza debe ser una función importante del Estado.", reverse: true },
+        { id: "e1_9b", text: "Debería existir un impuesto específico estatal sobre los grandes patrimonios y fortunas.", reverse: true },
       ],
     },
     {
       id: "eje2", title: "Eje 2. Estado del Bienestar",
       poleA: "Gestión mixta / Condicionalidad (0)", poleB: "Provisión pública universal amplia (100)",
       questions: [
-        { id: "e2_1", text: "La sanidad debe ser fundamentalmente pública.", reverse: false },
-        { id: "e2_2", text: "La educación pública debería recibir más financiación.", reverse: false },
-        { id: "e2_3", text: "Las pensiones públicas deberían garantizar un nivel de vida digno.", reverse: false },
-        { id: "e2_4", text: "El Estado debe garantizar prestaciones sociales suficientes para las personas vulnerables.", reverse: false },
+        { id: "e2_1", text: "La sanidad pública debería prestarse exclusivamente mediante gestión directa, sin derivaciones ni conciertos con centros privados.", reverse: false },
+        { id: "e2_3n", text: "El sistema de pensiones debería complementarse con cuentas individuales de ahorro obligatorio, además del sistema público de reparto.", reverse: true },
+        { id: "e2_4", text: "El Ingreso Mínimo Vital y las rentas básicas deberían ampliarse en cuantía y automatizarse para cubrir a más hogares.", reverse: false },
         { id: "e2_5", text: "Las ayudas sociales deberían estar condicionadas a determinados requisitos.", reverse: true },
         { id: "e2_6", text: "La colaboración público-privada debería tener mayor presencia en servicios públicos.", reverse: true },
         { id: "e2_7", text: "El acceso a servicios esenciales debe depender lo menos posible de la renta.", reverse: false },
@@ -51,55 +63,52 @@
         { id: "e3_1", text: "España debería facilitar la inmigración regular por motivos laborales.", reverse: false },
         { id: "e3_2", text: "Los controles fronterizos deberían endurecerse.", reverse: true },
         { id: "e3_3", text: "Las personas que llevan años residiendo y trabajando en España deberían disponer de vías de regularización.", reverse: false },
-        { id: "e3_4", text: "La inmigración debe vincularse más estrechamente a las necesidades del mercado laboral.", reverse: true },
-        { id: "e3_5", text: "Las políticas de asilo deben garantizar protección a quienes cumplen los requisitos legales.", reverse: false },
+        { id: "e3_4", text: "La entrada de inmigrantes debería autorizarse principalmente en función de los puestos de trabajo que falten por cubrir.", reverse: false },
+        { id: "e3_5", text: "España debería ampliar las vías legales de asilo y acogida humanitaria, evitando devoluciones automáticas en frontera.", reverse: false },
         { id: "e3_6", text: "Los requisitos de acceso a determinadas prestaciones deberían ser iguales para residentes nacionales y extranjeros.", reverse: false },
-        { id: "e3_7", text: "El Estado debería invertir más en integración lingüística y cultural.", reverse: false },
-        { id: "e3_8", text: "La inmigración tiene un efecto económico global positivo.", reverse: false },
+        { id: "e3_7", text: "El Estado debería destinar más recursos públicos a programas de acogida e integración lingüística de inmigrantes.", reverse: false },
         { id: "e3_9", text: "La expulsión de extranjeros condenados por determinados delitos debería aplicarse con mayor amplitud dentro del marco legal.", reverse: true },
-        { id: "e3_10", text: "España debería facilitar la reagrupación familiar de inmigrantes residentes legalmente.", reverse: false },
+        { id: "e3_10n", text: "Los menores extranjeros no acompañados deberían ser repatriados de forma prioritaria a sus países de origen en lugar de acogerse mediante reparto entre comunidades autónomas.", reverse: true },
       ],
     },
     {
-      id: "eje4", title: "Eje 4. Seguridad y Justicia",
-      poleA: "Enfoque garantista / Reinserción (0)", poleB: "Endurecimiento penal / Seguridad (100)",
+      id: "eje4", title: "Eje 4. Seguridad y Justicia Penal",
+      poleA: "Enfoque garantista / Prevención (0)", poleB: "Endurecimiento penal / Seguridad (100)",
       questions: [
         { id: "e4_1", text: "Las penas de prisión deberían endurecerse para delitos graves.", reverse: false },
         { id: "e4_2", text: "La reinserción debería ser una prioridad del sistema penitenciario.", reverse: true },
-        { id: "e4_3", text: "Deberían aumentarse los recursos policiales.", reverse: false },
-        { id: "e4_4", text: "El sistema judicial necesita más recursos y rapidez.", reverse: false },
         { id: "e4_5", text: "La ocupación ilegal de viviendas debería tener consecuencias legales más severas.", reverse: false },
         { id: "e4_6", text: "El Estado debería ampliar sus capacidades de vigilancia para combatir la delincuencia.", reverse: false },
         { id: "e4_7", text: "La seguridad debe prevalecer sobre determinadas libertades cuando exista un riesgo acreditado.", reverse: false },
-        { id: "e4_8", text: "Se deberían reforzar los mecanismos de prevención y rehabilitación frente a la delincuencia juvenil.", reverse: true },
+        { id: "e4_8", text: "Frente a la delincuencia juvenil, deberían priorizarse las medidas educativas y sociales sobre el endurecimiento penal.", reverse: true },
       ],
     },
     {
       id: "eje5", title: "Eje 5. Libertades y Derechos Civiles",
-      poleA: "Peso institucional / Tradición (0)", poleB: "Autonomía individual / Neutralidad (100)",
+      poleA: "Enfoque tradicional / Restricción normativa (0)", poleB: "Autonomía personal / Ampliación derechos civiles (100)",
       questions: [
-        { id: "e5_1", text: "El Estado debería intervenir lo mínimo posible en las decisiones personales de los ciudadanos.", reverse: false },
-        { id: "e5_2", text: "La libertad de expresión debe proteger incluso opiniones profundamente impopulares, dentro de los límites legales.", reverse: false },
-        { id: "e5_3", text: "El Estado debe garantizar la igualdad jurídica independientemente del sexo.", reverse: false },
-        { id: "e5_4", text: "Las políticas públicas deberían priorizar la igualdad de oportunidades frente a la igualdad de resultados.", reverse: false },
+        { id: "e5_2", text: "La libertad de expresión debería proteger incluso discursos ofensivos, reduciendo las restricciones legales por delitos de opinión o discurso de odio.", reverse: false },
+        { id: "e5_3a", text: "Deberían mantenerse y reforzarse las leyes específicas contra la violencia de género diferenciadas de la violencia intrafamiliar común.", reverse: false },
+        { id: "e5_3b", text: "La ley debe reconocer la libre autodeterminación registral del sexo sin requisitos médicos o judiciales previos.", reverse: false },
+        { id: "e5_4", text: "Las políticas públicas deberían priorizar la igualdad de oportunidades frente a cuotas obligatorias de resultados.", reverse: true },
         { id: "e5_5", text: "Las tradiciones culturales deberían tener un peso importante en las políticas públicas.", reverse: true },
         { id: "e5_6", text: "El Estado debe mantenerse neutral respecto a las creencias religiosas.", reverse: false },
-        { id: "e5_7", text: "Las libertades individuales deberían prevalecer frente a determinadas imposiciones sociales.", reverse: false },
-        { id: "e5_8", text: "Los derechos civiles deben protegerse incluso cuando sean impopulares entre la mayoría.", reverse: false },
+        { id: "e5_7a", text: "La legislación debe garantizar el acceso efectivo al aborto en la sanidad pública.", reverse: false },
+        { id: "e5_7b", text: "La ley debe garantizar el derecho a la eutanasia y a la ayuda médica para morir.", reverse: false },
       ],
     },
     {
       id: "eje6", title: "Eje 6. Organización Territorial",
-      poleA: "Centralización estatal (0)", poleB: "Descentralización / Autonomía (100)",
+      poleA: "Centralización / Estado unitario (0)", poleB: "Descentralización / Modelo federal (100)",
       questions: [
         { id: "e6_1", text: "El Estado central debería recuperar competencias autonómicas.", reverse: true },
         { id: "e6_2", text: "Las comunidades autónomas deberían disponer de mayor autonomía.", reverse: false },
-        { id: "e6_3", text: "La financiación autonómica debería distribuirse atendiendo a criterios de población y necesidades reales.", reverse: false },
-        { id: "e6_4", text: "Debería existir una mayor homogeneidad de servicios públicos entre comunidades autónomas.", reverse: true },
+        { id: "e6_3a", text: "La financiación autonómica debería regirse por un régimen común homogéneo para todas las comunidades, evitando acuerdos bilaterales o condonaciones singulares de deuda.", reverse: true },
+        { id: "e6_3b", text: "Las comunidades autónomas deberían poder celebrar un referéndum acordado sobre su independencia.", reverse: false },
         { id: "e6_5", text: "Las lenguas cooficiales deberían recibir protección institucional.", reverse: false },
-        { id: "e6_6", text: "La Administración debería simplificarse reduciendo duplicidades entre administraciones.", reverse: true },
+        { id: "e6_5b", text: "En las comunidades con lengua cooficial, la enseñanza debería garantizar el castellano como lengua vehicular junto a la lengua autonómica en lugar de modelos de inmersión monolingüe.", reverse: true },
+        { id: "e6_6n", text: "España debería reformar la Constitución para convertirse en un Estado federal con competencias claramente delimitadas.", reverse: false },
         { id: "e6_7", text: "Los municipios deberían tener más autonomía financiera.", reverse: false },
-        { id: "e6_8", text: "Las decisiones de interés nacional deberían depender prioritariamente del Estado central.", reverse: true },
       ],
     },
     {
@@ -109,11 +118,10 @@
         { id: "e7_1", text: "La transición ecológica debe acelerarse aunque implique costes económicos a corto plazo.", reverse: false },
         { id: "e7_2", text: "La energía nuclear debería formar parte del modelo energético español.", reverse: true },
         { id: "e7_3", text: "Las energías renovables deberían recibir más inversión pública.", reverse: false },
-        { id: "e7_4", text: "Las restricciones medioambientales no deberían perjudicar injustificadamente a la industria.", reverse: true },
+        { id: "e7_4", text: "Las normas medioambientales deberían flexibilizarse cuando encarezcan la producción industrial en España.", reverse: true },
         { id: "e7_5", text: "Deberían aplicarse impuestos adicionales a las actividades más contaminantes.", reverse: false },
         { id: "e7_6", text: "El vehículo privado debería tener menos restricciones.", reverse: true },
-        { id: "e7_7", text: "La protección del medio rural y natural debe ser una prioridad.", reverse: false },
-        { id: "e7_8", text: "España debería priorizar la independencia energética.", reverse: true },
+        { id: "e7_7n", text: "Las exigencias medioambientales europeas sobre el campo y la ganadería deberían relajarse aunque se ralenticen los objetivos climáticos.", reverse: true },
       ],
     },
     {
@@ -123,10 +131,8 @@
         { id: "e8_1", text: "La educación pública debería ser la opción prioritaria del Estado.", reverse: false },
         { id: "e8_2", text: "Los padres deberían disponer de mayor libertad para elegir el modelo educativo.", reverse: true },
         { id: "e8_3", text: "La educación concertada debería recibir financiación pública.", reverse: true },
-        { id: "e8_4", text: "La educación debería adaptarse más a las necesidades del mercado laboral.", reverse: true },
-        { id: "e8_5", text: "La Formación Profesional debería recibir más inversión.", reverse: false },
-        { id: "e8_6", text: "El Estado debería reforzar los contenidos comunes del sistema educativo.", reverse: true },
-        { id: "e8_7", text: "Las administraciones deberían invertir más en investigación científica.", reverse: false },
+        { id: "e8_4n", text: "La gratuidad de la educación infantil (0 a 3 años) debería garantizarse ampliando la red pública directa en lugar de financiar plazas en centros privados o concertados.", reverse: false },
+        { id: "e8_6", text: "El Estado debería reforzar los contenidos comunes y una prueba de acceso universitaria única en toda España.", reverse: true },
         { id: "e8_8", text: "La cultura debería recibir financiación pública suficiente para garantizar el acceso general.", reverse: false },
       ],
     },
@@ -139,8 +145,8 @@
         { id: "e9_3", text: "La negociación colectiva debería tener más protagonismo.", reverse: false },
         { id: "e9_4", text: "Las cotizaciones empresariales deberían reducirse para favorecer la contratación.", reverse: true },
         { id: "e9_5", text: "Deberían endurecerse las medidas contra el fraude laboral.", reverse: false },
-        { id: "e9_6", text: "Los autónomos deberían tener un sistema de cotización más adaptado a sus ingresos reales.", reverse: false },
-        { id: "e9_7", text: "Debería facilitarse la creación de empresas reduciendo burocracia.", reverse: true },
+        { id: "e9_6", text: "La cuota de los trabajadores autónomos debería reducirse al mínimo o suprimirse para quienes ingresen menos del salario mínimo.", reverse: true },
+        { id: "e9_7n", text: "Debería reducirse por ley la jornada laboral máxima semanal (por debajo de las 40 horas) sin reducción salarial.", reverse: false },
         { id: "e9_8", text: "La estabilidad laboral debería prevalecer sobre la flexibilidad empresarial.", reverse: false },
       ],
     },
@@ -152,165 +158,255 @@
         { id: "e10_2", text: "El mercado del alquiler necesita una regulación más estricta.", reverse: false },
         { id: "e10_3", text: "Los propietarios deberían disponer de mayor seguridad jurídica.", reverse: true },
         { id: "e10_4", text: "Deberían aplicarse incentivos fiscales a los propietarios que alquilen a precios asequibles.", reverse: true },
-        { id: "e10_5", text: "Las administraciones deberían facilitar la construcción de vivienda.", reverse: true },
-        { id: "e10_6", text: "Los jóvenes deberían tener más ayudas para acceder a su primera vivienda.", reverse: false },
-        { id: "e10_7", text: "La vivienda debería considerarse una prioridad de inversión pública.", reverse: false },
+        { id: "e10_5", text: "La solución principal al precio de la vivienda pasa por liberalizar más suelo privado para construir en lugar de intervenir los precios.", reverse: true },
+        { id: "e10_7n", text: "El Impuesto de Transmisiones Patrimoniales (ITP) en la compra de la primera vivienda habitual usada debería reducirse o bonificarse de forma general.", reverse: true },
         { id: "e10_8", text: "La intervención de precios puede provocar una reducción de la oferta de alquiler.", reverse: true },
       ],
     },
     {
       id: "eje11", title: "Eje 11. Familia y Conciliación",
-      poleA: "Menor intervención / Incentivo neutro (0)", poleB: "Apoyo público directo a familias (100)",
+      poleA: "Incentivos fiscales / Apoyo indirecto (0)", poleB: "Prestaciones universales y servicios (100)",
       questions: [
-        { id: "e11_1", text: "Deberían aumentarse las ayudas directas a las familias con hijos.", reverse: false },
-        { id: "e11_2", text: "La educación infantil de 0 a 3 años debería ser accesible y asequible.", reverse: false },
-        { id: "e11_3", text: "Deberían ampliarse los permisos de maternidad y paternidad.", reverse: false },
-        { id: "e11_4", text: "El Estado debería ofrecer más ayudas a las familias monoparentales.", reverse: false },
-        { id: "e11_5", text: "La conciliación debe ser una obligación compartida entre empresas y administraciones.", reverse: false },
-        { id: "e11_6", text: "Deberían existir más incentivos fiscales para familias con hijos.", reverse: false },
-        { id: "e11_7", text: "El sistema de dependencia debería facilitar más apoyo a los cuidadores familiares.", reverse: false },
+        { id: "e11_1", text: "Debería implantarse una prestación económica directa universal por cada hijo a cargo, con independencia de la renta familiar.", reverse: false },
+        { id: "e11_3", text: "Deberían ampliarse los permisos retribuidos de maternidad, paternidad y cuidado parental.", reverse: false },
+        { id: "e11_4", text: "El Estado debería ofrecer más ayudas específicas a las familias monoparentales.", reverse: false },
+        { id: "e11_5", text: "La conciliación debería impulsarse mediante obligaciones legales a las empresas (como reducir la jornada) antes que mediante bonificaciones fiscales voluntarias.", reverse: false },
+        { id: "e11_6", text: "Deberían existir mayores deducciones y mínimos exentos en el IRPF según el número de hijos.", reverse: true },
+        { id: "e11_7n", text: "La legislación familiar debería ampliar el reconocimiento jurídico a nuevas formas de convivencia más allá del matrimonio tradicional.", reverse: false },
       ],
     },
     {
-      id: "eje12", title: "Eje 12. Administración y Gobernanza",
-      poleA: "Estructura actual (0)", poleB: "Simplificación, control y transparencia (100)",
+      id: "eje12", title: "Eje 12. Administración, Justicia e Instituciones",
+      poleA: "Reducción estructura / Democracia directa (0)", poleB: "Fortalecimiento institucional / Parlamentario (100)",
       questions: [
-        { id: "e12_1", text: "La Administración pública necesita reducir burocracia.", reverse: false },
-        { id: "e12_2", text: "Los organismos públicos deberían estar sometidos a mayores controles de eficiencia.", reverse: false },
-        { id: "e12_3", text: "Deberían reducirse los cargos políticos y estructuras administrativas redundantes.", reverse: false },
-        { id: "e12_4", text: "Las decisiones públicas deberían ser más transparentes.", reverse: false },
-        { id: "e12_5", text: "Los ciudadanos deberían participar más directamente en decisiones políticas.", reverse: false },
-        { id: "e12_6", text: "Los mandatos y cargos públicos deberían tener mayores mecanismos de control.", reverse: false },
-        { id: "e12_7", text: "Las administraciones deberían publicar evaluaciones de resultados de sus políticas.", reverse: false },
-        { id: "e12_8", text: "La digitalización debe ser una prioridad de los servicios públicos.", reverse: false },
+        { id: "e12_3", text: "Deberían reducirse los ministerios, cargos políticos y organismos públicos considerados redundantes.", reverse: true },
+        { id: "e12_4n", text: "Los vocales judiciales del Consejo General del Poder Judicial deberían ser elegidos directamente por los jueces en lugar de por el Parlamento.", reverse: true },
+        { id: "e12_5", text: "Los ciudadanos deberían participar más directamente en decisiones políticas mediante referéndums e iniciativas populares.", reverse: true },
+        { id: "e12_6", text: "Deberían suprimirse los aforamientos políticos y limitarse temporalmente los mandatos de cargos públicos.", reverse: true },
+        { id: "e12_7n", text: "Debería rebajarse la edad mínima para votar a los 16 años.", reverse: false },
+        { id: "e12_8n", text: "Los medios de comunicación públicos (como RTVE y la Agencia EFE) deberían mantener o ampliar su financiación pública bajo control parlamentario.", reverse: false },
       ],
     },
   ];
 
+  // Solo las 4 preguntas activas conectadas a detectTensions()
   const CONTROL_QUESTIONS = [
-    { id: "ctrl_1", text: "¿Prefieres pagar menos impuestos aunque se reduzcan determinadas prestaciones?" },
-    { id: "ctrl_2", text: "¿Aceptarías pagar más impuestos para mejorar sanidad y educación?" },
-    { id: "ctrl_3", text: "¿Prefieres menor intervención estatal frente a mayor protección pública?" },
-    { id: "ctrl_4", text: "¿Consideras más importante la seguridad que la privacidad individual?" },
-    { id: "ctrl_5", text: "¿Priorizarías el crecimiento económico frente a la protección medioambiental?" },
-    { id: "ctrl_6", text: "¿Prefieres mayor libertad individual frente a mayor regulación para proteger a la sociedad?" },
-    { id: "ctrl_7", text: "¿Consideras más importante reducir el gasto público que aumentar la inversión social?" },
-    { id: "ctrl_8", text: "¿Aceptarías restricciones al mercado inmobiliario para facilitar el acceso a vivienda?" },
-    { id: "ctrl_9", text: "¿Debería priorizarse la estabilidad laboral sobre la flexibilidad empresarial?" },
-    { id: "ctrl_10", text: "¿Crees que el Estado debería mantener las prestaciones actuales aunque aumente la presión fiscal?" },
+    { id: "ctrl_1", text: "¿Prefieres reducir la presión fiscal global aunque implique limitar el alcance de algunas prestaciones públicas?" },
+    { id: "ctrl_2", text: "¿Aceptarías pagar más impuestos si se destinaran específicamente a reforzar sanidad y educación?" },
+    { id: "ctrl_7", text: "¿Consideras prioritario reducir el gasto público total frente a ampliar las partidas sociales?" },
+    { id: "ctrl_10", text: "¿Crees que el Estado debería mantener las prestaciones actuales aunque sea necesario subir impuestos?" },
   ];
 
   const HELP_BY_ID = {
-    e1_1: "Significa pagar menos IRPF o IVA a cambio de que haya menos presupuesto para servicios públicos.",
-    e1_2: "Confiar en que las empresas compitan libremente sin precios fijados por el Gobierno. Ej: no fijar precios máximos desde un ministerio.",
+    e1_1: "Significa bajar impuestos generales (IRPF, IVA) asumiendo que obligará a ajustar o reordenar el presupuesto de servicios públicos.",
+    e1_2: "Confiar en que las empresas compitan libremente sin precios fijados por el Gobierno.",
     e1_3: "Menos trámites, licencias o requisitos legales para que las grandes compañías operen.",
     e1_4: "Que quienes ganan más dinero paguen un porcentaje mayor de impuestos que quienes ganan menos.",
     e1_5: "Que el Gobierno pueda poner topes de precio a productos básicos (alimentos, luz, alquiler).",
-    e1_6: "Que empresas privadas gestionen más servicios (hospitales, transporte, etc.) mediante conciertos o concesiones.",
-    e1_7: "Recortar gastos públicos cuando el Estado gasta más de lo que recauda. Ej: frenar nuevas ayudas o inversiones para bajar la deuda.",
-    e1_8: "Apoyar sectores clave aunque limite la competencia libre. Ej: subvencionar la industria nacional o frenar compras extranjeras.",
-    e1_9: "Bajar impuestos sobre sueldos (IRPF) y cotizaciones para que quede más dinero neto en la nómina.",
-    e1_10: "Usar los impuestos y ayudas para reducir la diferencia económica entre rentas altas y bajas.",
-    e2_1: "Que los hospitales y centros de salud sean gestionados y financiados principalmente por el Estado.",
-    e2_2: "Dedicar más dinero público a colegios, institutos y universidades públicas.",
-    e2_3: "Que la pensión pública baste para vivir sin depender de planes privados.",
-    e2_4: "Garantizar ayudas básicas (como el ingreso mínimo) a hogares con pocos recursos.",
-    e2_5: "Exigir requisitos para cobrar ayudas. Ej: pedir estar buscando empleo activamente o llevar un mínimo de años empadronado.",
-    e2_6: "Combinar gestión pública con empresas privadas para prestar servicios sanitarios o sociales.",
-    e2_7: "Que todo el mundo pueda usar sanidad o educación de calidad independientemente de lo que gane.",
+    e1_7: "Recortar gastos públicos cuando el Estado gasta más de lo que recauda.",
+    e1_8: "Apoyar o proteger sectores clave aunque limite la libre competencia o el libre comercio.",
+    e1_9b: "Aplicar un impuesto estatal anual específico sobre patrimonios elevados o grandes fortunas.",
+    e2_1: "Que toda la asistencia sanitaria pública sea prestada por centros propios de gestión pública directa, evitando conciertos o derivaciones privadas.",
+    e2_3n: "Destinar una parte de las cotizaciones sociales a una cuenta individual de ahorro heredable, manteniendo un pilar público.",
+    e2_4: "Subir la cuantía del Ingreso Mínimo Vital / IPREM y concederlo automáticamente con los datos fiscales.",
+    e2_5: "Exigir requisitos para cobrar ayudas (búsqueda activa de empleo, años de residencia legal o cotización previa).",
+    e2_6: "Combinar gestión pública con empresas privadas para prestar servicios sanitarios, educativos o sociales.",
+    e2_7: "Que el acceso a sanidad, farmacia o educación dependa lo menos posible del nivel de ingresos.",
     e2_8: "Aumentar plazas públicas, ayudas y cuidadores para personas mayores o con discapacidad.",
     e3_1: "Agilizar visados y permisos para extranjeros que vengan con contrato de trabajo.",
-    e3_2: "Aumentar la vigilancia y los requisitos para entrar en el país.",
+    e3_2: "Aumentar la vigilancia física, medios y requisitos para entrar en el país.",
     e3_3: "Permitir obtener papeles a personas que ya viven y trabajan en España de forma continuada.",
-    e3_4: "Autorizar la entrada principalmente según los puestos de trabajo que falten por cubrir.",
-    e3_5: "Asegurar refugio legal a personas que huyen de guerras o persecución acreditada.",
-    e3_6: "Aplicar las mismas condiciones de acceso a ayudas sociales a españoles y residentes extranjeros.",
-    e3_7: "Financiar cursos de idioma, formación y programas de integración para recién llegados.",
-    e3_8: "Considerar que la llegada de población extranjera aporta más riqueza y cotizantes que gasto.",
+    e3_4: "Vincular los permisos de entrada principalmente a los puestos de trabajo que falten por cubrir.",
+    e3_5: "Reforzar el sistema de acogida y evitar devoluciones inmediatas en frontera para proteger el derecho de asilo.",
+    e3_6: "Aplicar las mismas condiciones de acceso a ayudas sociales y sanidad a españoles y residentes extranjeros.",
+    e3_7: "Financiar cursos de idioma, formación y programas públicos de acogida para recién llegados.",
     e3_9: "Ampliar los casos en los que un extranjero condenado por delito es devuelto a su país.",
-    e3_10: "Facilitar que residentes legales puedan traer a su cónyuge o hijos.",
-    e4_1: "Aumentar los años de cárcel para delitos graves.",
+    e3_10n: "Priorizar el retorno de menores no acompañados con sus familias o países de origen frente al reparto vinculante entre CC. AA.",
+    e4_1: "Aumentar los años de cárcel o el cumplimiento íntegro para delitos graves.",
     e4_2: "Priorizar programas de educación y trabajo en prisión para que el preso no vuelva a delinquir.",
-    e4_3: "Contratar más agentes y dotar de más medios a Policía y Guardia Civil.",
-    e4_4: "Más jueces y juzgados para que los juicios tarden menos tiempo.",
-    e4_5: "Acelerar desalojos y endurecer las penas por ocupar una vivienda sin permiso.",
+    e4_5: "Acelerar desalojos (24-48h) y endurecer las penas por ocupar una vivienda sin permiso.",
     e4_6: "Dar más herramientas legales y tecnológicas a las fuerzas de seguridad para investigar delitos.",
     e4_7: "Aceptar más controles o vigilancia cuando exista una amenaza de seguridad demostrada.",
     e4_8: "Invertir en prevención social y centros educativos antes que en castigos duros para menores.",
-    e5_1: "Que las leyes no regulen hábitos o decisiones privadas que no dañen a terceros.",
-    e5_2: "Permitir expresar ideas molestas o minoritarias siempre que no constituyan delito.",
-    e5_3: "Que hombres y mujeres tengan exactamente los mismos derechos y obligaciones ante la ley.",
-    e5_4: "Dar las mismas posibilidades de partida sin imponer cuotas finales. Ej: dar becas para estudiar sin reservar plazas por porcentaje.",
-    e5_5: "Proteger fiestas, costumbres e identidad cultural tradicional desde las instituciones.",
-    e5_6: "Que el Estado no favorezca ninguna religión sobre otras ni sobre quienes no tienen creencias.",
-    e5_7: "Proteger la autonomía de cada persona frente a presiones de grupo o normas morales.",
-    e5_8: "Garantizar los derechos de las minorías aunque la mayoría no esté de acuerdo con ellas.",
-    e6_1: "Que competencias como sanidad, educación o justicia vuelvan al Gobierno central en Madrid.",
+    e5_2: "Priorizar la libertad de expresión incluso en opiniones polémicas, limitando las sanciones penales por discurso.",
+    e5_3a: "Mantener leyes y juzgados específicos para violencia machista frente a un marco penal común para violencia intrafamiliar.",
+    e5_3b: "Permitir el cambio de sexo registral por autodeterminación sin informes médicos ni autorización judicial.",
+    e5_4: "Priorizar la igualdad de oportunidades de partida frente a cuotas obligatorias de representación.",
+    e5_5: "Proteger fiestas, costumbres y tradiciones culturales (como la tauromaquia) desde las instituciones.",
+    e5_6: "Que el Estado no favorezca ninguna religión ni mantenga privilegios fiscales ajenos al culto.",
+    e5_7a: "Garantizar la interrupción voluntaria del embarazo dentro de la cartera pública sanitaria.",
+    e5_7b: "Mantener el derecho legal a la prestación de ayuda para morir en los supuestos regulados.",
+    e6_1: "Que competencias como sanidad, educación o justicia vuelvan al Gobierno central.",
     e6_2: "Que cada Comunidad Autónoma tenga más capacidad de decisión sobre sus propias leyes y presupuestos.",
-    e6_3: "Repartir el dinero entre comunidades según cuántos habitantes tienen y cuánto cuesta dar servicios allí (ej. zonas más envejecidas o dispersas).",
-    e6_4: "Que sanidad, educación o impuestos básicos sean muy parecidos vivas en la comunidad que vivas.",
-    e6_5: "Apoyar y financiar el uso oficial del catalán, euskera, gallego o asturiano/otras lenguas.",
-    e6_6: "Eliminar organismos repetidos entre Estado, comunidades y ayuntamientos.",
+    e6_3a: "Aplicar criterios comunes iguales para todas las comunidades, evitando acuerdos bilaterales o condonaciones de deuda.",
+    e6_3b: "Reconocer legalmente la posibilidad de un referéndum pactado sobre la independencia.",
+    e6_5: "Apoyar y financiar el uso oficial del catalán, euskera, gallego u otras lenguas propias.",
+    e6_5b: "Garantizar clases vehiculares en castellano junto a la lengua cooficial en lugar de inmersión monolingüe.",
+    e6_6n: "Avanzar hacia una reforma constitucional de tipo federal que delimite competencias entre niveles.",
     e6_7: "Dar más dinero y capacidad de decisión directa a los ayuntamientos.",
-    e6_8: "Que grandes infraestructuras, energía o agua se decidan desde el Gobierno central.",
     e7_1: "Cambiar rápido hacia energías limpias aunque suban algunos costes a corto plazo.",
-    e7_2: "Mantener o ampliar las centrales nucleares para producir electricidad estable.",
-    e7_3: "Invertir más dinero público en energía solar, eólica y redes eléctricas.",
-    e7_4: "Evitar que normas ambientales obliguen a cerrar fábricas o encarezcan demasiado producir aquí. Ej: dar más plazo para adaptarse.",
+    e7_2: "Mantener o ampliar las centrales nucleares derogando su calendario de cierre.",
+    e7_3: "Invertir más dinero público en energía solar, eólica, almacenamiento y redes eléctricas.",
+    e7_4: "Dar más margen regulatorio o revertir normas ambientales que resten competitividad industrial.",
     e7_5: "Cobrar más impuestos a empresas o actividades que emiten más CO2 o contaminan.",
-    e7_6: "Reducir prohibiciones de circulación (como zonas de bajas emisiones) o impuestos al coche privado.",
-    e7_7: "Dedicar más recursos a cuidar bosques, ríos, agricultura sostenible y pueblos.",
-    e7_8: "Producir nuestra propia energía en España para no depender de compras a otros países.",
-    e8_1: "Centrar la inversión pública en colegios e institutos de titularidad estatal/autonómica.",
+    e7_6: "Reducir prohibiciones de circulación (como zonas de bajas emisiones) o restricciones al coche de combustión.",
+    e7_7n: "Flexibilizar exigencias del Pacto Verde Europeo sobre agricultura y ganadería.",
+    e8_1: "Centrar la inversión pública en colegios e institutos de titularidad pública.",
     e8_2: "Facilitar que las familias elijan centro (público, concertado o privado) según sus valores.",
-    e8_3: "Mantener el dinero público que financia colegios privados concertados.",
-    e8_4: "Orientar asignaturas y títulos a los empleos que más demandan las empresas.",
-    e8_5: "Reforzar los ciclos de Formación Profesional y prácticas en empresas.",
-    e8_6: "Asegurar que se enseñe lo mismo en asignaturas troncales en toda España.",
-    e8_7: "Aumentar el presupuesto para universidades, laboratorios y científicos.",
-    e8_8: "Subvencionar museos, bibliotecas, cine y actividades culturales para que sean accesibles.",
-    e9_1: "Hacer más fácil y barato contratar y despedir según la situación de cada empresa.",
-    e9_2: "Subir el Salario Mínimo Interprofesional cuando sube la inflación.",
-    e9_3: "Dar más peso a los acuerdos firmados entre sindicatos y patronal. Ej: que el convenio del sector marque sueldos y horarios mínimos.",
+    e8_3: "Mantener la financiación pública a colegios privados concertados.",
+    e8_4n: "Lograr la gratuidad de 0 a 3 años ampliando escuelas infantiles públicas frente a financiar plazas concertadas.",
+    e8_6: "Unificar contenidos mínimos y establecer una prueba de acceso universitaria (PAU/EVAU) común en toda España.",
+    e8_8: "Asegurar inversión pública directa en museos, bibliotecas y acceso cultural general.",
+    e9_1: "Hacer más fácil y flexible contratar y despedir según la situación de cada empresa.",
+    e9_2: "Subir el Salario Mínimo Interprofesional (p. ej. al 60% del salario medio) cuando sube el coste de vida.",
+    e9_3: "Dar más peso a los acuerdos firmados entre sindicatos y patronal y a los convenios sectoriales.",
     e9_4: "Bajar lo que pagan las empresas a la Seguridad Social por cada trabajador.",
     e9_5: "Aumentar inspecciones contra horas extra no pagadas, economía sumergida o falsos autónomos.",
-    e9_6: "Que la cuota mensual de autónomos dependa directamente de lo que ganan realmente.",
-    e9_7: "Simplificar licencias y papeles para abrir un negocio o pyme.",
+    e9_6: "Aplicar cuota cero o mínima a autónomos cuyos ingresos no alcancen el Salario Mínimo Interprofesional.",
+    e9_7n: "Reducir la jornada laboral máxima legal (37,5h o 32h semanales) manteniendo el mismo salario.",
     e9_8: "Priorizar contratos fijos y protección frente al despido sobre la flexibilidad empresarial.",
-    e10_1: "Construir o comprar muchas más viviendas públicas de alquiler asequible.",
+    e10_1: "Construir o ampliar significativamente el parque de vivienda pública.",
     e10_2: "Poner límites legales al precio del alquiler y más control sobre contratos.",
-    e10_3: "Garantizar cobros y desahucios rápidos si hay impago o destrozos para animar a alquilar.",
-    e10_4: "Bajar impuestos en el IRPF a caseros que pongan alquileres por debajo de cierto precio.",
-    e10_5: "Liberar suelo y agilizar licencias para construir más pisos.",
-    e10_6: "Dar avales, subvenciones o rebajas fiscales a jóvenes que compran su primera casa.",
-    e10_7: "Dedicar una parte importante de los presupuestos públicos a vivienda.",
+    e10_3: "Garantizar cobros y desahucios rápidos si hay impago u ocupación para animar a alquilar.",
+    e10_4: "Bajar impuestos a caseros que pongan alquileres por debajo de cierto precio.",
+    e10_5: "Apostar por liberalizar suelo privado y agilizar licencias de construcción en lugar de topar rentas.",
+    e10_7n: "Reducir o bonificar hasta el 0% el ITP en la compra de la primera vivienda habitual de segunda mano.",
     e10_8: "Considerar que topar precios hace que menos propietarios quieran poner pisos en alquiler.",
-    e11_1: "Dar pagos directos o deducciones mensuales por cada hijo a cargo.",
-    e11_2: "Garantizar escuelas infantiles gratuitas o muy baratas de 0 a 3 años.",
-    e11_3: "Dar más semanas de permiso pagado tras nacimiento o adopción.",
+    e11_1: "Dar un pago mensual directo por cada hijo a todas las familias sin límite de renta (p. ej. 200 €/mes).",
+    e11_3: "Ampliar semanas de permiso retribuido tras nacimiento o cuidado de hijos.",
     e11_4: "Reforzar ayudas específicas para madres o padres que crían solos.",
-    e11_5: "Facilitar horarios flexibles y teletrabajo junto con servicios públicos de cuidado.",
-    e11_6: "Aplicar rebajas de impuestos según el número de hijos.",
-    e11_7: "Pagar ayudas o cotizaciones a familiares que cuidan a personas dependientes.",
-    e12_1: "Eliminar papeleo y trámites duplicados para ciudadanos y empresas.",
-    e12_2: "Auditar en qué se gasta el dinero público y si las políticas funcionan.",
-    e12_3: "Recortar asesores, altos cargos y organismos públicos innecesarios.",
-    e12_4: "Publicar de forma clara contratos, presupuestos y decisiones de gobierno.",
-    e12_5: "Usar más referéndums o consultas ciudadanas en decisiones importantes.",
-    e12_6: "Limitar mandatos o exigir mayor rendición de cuentas a los cargos electos.",
-    e12_7: "Medir con datos públicos si una ley funcionó tras aplicarse. Ej: publicar un informe anual viendo si una ayuda redujo realmente el paro.",
-    e12_8: "Permitir hacer casi cualquier trámite público por internet de forma sencilla.",
-    ctrl_1: "Sirve para contrastar tu preferencia entre rebaja fiscal y tamaño de los servicios públicos.",
+    e11_5: "Priorizar medidas legales obligatorias (reducción de jornada, permisos) sobre incentivos fiscales voluntarios.",
+    e11_6: "Aplicar rebajas o mínimos exentos en el IRPF según el número de hijos.",
+    e11_7n: "Reconocer legalmente distintos modelos de convivencia y personas de referencia en permisos de cuidados.",
+    e12_3: "Recortar ministerios, altos cargos, asesores y organismos públicos considerados redundantes.",
+    e12_4n: "Que los 12 vocales de procedencia judicial del CGPJ sean elegidos por voto directo de los jueces.",
+    e12_5: "Usar más referéndums o consultas ciudadanas y facilitar la iniciativa legislativa popular.",
+    e12_6: "Eliminar los aforamientos de cargos públicos para delitos comunes y limitar los años en el cargo.",
+    e12_7n: "Ampliar el derecho al voto a jóvenes de 16 y 17 años.",
+    e12_8n: "Reforzar RTVE y la Agencia EFE con financiación pública estable y control parlamentario.",
+    ctrl_1: "Sirve para contrastar tu preferencia entre rebaja fiscal global y tamaño de las prestaciones públicas.",
     ctrl_2: "Mide si aceptarías mayor carga fiscal con destino finalista a sanidad y educación.",
-    ctrl_3: "Resume tu preferencia general entre autonomía privada y red pública.",
-    ctrl_4: "Contrasta cómo equilibras seguridad colectiva frente a privacidad personal.",
-    ctrl_5: "Mide qué priorizas cuando una norma ambiental choca con actividad económica inmediata.",
-    ctrl_6: "Contrasta libertad de decisión individual frente a normas de protección colectiva.",
-    ctrl_7: "Mide si priorizas contener el déficit o ampliar el gasto social.",
-    ctrl_8: "Contrasta si prefieres regular el alquiler aunque afecte a la libertad de mercado.",
-    ctrl_9: "Mide el equilibrio entre protección del puesto de trabajo y facilidad de contratación.",
-    ctrl_10: "Contrasta si sostener las prestaciones actuales justifica subir impuestos.",
+    ctrl_7: "Contrasta si priorizas contener el gasto público total o ampliar el gasto social.",
+    ctrl_10: "Contrasta si sostener las prestaciones actuales justifica subir la presión fiscal.",
   };
+
+  // Matriz documental trazable por pregunta en espacio de eje (0 = poleA, 100 = poleB, null = SIN MENCIÓN / no evaluable)
+  // Derivada exclusivamente de ingestion/data/programas_29n.json
+  const PARTY_QUESTION_SCORES = {
+    // Eje 1
+    e1_1:   { pp: 75, vox: 75, salf: 75, psoe: 25, "frente-amplio": 0 },
+    e1_2:   { pp: 75, vox: 75, salf: 75, psoe: 25, "frente-amplio": 0 },
+    e1_3:   { pp: 75, vox: 75, salf: 50, psoe: 25, "frente-amplio": 0 },
+    e1_4:   { pp: null, vox: 75, salf: 75, psoe: 0, "frente-amplio": 0 },
+    e1_5:   { pp: 100, vox: 100, salf: null, psoe: 0, "frente-amplio": 0 },
+    e1_7:   { pp: 75, vox: 100, salf: 100, psoe: 50, "frente-amplio": 0 },
+    e1_8:   { pp: 25, vox: 0, salf: 25, psoe: 0, "frente-amplio": 0 },
+    e1_9b:  { pp: null, vox: null, salf: 100, psoe: 0, "frente-amplio": 0 },
+    // Eje 2
+    e2_1:   { pp: 25, vox: 0, salf: 0, psoe: 75, "frente-amplio": 100 },
+    e2_3n:  { pp: null, vox: null, salf: 0, psoe: 100, "frente-amplio": 100 },
+    e2_4:   { pp: 50, vox: 25, salf: 50, psoe: 100, "frente-amplio": 100 },
+    e2_5:   { pp: 25, vox: 0, salf: 0, psoe: 75, "frente-amplio": 100 },
+    e2_6:   { pp: 25, vox: 0, salf: 0, psoe: null, "frente-amplio": 100 },
+    e2_7:   { pp: 50, vox: null, salf: 50, psoe: 100, "frente-amplio": 100 },
+    e2_8:   { pp: 50, vox: 75, salf: null, psoe: 100, "frente-amplio": 100 },
+    // Eje 3
+    e3_1:   { pp: 75, vox: 25, salf: 50, psoe: 100, "frente-amplio": null },
+    e3_2:   { pp: 0, vox: 0, salf: 0, psoe: 50, "frente-amplio": 100 },
+    e3_3:   { pp: 25, vox: 0, salf: 0, psoe: 75, "frente-amplio": 100 },
+    e3_4:   { pp: 75, vox: null, salf: 50, psoe: 75, "frente-amplio": null },
+    e3_5:   { pp: 25, vox: 0, salf: null, psoe: 100, "frente-amplio": 100 },
+    e3_6:   { pp: 25, vox: 0, salf: 0, psoe: 75, "frente-amplio": 100 },
+    e3_7:   { pp: 50, vox: 0, salf: 25, psoe: 100, "frente-amplio": 75 },
+    e3_9:   { pp: 25, vox: 0, salf: 0, psoe: null, "frente-amplio": null },
+    e3_10n: { pp: 25, vox: 0, salf: 0, psoe: 100, "frente-amplio": 100 },
+    // Eje 4
+    e4_1:   { pp: 75, vox: 100, salf: 100, psoe: 50, "frente-amplio": 25 },
+    e4_2:   { pp: null, vox: null, salf: 100, psoe: null, "frente-amplio": 0 },
+    e4_5:   { pp: 100, vox: 100, salf: 100, psoe: null, "frente-amplio": 0 },
+    e4_6:   { pp: 100, vox: 75, salf: 50, psoe: 50, "frente-amplio": 25 },
+    e4_7:   { pp: 75, vox: 75, salf: null, psoe: 50, "frente-amplio": 25 },
+    e4_8:   { pp: 50, vox: null, salf: null, psoe: null, "frente-amplio": 0 },
+    // Eje 5
+    e5_2:   { pp: 50, vox: 75, salf: 75, psoe: 25, "frente-amplio": 25 },
+    e5_3a:  { pp: 75, vox: 0, salf: null, psoe: 100, "frente-amplio": 100 },
+    e5_3b:  { pp: 0, vox: 0, salf: null, psoe: 100, "frente-amplio": 100 },
+    e5_4:   { pp: 25, vox: 0, salf: 0, psoe: 75, "frente-amplio": 100 },
+    e5_5:   { pp: 0, vox: 0, salf: null, psoe: null, "frente-amplio": 100 },
+    e5_6:   { pp: 50, vox: 25, salf: 50, psoe: null, "frente-amplio": 100 },
+    e5_7a:  { pp: null, vox: 0, salf: null, psoe: 100, "frente-amplio": 100 },
+    e5_7b:  { pp: null, vox: 0, salf: null, psoe: 100, "frente-amplio": 100 },
+    // Eje 6
+    e6_1:   { pp: 25, vox: 0, salf: 25, psoe: 75, "frente-amplio": 100 },
+    e6_2:   { pp: 50, vox: 0, salf: 25, psoe: 75, "frente-amplio": 100 },
+    e6_3a:  { pp: 25, vox: 0, salf: 0, psoe: 75, "frente-amplio": null },
+    e6_3b:  { pp: 0, vox: 0, salf: null, psoe: null, "frente-amplio": 100 },
+    e6_5:   { pp: 50, vox: 0, salf: 0, psoe: 100, "frente-amplio": 100 },
+    e6_5b:  { pp: 25, vox: 0, salf: 0, psoe: null, "frente-amplio": 100 },
+    e6_6n:  { pp: 25, vox: 0, salf: null, psoe: 75, "frente-amplio": 100 },
+    e6_7:   { pp: null, vox: null, salf: null, psoe: 100, "frente-amplio": 100 },
+    // Eje 7
+    e7_1:   { pp: 25, vox: 0, salf: 0, psoe: 100, "frente-amplio": 100 },
+    e7_2:   { pp: 0, vox: 0, salf: null, psoe: 100, "frente-amplio": 100 },
+    e7_3:   { pp: 50, vox: 25, salf: null, psoe: 100, "frente-amplio": 100 },
+    e7_4:   { pp: 25, vox: 0, salf: 0, psoe: 75, "frente-amplio": 100 },
+    e7_5:   { pp: null, vox: 0, salf: null, psoe: 75, "frente-amplio": 100 },
+    e7_6:   { pp: null, vox: 0, salf: null, psoe: 100, "frente-amplio": 100 },
+    e7_7n:  { pp: 25, vox: 0, salf: 0, psoe: 100, "frente-amplio": 100 },
+    // Eje 8
+    e8_1:   { pp: 25, vox: 25, salf: 50, psoe: 100, "frente-amplio": 100 },
+    e8_2:   { pp: 25, vox: 0, salf: 25, psoe: 75, "frente-amplio": 100 },
+    e8_3:   { pp: 0, vox: 0, salf: null, psoe: null, "frente-amplio": 100 },
+    e8_4n:  { pp: 0, vox: null, salf: null, psoe: 100, "frente-amplio": 100 },
+    e8_6:   { pp: 0, vox: 0, salf: 0, psoe: null, "frente-amplio": 75 },
+    e8_8:   { pp: 50, vox: 50, salf: null, psoe: 100, "frente-amplio": 100 },
+    // Eje 9
+    e9_1:   { pp: 25, vox: 0, salf: 25, psoe: 100, "frente-amplio": 100 },
+    e9_2:   { pp: 50, vox: null, salf: 50, psoe: 100, "frente-amplio": 100 },
+    e9_3:   { pp: 50, vox: null, salf: 0, psoe: 100, "frente-amplio": 100 },
+    e9_4:   { pp: 25, vox: 25, salf: 0, psoe: 75, "frente-amplio": 100 },
+    e9_5:   { pp: 75, vox: null, salf: null, psoe: 100, "frente-amplio": 100 },
+    e9_6:   { pp: 25, vox: 0, salf: 0, psoe: 50, "frente-amplio": null },
+    e9_7n:  { pp: null, vox: null, salf: null, psoe: 100, "frente-amplio": 100 },
+    e9_8:   { pp: 50, vox: 0, salf: 25, psoe: 100, "frente-amplio": 100 },
+    // Eje 10
+    e10_1:  { pp: 50, vox: 25, salf: 50, psoe: 100, "frente-amplio": 100 },
+    e10_2:  { pp: 0, vox: 0, salf: 25, psoe: 100, "frente-amplio": 100 },
+    e10_3:  { pp: 0, vox: 0, salf: 0, psoe: 50, "frente-amplio": 100 },
+    e10_4:  { pp: 25, vox: 0, salf: null, psoe: 50, "frente-amplio": 100 },
+    e10_5:  { pp: 0, vox: 0, salf: 25, psoe: 75, "frente-amplio": 100 },
+    e10_7n: { pp: 25, vox: 0, salf: 0, psoe: null, "frente-amplio": null },
+    e10_8:  { pp: 0, vox: 0, salf: null, psoe: 100, "frente-amplio": 100 },
+    // Eje 11
+    e11_1:  { pp: 50, vox: 0, salf: 0, psoe: 75, "frente-amplio": 100 },
+    e11_3:  { pp: 100, vox: null, salf: null, psoe: 100, "frente-amplio": null },
+    e11_4:  { pp: 100, vox: null, salf: null, psoe: 100, "frente-amplio": 75 },
+    e11_5:  { pp: 25, vox: 0, salf: null, psoe: 100, "frente-amplio": 100 },
+    e11_6:  { pp: 25, vox: 0, salf: 0, psoe: 50, "frente-amplio": null },
+    e11_7n: { pp: null, vox: null, salf: null, psoe: 100, "frente-amplio": 100 },
+    // Eje 12
+    e12_3:  { pp: 0, vox: 0, salf: 0, psoe: null, "frente-amplio": null },
+    e12_4n: { pp: null, vox: 0, salf: null, psoe: null, "frente-amplio": 100 },
+    e12_5:  { pp: null, vox: null, salf: 0, psoe: 25, "frente-amplio": 25 },
+    e12_6:  { pp: null, vox: null, salf: 0, psoe: 25, "frente-amplio": null },
+    e12_7n: { pp: null, vox: null, salf: null, psoe: 100, "frente-amplio": 100 },
+    e12_8n: { pp: 25, vox: 25, salf: 0, psoe: null, "frente-amplio": 100 },
+  };
+
+  function computePartyAxisScore(partyId, axis) {
+    let sum = 0;
+    let count = 0;
+    axis.questions.forEach((q) => {
+      const row = PARTY_QUESTION_SCORES[q.id];
+      const val = row ? row[partyId] : null;
+      if (typeof val === "number") {
+        sum += val;
+        count += 1;
+      }
+    });
+    // Exigir al menos 2 preguntas documentadas para puntuar un eje (evita inferencias sobre 1 único dato)
+    return count >= 2 ? Math.round(sum / count) : null;
+  }
 
   function computeAxisResults(answers) {
     return AXES.map((axis) => {
@@ -331,6 +427,7 @@
       });
 
       const score = validCount > 0 ? Math.round(sum / validCount) : null;
+      const minRep = Math.min(4, Math.ceil(axis.questions.length * 0.6));
       return {
         id: axis.id,
         title: axis.title,
@@ -338,7 +435,7 @@
         poleB: axis.poleB,
         totalQuestions: axis.questions.length,
         answeredCount: validCount,
-        representative: validCount >= 5,
+        representative: validCount >= minRep,
         score,
         unanswered,
       };
@@ -347,7 +444,7 @@
 
   function renderIdeologyTest(container, onNavigate) {
     const profile = global.ProfileStore29N.loadProfile();
-    let stepIndex = 0; // 0..11 = 12 ejes, 12 = preguntas de control
+    let stepIndex = 0; // 0..11 = 12 ejes, 12 = matices presupuestarios
 
     function render() {
       container.textContent = "";
@@ -362,12 +459,12 @@
       const tag = document.createElement("div");
       tag.className = "panel-header-tag";
       tag.textContent = isControl
-        ? "PREGUNTAS DE CONTROL Y COHERENCIA · SOLO LOCAL"
+        ? "MATICES DE PRIORIZACIÓN PRESUPUESTARIA · SOLO LOCAL"
         : `TEST IDEOLÓGICO (${stepIndex + 1}/${AXES.length}) · SOLO LOCAL`;
 
       const h2 = document.createElement("h2");
       h2.className = "hero-title";
-      h2.textContent = isControl ? "Control y matices de preferencias" : currentAxis.title;
+      h2.textContent = isControl ? "Matices de priorización presupuestaria" : currentAxis.title;
 
       const progWrap = document.createElement("div");
       progWrap.className = "wizard-progress-wrap";
@@ -398,7 +495,7 @@
       const ctrlPill = document.createElement("button");
       ctrlPill.type = "button";
       ctrlPill.className = `step-pill ${isControl ? "active" : ""}`;
-      ctrlPill.textContent = "CONTROL";
+      ctrlPill.textContent = "MATICES";
       ctrlPill.addEventListener("click", () => {
         stepIndex = AXES.length;
         render();
@@ -503,6 +600,9 @@
 
   global.IdeologyTest29N = {
     AXES,
+    COMPATIBLE_V1_IDS,
+    PARTY_QUESTION_SCORES,
+    computePartyAxisScore,
     computeAxisResults,
     render: renderIdeologyTest,
   };

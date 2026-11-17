@@ -78,7 +78,8 @@ FastAPI Middleware (backend_29n)
 ├── ingestion/
 │   ├── scrape_29nov.py                 # Extractor de bloques temáticos (PP, PSOE, VOX, FA, SALF)
 │   ├── ingest_qdrant.py                # Indexación idempotente con FastEmbed -> Qdrant
-│   └── data/programas_29n.json         # Dataset estructurado (715 propuestas)
+│   └── data/programas_29n.json         # Dataset estructurado (931 propuestas)
+├── docs/auditoria_fase2/               # Auditoría metodológica y baremos documentales v2
 ├── deploy/nginx/                       # Plantilla vhost Nginx con anti-bot y SSE
 └── scripts/
     ├── verify_env.py                   # Gate obligatorio de validación de .env y secretos
@@ -103,3 +104,13 @@ FastAPI Middleware (backend_29n)
    ./scripts/deploy_pi.sh
    python3 ingestion/ingest_qdrant.py
    ```
+
+
+---
+
+## Test Ideológico y Metodología (v2)
+
+- **Estructura actual (`frontend/js/ideology_test.js`):** **86 preguntas** distribuidas en **12 ejes** (`49` directas y `37` inversas) más **4 matices de priorización presupuestaria** (`ctrl_1`, `ctrl_2`, `ctrl_7`, `ctrl_10`), sin puntuación global izquierda–derecha ni recomendación de voto.
+- **Baremos trazables (`PARTY_QUESTION_SCORES` + `frontend/js/results_view.js`):** Cada pregunta incluida cuenta con al menos **2 partidos** con posición documentada en `ingestion/data/programas_29n.json`. Las ausencias (`SIN MENCIÓN`) quedan como `null` (no evaluables) y se excluyen del cálculo por eje sin inventar puntuaciones.
+- **Migración local (`frontend/js/profile_store.js`):** `schemaVersion: 2` conserva las respuestas `v1` compatibles y limpia los ítems sustituidos o con polaridad modificada.
+- **Documentación completa:** [frontend/metodologia.html](frontend/metodologia.html) y carpeta [docs/auditoria_fase2/](docs/auditoria_fase2/).

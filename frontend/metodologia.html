@@ -47,10 +47,10 @@
         <div class="home-rule-card" style="margin-top: 0.75rem;">
           <ul>
             <li><strong>Las respuestas <code>0</code> se excluyen:</strong> No puntúan ni bajan tu nota; simplemente no se cuentan en la media del eje.</li>
-            <li><strong>Preguntas directas (68 de 99):</strong> Se mantiene tu valor (<code>1..5</code>).</li>
-            <li><strong>Preguntas inversas (31 de 99):</strong> Se invierte matemáticamente con <code>6 - respuesta</code> (así un <code>5</code> pasa a <code>1</code> y un <code>1</code> pasa a <code>5</code>) para que todas apunten al mismo polo en cada eje.</li>
+            <li><strong>Preguntas directas (49 de 86):</strong> Se mantiene tu valor (<code>1..5</code>).</li>
+            <li><strong>Preguntas inversas (37 de 86):</strong> Se invierte matemáticamente con <code>6 - respuesta</code> (así un <code>5</code> pasa a <code>1</code> y un <code>1</code> pasa a <code>5</code>) para que todas apunten al mismo polo en cada eje.</li>
             <li><strong>Fórmula a escala 0–100:</strong> <code>((valor_normalizado - 1) / 4) × 100</code>. Así: <code>1 → 0</code>, <code>2 → 25</code>, <code>3 → 50</code>, <code>4 → 75</code>, <code>5 → 100</code>.</li>
-            <li><strong>Cobertura mínima:</strong> Si un eje tiene menos de 5 preguntas respondidas, se avisa explícitamente como <em>«poco representativo»</em>.</li>
+            <li><strong>Cobertura mínima:</strong> Si un eje tiene menos del 60 % de preguntas respondidas (máx. 4), se avisa explícitamente como <em>«baja cobertura»</em>.</li>
           </ul>
         </div>
       </div>
@@ -71,7 +71,7 @@
       <div class="home-section-block">
         <h3 class="home-section-title">3. Baremos públicos por partido (0–100 en los 12 ejes)</h3>
         <p class="hero-subtitle" style="margin-bottom: 0.75rem;">
-          Estos valores orientativos sitúan la posición programática de cada formación en cada eje según sus documentos oficiales de 2026:
+          Estos valores se calculan dinámicamente a partir de las posiciones documentadas por pregunta en <code>programas_29n.json</code> (los ítems sin mención quedan excluidos del promedio como no evaluables, sin inventar puntuaciones):
         </p>
         <div style="overflow-x: auto;">
           <table style="width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:0.8rem; background:var(--bg-primary); border:2px solid var(--border-strong);">
@@ -86,18 +86,18 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td style="padding:0.45rem;">E1. Economía y Mercado (0 Interv. / 100 Mercado)</td><td style="text-align:center;">72</td><td style="text-align:center;">30</td><td style="text-align:center;">78</td><td style="text-align:center;">15</td><td style="text-align:center;">82</td></tr>
-              <tr><td style="padding:0.45rem;">E2. Estado del Bienestar (0 Mixto / 100 Público)</td><td style="text-align:center;">48</td><td style="text-align:center;">82</td><td style="text-align:center;">35</td><td style="text-align:center;">90</td><td style="text-align:center;">30</td></tr>
-              <tr><td style="padding:0.45rem;">E3. Inmigración (0 Control / 100 Apertura)</td><td style="text-align:center;">35</td><td style="text-align:center;">72</td><td style="text-align:center;">10</td><td style="text-align:center;">88</td><td style="text-align:center;">15</td></tr>
-              <tr><td style="padding:0.45rem;">E4. Seguridad y Justicia (0 Garantista / 100 Penal)</td><td style="text-align:center;">78</td><td style="text-align:center;">45</td><td style="text-align:center;">92</td><td style="text-align:center;">25</td><td style="text-align:center;">88</td></tr>
-              <tr><td style="padding:0.45rem;">E5. Libertades Civiles (0 Tradición / 100 Autonomía)</td><td style="text-align:center;">48</td><td style="text-align:center;">78</td><td style="text-align:center;">25</td><td style="text-align:center;">85</td><td style="text-align:center;">55</td></tr>
-              <tr><td style="padding:0.45rem;">E6. Organización Territorial (0 Central / 100 Auton.)</td><td style="text-align:center;">45</td><td style="text-align:center;">70</td><td style="text-align:center;">12</td><td style="text-align:center;">82</td><td style="text-align:center;">25</td></tr>
-              <tr><td style="padding:0.45rem;">E7. Medioambiente y Energía (0 Mix / 100 Transición)</td><td style="text-align:center;">42</td><td style="text-align:center;">78</td><td style="text-align:center;">18</td><td style="text-align:center;">92</td><td style="text-align:center;">22</td></tr>
-              <tr><td style="padding:0.45rem;">E8. Educación y Cultura (0 Elección / 100 Pública)</td><td style="text-align:center;">28</td><td style="text-align:center;">75</td><td style="text-align:center;">22</td><td style="text-align:center;">90</td><td style="text-align:center;">35</td></tr>
-              <tr><td style="padding:0.45rem;">E9. Trabajo y Empresa (0 Flexibilidad / 100 Protec.)</td><td style="text-align:center;">35</td><td style="text-align:center;">78</td><td style="text-align:center;">30</td><td style="text-align:center;">90</td><td style="text-align:center;">25</td></tr>
-              <tr><td style="padding:0.45rem;">E10. Vivienda (0 Oferta priv. / 100 Regulación)</td><td style="text-align:center;">30</td><td style="text-align:center;">76</td><td style="text-align:center;">22</td><td style="text-align:center;">92</td><td style="text-align:center;">25</td></tr>
-              <tr><td style="padding:0.45rem;">E11. Familia y Conciliación (0 Neutro / 100 Ayudas)</td><td style="text-align:center;">65</td><td style="text-align:center;">78</td><td style="text-align:center;">75</td><td style="text-align:center;">85</td><td style="text-align:center;">45</td></tr>
-              <tr><td style="padding:0.45rem;">E12. Gobernanza (0 Actual / 100 Simplificación)</td><td style="text-align:center;">72</td><td style="text-align:center;">60</td><td style="text-align:center;">82</td><td style="text-align:center;">75</td><td style="text-align:center;">92</td></tr>
+              <tr><td style="padding:0.45rem;">E1. Economía y Mercado (0 Interv. / 100 Mercado)</td><td style="text-align:center;">71</td><td style="text-align:center;">16</td><td style="text-align:center;">71</td><td style="text-align:center;">0</td><td style="text-align:center;">71</td></tr>
+              <tr><td style="padding:0.45rem;">E2. Estado del Bienestar (0 Mixto / 100 Público)</td><td style="text-align:center;">38</td><td style="text-align:center;">92</td><td style="text-align:center;">20</td><td style="text-align:center;">100</td><td style="text-align:center;">17</td></tr>
+              <tr><td style="padding:0.45rem;">E3. Inmigración (0 Control / 100 Apertura)</td><td style="text-align:center;">36</td><td style="text-align:center;">84</td><td style="text-align:center;">3</td><td style="text-align:center;">96</td><td style="text-align:center;">16</td></tr>
+              <tr><td style="padding:0.45rem;">E4. Seguridad y Justicia Penal (0 Garantista / 100 Penal)</td><td style="text-align:center;">80</td><td style="text-align:center;">50</td><td style="text-align:center;">88</td><td style="text-align:center;">13</td><td style="text-align:center;">88</td></tr>
+              <tr><td style="padding:0.45rem;">E5. Libertades Civiles (0 Tradición / 100 Autonomía)</td><td style="text-align:center;">33</td><td style="text-align:center;">83</td><td style="text-align:center;">13</td><td style="text-align:center;">91</td><td style="text-align:center;">42</td></tr>
+              <tr><td style="padding:0.45rem;">E6. Organización Territorial (0 Unitario / 100 Federal)</td><td style="text-align:center;">29</td><td style="text-align:center;">83</td><td style="text-align:center;">0</td><td style="text-align:center;">100</td><td style="text-align:center;">10</td></tr>
+              <tr><td style="padding:0.45rem;">E7. Medioambiente y Energía (0 Mix / 100 Transición)</td><td style="text-align:center;">25</td><td style="text-align:center;">93</td><td style="text-align:center;">4</td><td style="text-align:center;">100</td><td style="text-align:center;">0</td></tr>
+              <tr><td style="padding:0.45rem;">E8. Educación y Cultura (0 Elección / 100 Pública)</td><td style="text-align:center;">17</td><td style="text-align:center;">94</td><td style="text-align:center;">15</td><td style="text-align:center;">96</td><td style="text-align:center;">25</td></tr>
+              <tr><td style="padding:0.45rem;">E9. Trabajo y Empresa (0 Flexibilidad / 100 Protec.)</td><td style="text-align:center;">43</td><td style="text-align:center;">91</td><td style="text-align:center;">6</td><td style="text-align:center;">100</td><td style="text-align:center;">17</td></tr>
+              <tr><td style="padding:0.45rem;">E10. Vivienda (0 Oferta priv. / 100 Regulación)</td><td style="text-align:center;">14</td><td style="text-align:center;">79</td><td style="text-align:center;">4</td><td style="text-align:center;">100</td><td style="text-align:center;">20</td></tr>
+              <tr><td style="padding:0.45rem;">E11. Familia y Conciliación (0 Fiscal / 100 Universal)</td><td style="text-align:center;">60</td><td style="text-align:center;">88</td><td style="text-align:center;">0</td><td style="text-align:center;">94</td><td style="text-align:center;">0</td></tr>
+              <tr><td style="padding:0.45rem;">E12. Gobernanza (0 Recorte-Directa / 100 Parlamentario)</td><td style="text-align:center;">13</td><td style="text-align:center;">50</td><td style="text-align:center;">8</td><td style="text-align:center;">81</td><td style="text-align:center;">0</td></tr>
             </tbody>
           </table>
         </div>
@@ -108,9 +108,9 @@
         <div class="home-rule-card">
           <ul>
             <li><strong>Simetría en perfiles sintéticos (no equivale a neutralidad total):</strong> Cualquier perfil construido exactamente con los valores de uno de los cinco partidos obtiene <code>100.0 %</code> en ese partido. Esto verifica simetría matemática en la fórmula, pero no demuestra por sí solo que la redacción de todas las preguntas sea perfectamente neutral.</li>
-            <li><strong>Efecto del punto medio (<code>50</code>):</strong> Con respuestas neutrales (<code>3 = 50</code> en todos los ejes), los partidos con baremos más cercanos al centro obtienen puntuaciones más altas (<code>77–85 %</code>) que los más alejados del centro (<code>64–75 %</code>), porque la fórmula mide distancia geométrica lineal <code>100 - |U - P|</code>.</li>
+            <li><strong>Ausencias documentales (<code>null</code>):</strong> Si un partido no menciona un tema en los programas indexados, no se le asigna puntuación inventada; se excluye ese ítem/eje de su cálculo y se muestra la cobertura comparable real.</li>
             <li><strong>Qué significa el porcentaje:</strong> El porcentaje mostrado es una medida orientativa de cercanía geométrica sobre los ejes respondidos; <strong>no</strong> significa que compartas ese porcentaje literal del programa de un partido ni constituye un test psicométrico validado.</li>
-            <li><strong>Conteo auditado en código:</strong> El test actual consta de <strong>99 preguntas</strong> en 12 ejes (<strong>68 directas</strong> y <strong>31 inversas</strong>) más <strong>10 preguntas de control</strong>.</li>
+            <li><strong>Conteo auditado en código:</strong> El test actual (v2) consta de <strong>86 preguntas</strong> en 12 ejes (<strong>49 directas</strong> y <strong>37 inversas</strong>) más <strong>4 matices de priorización presupuestaria</strong>.</li>
             <li><strong>Sin recomendación de voto:</strong> El resultado no predice, recomienda ni facilita el voto. Sirve únicamente para orientarte antes de leer los textos oficiales en <strong>Programas</strong>.</li>
           </ul>
         </div>

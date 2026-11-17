@@ -34,20 +34,20 @@
     eje4: {
       measures: "Mide el equilibrio entre políticas de reinserción/prevención y endurecimiento penal o policial.",
       low: "Prioridad a la rehabilitación penitenciaria, prevención juvenil y garantías frente a la ampliación de vigilancia.",
-      mid: "Combinación de recursos judiciales y policiales con medidas de prevención y reinserción.",
-      high: "Preferencia por penas más severas, mayor dotación policial, lucha frontal contra la ocupación y ampliación de vigilancia.",
+      mid: "Combinación de recursos policiales con medidas de prevención social y reinserción.",
+      high: "Preferencia por penas más severas, lucha frontal contra la ocupación y ampliación de vigilancia.",
     },
     eje5: {
-      measures: "Mide la relación entre autonomía individual, neutralidad institucional y peso de tradiciones culturales.",
-      low: "Mayor peso de las tradiciones culturales y normas colectivas en la orientación de las políticas públicas.",
-      mid: "Equilibrio entre protección de derechos individuales y consideración del marco cultural compartido.",
-      high: "Prioridad a la libertad individual, neutralidad religiosa del Estado y protección de minorías y opiniones impopulares.",
+      measures: "Mide la relación entre enfoque tradicional/normas culturales y autonomía personal o ampliación de derechos civiles.",
+      low: "Mayor peso de las tradiciones culturales, criterios biológicos y límites normativos en derechos civiles.",
+      mid: "Equilibrio entre protección de derechos individuales, libertad de expresión y marco cultural compartido.",
+      high: "Prioridad a la autonomía individual, laicidad, leyes de igualdad/género, derechos LGTBI/trans, aborto y eutanasia.",
     },
     eje6: {
-      measures: "Mide tu preferencia sobre el reparto de competencias entre Estado central, comunidades y municipios.",
-      low: "Preferencia por recentralizar competencias, homogeneizar servicios y priorizar decisiones de ámbito estatal.",
-      mid: "Mantenimiento de un marco descentralizado con mecanismos de coordinación y simplificación administrativa.",
-      high: "Preferencia por ampliar la autonomía autonómica y municipal y proteger institucionalmente lenguas cooficiales.",
+      measures: "Mide tu preferencia sobre reparto de competencias, financiación común, lenguas y modelo unitario frente a federal.",
+      low: "Preferencia por recentralizar competencias, financiación común homogénea, castellano vehicular y unidad estatal.",
+      mid: "Mantenimiento de un marco autonómico descentralizado con mecanismos de coordinación y respeto lingüístico.",
+      high: "Preferencia por ampliar la autonomía autonómica y municipal, proteger lenguas cooficiales o avanzar hacia un modelo federal.",
     },
     eje7: {
       measures: "Mide cómo equilibras transición ecológica, modelo energético (renovables/nuclear) e impacto industrial.",
@@ -74,41 +74,40 @@
       high: "Prioridad a la regulación de precios del alquiler y a una fuerte expansión de la vivienda pública.",
     },
     eje11: {
-      measures: "Mide el grado de apoyo público directo que consideras adecuado para familias, crianza y cuidados.",
-      low: "Menor intervención estatal directa mediante prestaciones específicas y enfoque más neutro en ayudas familiares.",
-      mid: "Apoyo selectivo a conciliación y educación infantil combinado con incentivos fiscales moderados.",
-      high: "Fuerte ampliación de ayudas directas por hijo, escuelas 0-3 accesibles, permisos ampliados y apoyo a cuidadores.",
+      measures: "Mide si prefieres apoyar a las familias mediante incentivos fiscales indirectos o mediante prestaciones universales y servicios.",
+      low: "Preferencia por deducciones y mínimos exentos en el IRPF e incentivos voluntarios para conciliación.",
+      mid: "Combinación de incentivos fiscales familiares con ampliación selectiva de permisos y ayudas.",
+      high: "Fuerte ampliación de prestaciones universales por crianza, obligaciones legales de conciliación y reconocimiento de diversidad familiar.",
     },
     eje12: {
-      measures: "Mide la demanda de simplificación administrativa, transparencia, evaluación de políticas y participación.",
-      low: "Menor prioridad a reformas estructurales de gobernanza o mantenimiento del funcionamiento administrativo vigente.",
-      mid: "Interés moderado por digitalizar trámites y mejorar controles de eficiencia sin grandes cambios de modelo.",
-      high: "Fuerte exigencia de reducir burocracia y cargos redundantes, auditar resultados y ampliar la participación ciudadana.",
+      measures: "Mide tus preferencias institucionales: reducción de estructura estatal y democracia directa frente a fortalecimiento institucional parlamentario.",
+      low: "Preferencia por recortar ministerios y cargos, elegir el CGPJ por jueces, suprimir aforamientos y ampliar referéndums.",
+      mid: "Equilibrio entre controles institucionales a cargos públicos y mantenimiento del marco representativo.",
+      high: "Preferencia por reforzar instituciones parlamentarias, ampliar el sufragio a los 16 años y sostener medios públicos.",
     },
   };
 
-  const PARTY_PROFILES = [
-    {
-      id: "vox", name: "VOX", short: "VOX",
-      axes: { eje1: 78, eje2: 35, eje3: 10, eje4: 92, eje5: 25, eje6: 12, eje7: 18, eje8: 22, eje9: 30, eje10: 22, eje11: 75, eje12: 82 },
-    },
-    {
-      id: "pp", name: "PP (Partido Popular)", short: "PP",
-      axes: { eje1: 72, eje2: 48, eje3: 35, eje4: 78, eje5: 48, eje6: 45, eje7: 42, eje8: 28, eje9: 35, eje10: 30, eje11: 65, eje12: 72 },
-    },
-    {
-      id: "salf", name: "SALF (Se Acabó La Fiesta)", short: "SALF",
-      axes: { eje1: 82, eje2: 30, eje3: 15, eje4: 88, eje5: 55, eje6: 25, eje7: 22, eje8: 35, eje9: 25, eje10: 25, eje11: 45, eje12: 92 },
-    },
-    {
-      id: "psoe", name: "PSOE", short: "PSOE",
-      axes: { eje1: 30, eje2: 82, eje3: 72, eje4: 45, eje5: 78, eje6: 70, eje7: 78, eje8: 75, eje9: 78, eje10: 76, eje11: 78, eje12: 60 },
-    },
-    {
-      id: "frente-amplio", name: "Frente Amplio", short: "F. AMPLIO",
-      axes: { eje1: 15, eje2: 90, eje3: 88, eje4: 25, eje5: 85, eje6: 82, eje7: 92, eje8: 90, eje9: 90, eje10: 92, eje11: 85, eje12: 75 },
-    },
+  const PARTY_META = [
+    { id: "vox", name: "VOX", short: "VOX" },
+    { id: "pp", name: "PP (Partido Popular)", short: "PP" },
+    { id: "salf", name: "SALF (Se Acabó La Fiesta)", short: "SALF" },
+    { id: "psoe", name: "PSOE", short: "PSOE" },
+    { id: "frente-amplio", name: "Frente Amplio", short: "F. AMPLIO" },
   ];
+
+  function getPartyProfiles() {
+    const testApi = global.IdeologyTest29N;
+    if (!testApi || !Array.isArray(testApi.AXES) || typeof testApi.computePartyAxisScore !== "function") {
+      return PARTY_META.map((p) => ({ ...p, axes: {} }));
+    }
+    return PARTY_META.map((p) => {
+      const axes = {};
+      testApi.AXES.forEach((ax) => {
+        axes[ax.id] = testApi.computePartyAxisScore(p.id, ax);
+      });
+      return { ...p, axes };
+    });
+  }
 
   const TOPIC_TO_AXIS = {
     "Economía e impuestos": "eje1",
@@ -151,29 +150,34 @@
       return { answeredCount: answered.length, usedAxesCount: 0, ranking: [] };
     }
 
-    const ranking = PARTY_PROFILES.map((party) => {
+    const partyProfiles = getPartyProfiles();
+    const ranking = partyProfiles.map((party) => {
       let weightedSum = 0;
       let totalWeight = 0;
       let closeAxes = 0;
+      let comparableAxes = 0;
 
       activeAxes.forEach((ax) => {
+        const pScore = party.axes[ax.id];
+        if (typeof pScore !== "number") return;
         const w =
           weightMode === "weighted" && priorityAxisSet.has(ax.id) ? 3 : 1;
-        const pScore = party.axes[ax.id];
         const diff = Math.abs(ax.score - pScore);
         weightedSum += Math.max(0, 100 - diff) * w;
         totalWeight += w;
+        comparableAxes += 1;
         if (diff <= 25) closeAxes += 1;
       });
 
-      const pct = totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 0;
+      const pct = totalWeight > 0 ? Math.round(weightedSum / totalWeight) : null;
       return {
         ...party,
         pct,
         closeAxes,
+        comparableAxes,
         totalAnsweredAxes: activeAxes.length,
       };
-    }).sort((a, b) => b.pct - a.pct);
+    }).sort((a, b) => (b.pct ?? -1) - (a.pct ?? -1));
 
     return {
       answeredCount: answered.length,
@@ -245,7 +249,7 @@
       emptyPrio.textContent = "No has respondido todavía en el test a los ejes correspondientes a tus prioridades seleccionadas. Responde esos ejes o cambia a 'Todos los ejes por igual'.";
       matchSection.appendChild(emptyPrio);
     } else {
-      const top = matchData.ranking[0];
+      const top = matchData.ranking.find((p) => p.pct !== null);
       const modeDesc =
         activeMode === "only_priorities"
           ? `usando únicamente tus ${matchData.usedAxesCount} ejes prioritarios`
@@ -254,7 +258,9 @@
             : `con igual peso en ${matchData.usedAxesCount} ejes respondidos`;
       const leadText = document.createElement("p");
       leadText.className = "hero-subtitle";
-      leadText.textContent = `Calculado ${modeDesc}: cercanía geométrica orientativa mayor con ${top.name} (${top.pct}% de cercanía sobre distancia de ejes · ${top.closeAxes} de ${top.totalAnsweredAxes} ejes próximos). No indica qué % del programa compartes ni recomienda el voto.`;
+      leadText.textContent = top
+        ? `Calculado ${modeDesc}: cercanía geométrica orientativa mayor con ${top.name} (${top.pct}% sobre ${top.comparableAxes} ejes con datos programáticos · ${top.closeAxes} próximos). No indica qué % del programa compartes ni recomienda el voto.`
+        : `Calculado ${modeDesc}: no hay suficientes datos programáticos comparables en los ejes seleccionados.`;
       matchSection.appendChild(leadText);
 
       const list = document.createElement("div");
@@ -276,15 +282,15 @@
         track.className = "party-match-track";
         const fill = document.createElement("div");
         fill.className = `party-match-fill ${p.id}`;
-        fill.style.width = `${p.pct}%`;
+        fill.style.width = `${p.pct ?? 0}%`;
         track.appendChild(fill);
         mid.append(name, track);
 
         const score = document.createElement("div");
         score.className = "party-match-score";
-        score.textContent = `${p.pct}%`;
+        score.textContent = p.pct !== null ? `${p.pct}%` : "N/D";
         const sub = document.createElement("small");
-        sub.textContent = `${p.closeAxes} de ${p.totalAnsweredAxes} ejes`;
+        sub.textContent = p.pct !== null ? `${p.closeAxes}/${p.comparableAxes} ejes` : "Sin datos";
         score.appendChild(sub);
 
         row.append(logo, mid, score);
@@ -391,7 +397,7 @@
         const right = document.createElement("span");
         right.textContent = ax.score === null
           ? `Sin respuestas (0/${ax.totalQuestions})`
-          : `${ax.score}/100 · Cobertura: ${ax.answeredCount}/${ax.totalQuestions}${ax.representative ? "" : " (poco representativo < 5)"}`;
+          : `${ax.score}/100 · Cobertura: ${ax.answeredCount}/${ax.totalQuestions}${ax.representative ? "" : " (baja cobertura)"}`;
         head.append(left, right);
 
         if (detail) {
