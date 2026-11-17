@@ -566,7 +566,6 @@
         listEl.textContent = "Error al cargar las medidas verificadas.";
       }
     }
-  }
 
   global.PromisesView29N = {
     render: renderPromisesView,
