@@ -148,7 +148,7 @@ RECORDS = [
     {
         "id": "es_vivienda_12_2023",
         "scope": "espana",
-        "scope_name": "España",
+        "scope_name": "España (Gobierno Central)",
         "governing_party": "PSOE + Sumar",
         "party_id": "psoe",
         "topic": "Vivienda",
@@ -163,7 +163,7 @@ RECORDS = [
     {
         "id": "es_permisos_familias_2026",
         "scope": "espana",
-        "scope_name": "España",
+        "scope_name": "España (Gobierno Central)",
         "governing_party": "PSOE + Sumar",
         "party_id": "sumar",
         "topic": "Familia y Conciliación",
