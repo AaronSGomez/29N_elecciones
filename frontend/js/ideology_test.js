@@ -485,6 +485,16 @@
       h2.className = "hero-title";
       h2.textContent = isControl ? "Matices de priorización presupuestaria" : currentAxis.title;
 
+      const testStepsHelp = document.createElement("div");
+      testStepsHelp.className = "ideology-q-help";
+      testStepsHelp.style.whiteSpace = "pre-line";
+      testStepsHelp.style.marginTop = "0.5rem";
+      testStepsHelp.textContent =
+        "Cómo realizar la encuesta:\n" +
+        "1- Pulsa del 1 (En desacuerdo) al 5 (De acuerdo), o 0 si prefieres no responder.\n" +
+        "2- Completa los 12 ejes pulsando 'SIGUIENTE EJE →' (cuantas más respondas, más precisa será tu afinidad).\n" +
+        "3- Al llegar al final, pulsa 'PRIORIDADES Y RESULTADOS →'.";
+
       const progWrap = document.createElement("div");
       progWrap.className = "wizard-progress-wrap";
       const progMeta = document.createElement("div");
@@ -613,7 +623,7 @@
       right.appendChild(next);
 
       actions.append(left, right);
-      card.append(tag, h2, progWrap, tabs, qList, actions);
+      card.append(tag, h2, testStepsHelp, progWrap, tabs, qList, actions);
       container.appendChild(card);
       if (shouldScroll) scrollToTopOfTest();
     }

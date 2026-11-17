@@ -293,12 +293,22 @@
         h2.textContent = "Empieza aquí tu encuesta: rellena primero tus datos";
         const p = document.createElement("p");
         p.className = "hero-subtitle";
-        p.textContent = "Sigue los 3 pasos en orden: 1º Rellena tus 6 bloques de contexto aquí abajo, 2º Responde la encuesta de 12 ejes (86 preguntas) y 3º Marca tus prioridades y mira tus resultados. Cuantos más campos y preguntas completes, mayor precisión tendrá el cálculo de tu afinidad con un partido u otro.";
+        p.style.whiteSpace = "pre-line";
+        p.textContent =
+          "Sigue estos 3 pasos en orden:\n" +
+          "1- Rellena tus 6 bloques de contexto aquí abajo.\n" +
+          "2- Responde la encuesta de 12 ejes (86 preguntas).\n" +
+          "3- Marca tus prioridades y mira tus resultados.\n\n" +
+          "Cuantos más campos y preguntas completes, mayor precisión tendrá el cálculo de tu afinidad con un partido u otro.";
 
         const guideBox = document.createElement("div");
         guideBox.className = "ideology-q-help";
         guideBox.style.marginTop = "0.75rem";
-        guideBox.textContent = "Importante: Si entras directamente a '3. Mis prioridades y resultados' sin haber rellenado antes tus datos y la encuesta, la comparativa aparecerá vacía. Pulsa 'EMPEZAR PASO 1: RELLENAR MIS DATOS' para comenzar.";
+        guideBox.style.whiteSpace = "pre-line";
+        guideBox.textContent =
+          "Importante:\n" +
+          "1- No entres directamente a Resultados sin haber rellenado antes tus datos y la encuesta.\n" +
+          "2- Pulsa '1. EMPEZAR A RELLENAR MIS DATOS' para comenzar.";
 
         // Resumen visual con check verde de pruebas contestadas
         const checklistTitle = document.createElement("div");
