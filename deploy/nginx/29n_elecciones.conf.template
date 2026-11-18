@@ -14,6 +14,15 @@ server {
     listen 80;
     server_name ${DOMAIN_NAME};
 
+    # Bloqueo inmediato en puerto 80 de dotfiles y rutas de exploit sin redirigir a HTTPS
+    location ~ /\.(?!well-known) {
+        return 444;
+    }
+
+    location ~* ^/(wp-|wordpress|xmlrpc|wlwmanifest|\.env|\.git|\.svn|\.hg|\.kube|\.docker|\.npmrc|.*\.php|boaform|ubus|SDK|owa|rpc/|ReportServer|developmentserver|\+CSCOE\+|cgi-bin|admin|login|vpn|sellers\.json|gcp-key|api/session|Public/home|static/admin|cap\.js|Dr0v|site\.zip|.*\.sql) {
+        return 444;
+    }
+
     location /.well-known/acme-challenge/ {
         root /var/www/html;
     }
@@ -36,15 +45,35 @@ server {
     ssl_session_cache shared:SSL:10m;
     ssl_session_timeout 1d;
 
-    # Whitelist temporal de IPs
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    # Whitelist temporal de IPs / Acceso público
     ${NGINX_ALLOW_RULES}
 
-    # Bloqueo de bots y escáneres comunes
-    if ($http_user_agent ~* (curl|wget|python-requests|nikto|sqlmap|nmap|masscan|zgrab|gobuster|dirbuster|scrapy|semrush|ahrefs|mj12bot)) {
-        return 403;
+    # Permitir únicamente métodos HTTP legítimos de la aplicación
+    if ($request_method !~ ^(GET|HEAD|POST)$) {
+        return 444;
     }
 
-    location ~* ^/(wp-|wordpress|\.env|\.git|.*\.php|boaform|ubus|SDK|info\.php|site\.zip|.*\.sql) {
+    # Bloqueo de bots maliciosos, fuzzers y escáneres de vulnerabilidades
+    if ($http_user_agent ~* (curl|wget|python-requests|python-httpx|go-http-client|nikto|sqlmap|nmap|masscan|zgrab|zmap|gobuster|dirbuster|scrapy|semrush|ahrefs|mj12bot|censys|cortex-xpanse|visionheight|genomecrawler|cyberconvoy|modatscanner|cms-checker|internetdata|cyber-asset-fetch|hello\ world)) {
+        return 444;
+    }
+
+    # Bloqueo de intentos de evasión por URL encoding de punto/barra (%2e / %2f)
+    if ($request_uri ~* "(%2e|%2f%2e|\.\.)") {
+        return 444;
+    }
+
+    # Bloqueo estricto de cualquier archivo o carpeta oculta (.env, .git, .svn, .kube, etc.)
+    location ~ /\.(?!well-known) {
+        return 444;
+    }
+
+    # Bloqueo de rutas de escaneo y explotación comunes
+    location ~* ^/(wp-|wordpress|xmlrpc|wlwmanifest|\.env|\.git|\.svn|\.hg|\.kube|\.docker|\.npmrc|.*\.php|boaform|ubus|SDK|owa|rpc/|ReportServer|developmentserver|\+CSCOE\+|cgi-bin|admin|login|vpn|sellers\.json|gcp-key|api/session|Public/home|static/admin|cap\.js|Dr0v|site\.zip|.*\.sql) {
         return 444;
     }
 
