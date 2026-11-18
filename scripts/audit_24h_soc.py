@@ -333,20 +333,31 @@ def main() -> None:
             elif "Macintosh" in ua0:
                 device = "Mac"
 
+            prev_u = historical_users.get(ip, {})
+            new_first = evs[0]["dt_cet"].strftime("%Y-%m-%d %H:%M:%S")
+            new_last = evs[-1]["dt_cet"].strftime("%Y-%m-%d %H:%M:%S")
+            merged_days = sorted(
+                list(set(prev_u.get("days_active", [])) | set(e["day"] for e in evs))
+            )
+
             legit_users[ip] = {
                 "ip": ip,
-                "day": evs[0]["dt_cet"].strftime("%Y-%m-%d"),
-                "days_active": sorted(list(set(e["day"] for e in evs))),
-                "first_seen": evs[0]["dt_cet"].strftime("%Y-%m-%d %H:%M:%S"),
-                "last_seen": evs[-1]["dt_cet"].strftime("%Y-%m-%d %H:%M:%S"),
-                "total_reqs": len(evs),
-                "completed_bundle": has_test_js,
-                "used_comparator": any("/api/proposals" in r or "/api/topics" in r for r in reqs),
-                "used_promises": any("/api/promises" in r or "veracidad_2026.json" in r for r in reqs),
-                "used_chat": any("/api/chat" in r for r in reqs),
-                "read_methodology": any("metodologia.html" in r for r in reqs),
-                "device": device,
-                "ua": ua0,
+                "day": prev_u.get("day", evs[0]["dt_cet"].strftime("%Y-%m-%d")),
+                "days_active": merged_days,
+                "first_seen": min(prev_u["first_seen"], new_first) if "first_seen" in prev_u else new_first,
+                "last_seen": max(prev_u["last_seen"], new_last) if "last_seen" in prev_u else new_last,
+                "total_reqs": max(prev_u.get("total_reqs", 0), len(evs)),
+                "completed_bundle": prev_u.get("completed_bundle", False) or has_test_js,
+                "used_comparator": prev_u.get("used_comparator", False)
+                or any("/api/proposals" in r or "/api/topics" in r for r in reqs),
+                "used_promises": prev_u.get("used_promises", False)
+                or any("/api/promises" in r or "veracidad_2026.json" in r for r in reqs),
+                "used_chat": prev_u.get("used_chat", False)
+                or any("/api/chat" in r for r in reqs),
+                "read_methodology": prev_u.get("read_methodology", False)
+                or any("metodologia.html" in r for r in reqs),
+                "device": prev_u.get("device", device),
+                "ua": prev_u.get("ua", ua0),
             }
 
     attackers = dict(historical_attackers)
@@ -451,17 +462,25 @@ def main() -> None:
                     r_clean = r_clean[:45] + "..."
                 if r_clean not in clean_samples:
                     clean_samples.append(r_clean)
+            prev_a = historical_attackers.get(ip, {})
+            new_first = evs[0]["dt_cet"].strftime("%Y-%m-%d %H:%M:%S")
+            new_last = evs[-1]["dt_cet"].strftime("%Y-%m-%d %H:%M:%S")
+            merged_days = sorted(
+                list(set(prev_a.get("days_active", [])) | set(e["day"] for e in evs))
+            )
+            merged_statuses = sorted(list(set(prev_a.get("statuses", [])) | set(statuses)))
+
             attackers[ip] = {
                 "ip": ip,
-                "day": evs[0]["dt_cet"].strftime("%Y-%m-%d"),
-                "days_active": sorted(list(set(e["day"] for e in evs))),
-                "first_seen": evs[0]["dt_cet"].strftime("%Y-%m-%d %H:%M:%S"),
-                "last_seen": evs[-1]["dt_cet"].strftime("%Y-%m-%d %H:%M:%S"),
-                "total_reqs": len(evs),
-                "statuses": sorted(statuses),
-                "attack_type": classify_attack_type(reqs, uas),
-                "sample_payload": clean_samples[0] if clean_samples else "-",
-                "ua": uas[0][:55] if uas else "-",
+                "day": prev_a.get("day", evs[0]["dt_cet"].strftime("%Y-%m-%d")),
+                "days_active": merged_days,
+                "first_seen": min(prev_a["first_seen"], new_first) if "first_seen" in prev_a else new_first,
+                "last_seen": max(prev_a["last_seen"], new_last) if "last_seen" in prev_a else new_last,
+                "total_reqs": max(prev_a.get("total_reqs", 0), len(evs)),
+                "statuses": merged_statuses,
+                "attack_type": prev_a.get("attack_type") or classify_attack_type(reqs, uas),
+                "sample_payload": clean_samples[0] if clean_samples else prev_a.get("sample_payload", "-"),
+                "ua": uas[0][:55] if uas else prev_a.get("ua", "-"),
             }
 
     # Geo-enrich missing IPs
