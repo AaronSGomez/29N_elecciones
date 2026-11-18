@@ -118,9 +118,107 @@
 
       const veracityBody = document.createElement("div");
 
+      function openVeracityModal(party, ex) {
+        const existing = document.getElementById("proposal-detail-modal");
+        if (existing) existing.remove();
+
+        const backdrop = document.createElement("div");
+        backdrop.id = "proposal-detail-modal";
+        backdrop.className = "proposal-modal-backdrop";
+        backdrop.setAttribute("role", "dialog");
+        backdrop.setAttribute("aria-modal", "true");
+
+        const modalCard = document.createElement("div");
+        modalCard.className = `proposal-modal-card party-${party.id}`;
+
+        const topBar = document.createElement("div");
+        topBar.className = "proposal-modal-header";
+
+        const meta = document.createElement("div");
+        meta.className = "proposal-modal-meta";
+        meta.textContent = `${party.name} · ${ex.page}${ex.topic ? ` · ${ex.topic}` : ""}`;
+
+        const closeBtn = document.createElement("button");
+        closeBtn.type = "button";
+        closeBtn.className = "proposal-modal-close";
+        closeBtn.setAttribute("aria-label", "Cerrar");
+        closeBtn.textContent = "✕";
+
+        function closeModal() {
+          document.removeEventListener("keydown", onEsc);
+          backdrop.remove();
+        }
+        function onEsc(e) {
+          if (e.key === "Escape") closeModal();
+        }
+
+        closeBtn.addEventListener("click", closeModal);
+        backdrop.addEventListener("click", (e) => {
+          if (e.target === backdrop) closeModal();
+        });
+        document.addEventListener("keydown", onEsc);
+
+        topBar.append(meta, closeBtn);
+
+        const body = document.createElement("div");
+        body.className = "proposal-modal-body";
+
+        const catPill = document.createElement("span");
+        catPill.className = `promise-status-pill ${catBadgeClass(ex.cat)}`;
+        catPill.style.alignSelf = "flex-start";
+        catPill.textContent = ex.catLabel;
+        body.appendChild(catPill);
+
+        const title = document.createElement("h3");
+        title.className = "proposal-modal-title";
+        title.textContent = ex.title || "";
+        body.appendChild(title);
+
+        if (ex.quote) {
+          const q = document.createElement("blockquote");
+          q.className = "proposal-modal-quote";
+          q.textContent = `«${ex.quote}»`;
+          body.appendChild(q);
+        }
+
+        if (ex.detail) {
+          const det = document.createElement("p");
+          det.className = "proposal-modal-explanation";
+          det.textContent = ex.detail;
+          body.appendChild(det);
+        }
+
+        const footer = document.createElement("div");
+        footer.className = "proposal-modal-footer";
+
+        if (ex.url && ex.url.startsWith("https://")) {
+          const pdfBtn = document.createElement("a");
+          pdfBtn.className = "proposal-direct-btn";
+          pdfBtn.href = ex.url;
+          pdfBtn.target = "_blank";
+          pdfBtn.rel = "noopener noreferrer";
+          pdfBtn.textContent = `Ver medida en programa (${ex.page || "PDF"}) ↗`;
+          footer.appendChild(pdfBtn);
+        }
+
+        modalCard.append(topBar, body, footer);
+        backdrop.appendChild(modalCard);
+        document.body.appendChild(backdrop);
+      }
+
       function buildExampleCard(party, ex) {
         const blk = document.createElement("article");
-        blk.className = `proposal-block party-${party.id}`;
+        blk.className = `proposal-block comparator-clickable party-${party.id}`;
+        blk.tabIndex = 0;
+        blk.setAttribute("role", "button");
+        blk.setAttribute("aria-label", `Ver detalle completo: ${ex.title || ""}`);
+        blk.addEventListener("click", () => openVeracityModal(party, ex));
+        blk.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openVeracityModal(party, ex);
+          }
+        });
 
         const hdr = document.createElement("div");
         hdr.className = "proposal-header";
@@ -156,11 +254,12 @@
         }
         if (ex.url && ex.url.startsWith("https://")) {
           const link = document.createElement("a");
-          link.className = "proposal-link";
+          link.className = "proposal-direct-btn";
           link.href = ex.url;
           link.target = "_blank";
           link.rel = "noopener noreferrer";
-          link.textContent = "Leer en programa oficial ↗";
+          link.textContent = `Ver medida en programa (${ex.page || "PDF"}) ↗`;
+          link.addEventListener("click", (e) => e.stopPropagation());
           blk.appendChild(link);
         }
         return blk;
