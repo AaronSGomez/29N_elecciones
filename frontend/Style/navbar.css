@@ -37,17 +37,37 @@
   color: var(--ink-primary);
 }
 
+@keyframes statusDotCartoon {
+  0%, 68%, 100% {
+    transform: translate3d(0, 0, 0) scale(1, 1);
+  }
+  73% {
+    transform: translate3d(-1px, -2px, 0) scale(1.18, 0.88);
+  }
+  78% {
+    transform: translate3d(1px, 1px, 0) scale(0.9, 1.15);
+  }
+  84% {
+    transform: translate3d(-1px, -1px, 0) scale(1.12, 0.92);
+  }
+  90% {
+    transform: translate3d(1px, 0, 0) scale(0.96, 1.06);
+  }
+}
+
 .status-dot {
-  width: 10px;
-  height: 10px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
   background: var(--accent-green);
   border: 1.5px solid var(--border-strong);
   flex-shrink: 0;
+  animation: statusDotCartoon 2.6s ease-in-out infinite;
 }
 
 .status-dot.offline {
   background: var(--accent-red);
+  animation: none;
 }
 
 .masthead-nav {
@@ -131,7 +151,7 @@
   right: -0.08em;
   top: 0.52em;
   bottom: -0.04em;
-  background: rgba(74, 222, 128, 0.45);
+  background: #4ADE80;
   z-index: -1;
   transform: skewX(-8deg) rotate(-1.2deg);
   border-radius: 4px;
