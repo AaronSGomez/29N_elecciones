@@ -188,11 +188,34 @@ def classify_attack_type(reqs: list[str], uas: list[str]) -> str:
     return "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)"
 
 
+def mask_ip(ip: str) -> str:
+    """Enmascara los dos últimos octetos de IPs de usuarios legítimos para proteger su privacidad en documentación pública."""
+    parts = ip.split(".")
+    if len(parts) == 4:
+        return f"{parts[0]}.{parts[1]}.xxx.xxx"
+    return "xxx.xxx.xxx.xxx"
+
+
 def is_local_pi() -> bool:
-    return (
-        "--local-pi" in sys.argv
-        or Path("/home/makpi5/Odoo18_AuntomatizacionesIA/docker_compose/nginx/conf.d").exists()
-    )
+    return "--local-pi" in sys.argv or (sys.platform.startswith("linux") and Path("/etc/letsencrypt").exists())
+
+
+def resolve_nginx_conf_d(ssh=None) -> str:
+    env_dir = os.environ.get("NGINX_CONF_D_DIR", "").strip()
+    if env_dir:
+        return env_dir
+    cmd = "docker inspect rpi_nginx_proxy --format '{{range .Mounts}}{{if eq .Destination \"/etc/nginx/conf.d\"}}{{.Source}}{{end}}{{end}}'"
+    if ssh is not None:
+        _, out, _ = ssh.exec_command(cmd)
+        res = out.read().decode("utf-8", errors="replace").strip()
+        if res:
+            return res
+    else:
+        proc = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+        res = (proc.stdout or "").strip()
+        if res:
+            return res
+    return "/etc/nginx/conf.d"
 
 
 def main() -> None:
@@ -279,6 +302,11 @@ def main() -> None:
         if e["dt_cet"] >= cutoff_users_cet:
             since_21h_by_ip[e["ip"]].append(e)
 
+    admin_ips = {
+        x.strip()
+        for x in os.environ.get("ALLOWED_CLIENT_IPS", "").split(",")
+        if x.strip() and "/" not in x
+    }
     social_bots = {
         "108.174.5.113",
         "103.20.93.40",
@@ -286,7 +314,6 @@ def main() -> None:
         "34.145.33.117",
         "72.152.84.15",
     }
-    iaodoo_users = {"5.102.169.100", "5.102.169.101", "5.102.169.102"}
     legit_users = dict(historical_users)
 
     for ip, evs in sorted(since_21h_by_ip.items(), key=lambda x: x[1][0]["dt_cet"]):
@@ -295,7 +322,7 @@ def main() -> None:
             or ip.startswith("172.20.")
             or ip.startswith("127.")
             or ip.startswith("192.168.")
-            or ip == "89.141.78.55"
+            or ip in admin_ips
             or ip in social_bots
         ):
             continue
@@ -367,10 +394,10 @@ def main() -> None:
             or ip.startswith("172.20.")
             or ip.startswith("127.")
             or ip.startswith("192.168.")
-            or ip == "89.141.78.55"
+            or ip in admin_ips
             or ip in legit_users
             or ip in social_bots
-            or ip in iaodoo_users
+            or ip.startswith("5.102.169.")
             or ip == "217.61.226.205"
         ):
             continue
@@ -551,7 +578,8 @@ def main() -> None:
         ]
     ) + "\n"
 
-    nginx_conf_host_path = "/home/makpi5/Odoo18_AuntomatizacionesIA/docker_compose/nginx/conf.d/00_blocklist_ips.conf"
+    nginx_conf_dir = resolve_nginx_conf_d(ssh)
+    nginx_conf_host_path = f"{nginx_conf_dir}/00_blocklist_ips.conf"
     if local_mode:
         Path(nginx_conf_host_path).write_text(blocklist_conf, encoding="utf-8")
         Path("/tmp/apply_fw_29n.sh").write_text(fw_script, encoding="utf-8")
@@ -748,7 +776,7 @@ def main() -> None:
         u_md.append(f"### 📅 Día {d} ({len(u_list)} usuarios humanos únicos)")
         u_md.append("")
         u_md.append(
-            "| # | IP | Primera conexión (CET) | Última actividad (CET) | País (Ciudad) | Operador (ISP) | Dispositivo | Reqs | Módulos utilizados |"
+            "| # | Red Usuario (IP Anonimizada) | Primera conexión (CET) | Última actividad (CET) | País (Ciudad) | Operador (ISP) | Dispositivo | Reqs | Módulos utilizados |"
         )
         u_md.append(
             "| :-: | :--- | :--- | :--- | :--- | :--- | :--- | :-: | :--- |"
@@ -764,7 +792,7 @@ def main() -> None:
             if u["read_methodology"]:
                 mods.append("Metodología")
             u_md.append(
-                f"| {idx} | `{u['ip']}` | `{u['first_seen']}` | `{u['last_seen']}` | {u['country']} ({u['city']}) | {u['isp']} | {u['device']} | {u['total_reqs']} | {', '.join(mods)} |"
+                f"| {idx} | `{mask_ip(u['ip'])}` | `{u['first_seen']}` | `{u['last_seen']}` | {u['country']} ({u['city']}) | {u['isp']} | {u['device']} | {u['total_reqs']} | {', '.join(mods)} |"
             )
         u_md.append("")
 

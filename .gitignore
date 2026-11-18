@@ -32,6 +32,7 @@ tmp/
 .DS_Store
 Thumbs.db
 
-# Configuraciones generadas en despliegue
+# Configuraciones generadas en despliegue y caché interna SOC con IPs de usuarios
 deploy/nginx/*.conf
 !deploy/nginx/*.conf.template
+docs/registro_usuarios_29n.json

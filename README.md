@@ -1,116 +1,146 @@
-# 29N Elecciones — Consultor Electoral RAG (Qdrant + FastAPI + Grok + Telegram)
+# 29N Elecciones — Explorador Cívico, Consultor RAG y Monitor SOC (Qdrant + PostgreSQL + FastAPI + Grok)
 
 [![Platform](https://img.shields.io/badge/Platform-Raspberry_Pi_5_(ARM64)-C51A4A?style=for-the-badge&logo=raspberrypi&logoColor=white)](https://www.raspberrypi.com)
 [![Backend](https://img.shields.io/badge/Backend-FastAPI_Async-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Vector DB](https://img.shields.io/badge/Vector_DB-Qdrant_Rust-DC244C?style=for-the-badge&logo=qdrant&logoColor=white)](https://qdrant.tech)
+[![Database](https://img.shields.io/badge/PostgreSQL-16_Alpine-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org)
 [![Embeddings](https://img.shields.io/badge/Embeddings-FastEmbed_ONNX-7C3AED?style=for-the-badge)](https://qdrant.github.io/fastembed/)
 [![LLM](https://img.shields.io/badge/LLM-Grok_API-121316?style=for-the-badge)](https://x.ai)
-[![Telegram](https://img.shields.io/badge/Bot-Telegram_Whitelist-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://core.telegram.org/bots/api)
-[![Docker](https://img.shields.io/badge/Deploy-Docker_Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com)
-[![Nginx](https://img.shields.io/badge/Proxy-Nginx_RateLimit-009639?style=for-the-badge&logo=nginx&logoColor=white)](https://nginx.org)
+[![Security](https://img.shields.io/badge/SOC-Active_Shield_(iptables_%2B_Nginx)-B91C1C?style=for-the-badge&logo=linux&logoColor=white)](frontend/secure.html)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
 > **Resumen Ejecutivo**:  
-> Plataforma RAG (*Retrieval-Augmented Generation*) de alta velocidad y bajo consumo diseñada para ejecutarse de forma **totalmente aislada en una Raspberry Pi 5 (8 GB RAM, ARM64)** junto a otros servicios existentes. Permite consultar y comparar las propuestas oficiales de los programas electorales del **29 de noviembre (29N)** —**PP, PSOE, VOX, Frente Amplio y SALF**— mediante una interfaz clara organizada en **3 apartados principales** (**Inicio**, **Programas** [Comparador + Chat SSE] y **Mi espacio** [Perfil de 6 bloques + Test de 12 ejes + Resultados]), además de soporte opcional para Bot de Telegram.  
-> Implementa embeddings locales **FastEmbed (ONNX)** para no consumir cuota de API en búsquedas, **PostgreSQL** como fuente de verdad estructurada (`2.179` registros sincronizados con Qdrant), búsqueda híbrida con diccionario electoral y expansión de consultas, protección estricta contra *prompt injection* y XSS, y un **Gate obligatorio de secretos** (`verify_env.py`) que prohíbe cualquier despliegue sin validar `.env`.
+> Plataforma cívica y RAG (*Retrieval-Augmented Generation*) de alta velocidad y bajo consumo diseñada para ejecutarse de forma **totalmente aislada en una Raspberry Pi 5 (ARM64)**. Permite consultar, contrastar y auditar las propuestas oficiales de los programas electorales del **29 de noviembre (29N)** —**PP, PSOE, VOX, Frente Amplio y SALF**— con **privacidad 100 % Local-First** (cero almacenamiento de respuestas del ciudadano en el servidor).  
+> Integra un **sistema de ciberseguridad y auditoría SOC automatizada** (`scripts/audit_24h_soc.py`) que bloquea en tiempo real escáneres y ataques en el kernel (`iptables`) y en el proxy (`Nginx`), expone un traductor público sin datos personales (`frontend/data/soc_public.json`), muestra en la cabecera el **contador de visitantes humanos reales (sin bots)** y publica la telemetría de amenazas mitigadas en `/secure`.
 
 ---
 
-## Arquitectura del Sistema
+## 1. Arquitectura General y Capas de Defensa
 
 ```text
-Usuario (Web / Telegram)
+Visitante Humano / Atacante Externo
         │
-        ▼ (HTTPS + Anti-Bot + Limit_Req)
-   Nginx (Host Pi 5)
+        ▼  [Capa 1: Firewall Kernel — iptables DOCKER-USER / INPUT -> BLOCKLIST_29N (DROP)]
+   Host Raspberry Pi 5 (ARM64)
         │
-        ▼ (127.0.0.1:${APP_PORT} · SSE Streaming)
-FastAPI Middleware (backend_29n)
-   ├── Seguridad: Sanitización + Anti-Prompt Injection + Rate Limit + CSP
-   ├── Caché TTL + Semáforo LLM_MAX_CONCURRENCY
-   ├── Embeddings locales: FastEmbed (intfloat/multilingual-e5-small)
-   ├── Búsqueda Semántica: Qdrant (qdrant_29n · net_29n)
-   └── Generación: Grok API (solo con contexto > QDRANT_SCORE_THRESHOLD)
+        ▼  [Capa 2: Proxy Inverso Nginx — 00_blocklist_ips.conf + Anti-Exploit 444 + Limit_Req]
+   Contenedor Nginx (TLS 1.2/1.3)
+        │
+        ▼  [Capa 3: FastAPI Middleware (127.0.0.1:${APP_PORT} · Red aislada net_29n)]
+   backend_29n (Usuario sin privilegios: appuser)
+    ├── Seguridad App: Anti-Prompt Injection + Validación Unicode + Rate Limit + CSP estricta
+    ├── Caché TTL + Semáforo LLM_MAX_CONCURRENCY + Presupuesto global de cuota
+    ├── Embeddings locales CPU: FastEmbed ONNX (0 consumo de API externa en búsquedas)
+    ├── Búsqueda Híbrida: PostgreSQL (postgres_29n) + Qdrant Vectorial (qdrant_29n)
+    ├── Síntesis Neutral con Citas PDF: LLM API (solo si supera umbral documental)
+    └── Telemetría SOC (/secure): Alimentada por frontend/data/soc_public.json (Cron 09:00 y 21:00)
 ```
 
 ---
 
-## Tecnologías Usadas
+## 2. Módulos Funcionales de la Plataforma
 
-| Capa | Tecnología | Propósito en el proyecto |
+| Apartado / Ruta | Descripción Funcional | Privacidad y Fuentes |
 | :--- | :--- | :--- |
-| **Frontend** | HTML5, CSS3 (**PRINT//CORE 5**), Vanilla JS | Interfaz ligera sin build pesada, tema claro/oscuro anti-FOUT, renderizado seguro (`textContent`) y streaming SSE. |
-| **Middleware API** | **FastAPI** + Uvicorn + `httpx` (`asyncio`) | Concurrencia real para múltiples usuarios simultáneos sin bloquear hilos; endpoints `/api/chat`, `/api/parties` y `/api/health`. |
-| **Base Vectorial** | **Qdrant** (Docker ARM64, `v1.12.1`) | Almacenamiento vectorial e índices de *payload* (`party_id`, `topic`) en contenedor y puerto aislados (`6339`). |
-| **Embeddings** | **FastEmbed** (`intfloat/multilingual-e5-small`) | Vectorización local en CPU (ONNX, 384 dims) con **0 gasto de cuota** de Grok en ingesta y búsqueda. |
-| **Generación LLM** | **Grok API** (OpenAI-compatible) | Síntesis neutral y comparativa con citas de página, protegida por semáforo de concurrencia y caché TTL. |
-| **Canal Móvil** | **Telegram Bot** (`long-polling` async) | Consultas desde el móvil restringidas mediante lista blanca `TELEGRAM_ALLOWED_USER_IDS`. |
-| **Ingesta** | `scrape_29nov.py` + `sync_postgres_and_qdrant.py` | Extracción de **931 bloques temáticos** (21 materias) + **1.246 fragmentos PDF** de los 5 partidos (`PP`, `PSOE`, `VOX`, `Frente Amplio`, `SALF`). |
-| **Seguridad & Proxy** | **Nginx** + `verify_env.py` + `pydantic-settings` | Bloqueo de bots/escáneres, cabeceras CSP, cero hardcodeo y Gate obligatorio de `.env` previo al despliegue. |
+| **Inicio (`/`)** | Guía en 3 pasos, presentación de los 5 programas electorales y contador en cabecera de visitantes humanos reales. | Sin cookies de rastreo ni analítica de terceros. |
+| **Mi Espacio (`Paso 1, 2 y 3`)** | **A. Mi Contexto** (6 bloques), **B. Mis Ideas** (Test de 12 ejes y 86 preguntas documentadas + 4 matices) y **C. Mis Resultados** de afinidad bloque a bloque. | **100 % en `localStorage`** del navegador del usuario. Nunca se envía al servidor. |
+| **Programas (`Comparador + Chat + Veracidad + BOE`)** | Comparador directo en 21 materias, Consultor RAG por streaming SSE, auditoría de **Veracidad Constitucional/UE** (`831` medidas) y archivo legislativo BOE. | `2.179` registros verificados con cita y enlace directo a la página del PDF oficial. |
+| **Metodología (`/metodologia.html`)** | Documentación pública de las fórmulas matemáticas, corrección de baremos `v1 -> v2` por rigor documental y criterios constitucionales/europeos. | Transparencia algorítmica completa (`PARTY_QUESTION_SCORES`). |
+| **Monitor SOC (`/secure`)** | Panel público de ciberseguridad con balance diario de visitantes humanos frente a ataques, ranking por países/vectores y buscador de IPs atacantes bloqueadas. | **0 % de IPs de visitantes humanos expuestas**; solo se publican las IPs de atacantes bloqueados. |
 
 ---
 
-## Seguridad y Guardrails
+## 3. Ciberseguridad en Profundidad y Auditoría SOC Automatizada
 
-1. **Cero Hardcodeo y Gate Pre-Despliegue**: Todas las credenciales, puertos, claves y parámetros viven en `.env` (excluido por `.gitignore`). El script [`scripts/verify_env.py`](scripts/verify_env.py) audita el repositorio antes de desplegar y bloquea cualquier ejecución si faltan variables o detecta secretos en el código.
-2. **Bloqueo Estricto Fuera de Dominio**: Si los fragmentos recuperados en Qdrant no superan `QDRANT_SCORE_THRESHOLD`, FastAPI corta la petición **antes de llamar a Grok** y responde indicando que la consulta no pertenece a los programas del 29N.
-3. **Anti-Prompt Injection y XSS**: [`backend/app/core/security.py`](backend/app/core/security.py) normaliza Unicode, limita longitud, filtra patrones de *jailbreak*/suplantación de rol y encapsula la pregunta en etiquetas XML (`<user_query>`). El frontend renderiza exclusivamente mediante nodos DOM seguros (`textContent`) y cabeceras `Content-Security-Policy`.
-4. **Aislamiento en Raspberry Pi 5**: Red Docker dedicada (`net_29n`), puertos enlazados únicamente a `127.0.0.1` (`APP_PORT=8029`, `QDRANT_PORT=6339`) y plantilla Nginx independiente ([`deploy/nginx/29n_elecciones.conf.template`](deploy/nginx/29n_elecciones.conf.template)) para convivir sin interferir con servicios previos.
+El proyecto implementa una arquitectura de **Defensa en Profundidad (5 capas)** diseñada para resistir escaneos automatizados, intentos de extracción de secretos, fuerza bruta e inyecciones sobre hardware embebido:
+
+### Capa 1 — Perímetro de Red y Kernel (`iptables DOCKER-USER` & `INPUT`)
+- Dado que Docker enruta el tráfico de contenedores publicados a través de la cadena `DOCKER-USER` antes que `INPUT`, el sistema mantiene una subcadena dedicada **`BLOCKLIST_29N`** enganchada en la posición `1` de `DOCKER-USER` y de `INPUT`.
+- Los paquetes procedentes de IPs atacantes confirmadas y de **subredes CIDR de botnets reincidentes** reciben `DROP` directo en el kernel de Linux antes de consumir sockets o CPU en el proxy.
+
+### Capa 2 — Proxy Inverso y WAF Ligero (`Nginx`)
+- **Lista negra global (`00_blocklist_ips.conf`):** Generada automáticamente con directivas `deny` para bloquear en todos los *virtual hosts* cualquier IP o rango CIDR malicioso.
+- **Cierre abrupto sin respuesta (`HTTP 444`) en puertos 80 y 443:**
+  - Bloqueo estricto de cualquier archivo o directorio oculto (`location ~ /\.(?!well-known) { return 444; }`), neutralizando sondeos de `/.env`, `/.git/config`, `/.svn`, `/.kube/config`, `/.docker` o `/.npmrc`.
+  - Bloqueo de técnicas de evasión por codificación de URL (`%2e`, `%2f%2e`, `..`).
+  - Bloqueo de rutas de explotación conocidas (`wp-admin`, `wp-login.php`, `xmlrpc.php`, `SDK/webLanguage`, `boaform`, `+CSCOE+`, `cgi-bin`, `owa/`, `ReportServer`, `gcp-key.json`, `sellers.json`).
+- **Restricción de métodos HTTP:** Solo se permiten `GET`, `HEAD` y `POST`; métodos como `PROPFIND`, `CONNECT` (abuso de proxy abierto/SOCKS), `TRACE`, `PUT` o `DELETE` se cortan con `444`.
+- **Filtrado de escáneres y *Rate Limiting*:** Bloqueo de User-Agents de reconocimiento (`zgrab`, `zmap`, `censys`, `cortex-xpanse`, `nikto`, `sqlmap`, `nmap`, `masscan`, `gobuster`, `genomecrawler`, `modatscanner`, `python-requests`, `curl`, etc.), preservando únicamente navegadores reales y bots oficiales de previsualización (`LinkedInBot`, `WhatsApp`).
+
+### Capa 3 — Blindaje de Aplicación, Base de Datos y Cuota de IA (`FastAPI`)
+- **Anti-Prompt Injection y Sanitización ([`backend/app/core/security.py`](backend/app/core/security.py)):** Normalización Unicode (`NFKC`), eliminación de caracteres de control y delimitadores XML (`<`, `>`), detección mediante expresiones regulares de patrones de *jailbreak* / suplantación de sistema y encapsulado estricto en `<user_query>`.
+- **Anti-SQL Injection:** Consultas 100 % parametrizadas mediante `asyncpg` (`$1, $2...`) y escape explícito de comodines en búsquedas `ILIKE`.
+- **Protección de Dominio y Cuota LLM:** Si la similitud documental no alcanza `QDRANT_SCORE_THRESHOLD`, la petición se rechaza en local sin consumir tokens de la API externa. Además, cuenta con caché TTL, semáforo `LLM_MAX_CONCURRENCY` y `SlidingWindowRateLimiter` con memoria acotada (`max_keys=4096`).
+- **Prevención de XSS y Clickjacking:** Cabeceras `Content-Security-Policy` (`default-src 'self'; script-src 'self'; frame-ancestors 'none'`), `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY` y renderizado en el frontend exclusivamente mediante nodos DOM seguros (`textContent` / `createElement`).
+
+### Capa 4 — Auditoría SOC Automatizada (`scripts/audit_24h_soc.py`) y Traductor Público (`/secure`)
+- **Ejecución autónoma 2 veces al día (`09:00` y `21:00 CET`):** Programada en el `crontab` de la Raspberry Pi (`--local-pi`), sin depender de equipos externos ni requerir credenciales de GitHub en el servidor.
+- **Fusión incremental e histórica:** Cada ejecución complementa la base histórica sin perder registros previos, bloquea en caliente las nuevas IPs maliciosas detectadas y actualiza:
+  - [`frontend/data/soc_public.json`](frontend/data/soc_public.json): Traductor JSON consumido por el contador de la cabecera y la vista [`/secure`](frontend/secure.html). **Garantiza por diseño que jamás se incluyan IPs de usuarios legítimos** (únicamente exporta el contador agregado de humanos reales y la telemetría de atacantes).
+  - [`docs/INFORME_USUARIOS_POR_DIA.md`](docs/INFORME_USUARIOS_POR_DIA.md): Informe diario de participación humana con **IPs anonimizadas (`A.B.xxx.xxx`)** para proteger la privacidad de los ciudadanos.
+  - [`docs/INFORME_ATAQUES_SEGURIDAD.md`](docs/INFORME_ATAQUES_SEGURIDAD.md): Informe diario de ciberataques clasificados por país, IP, proveedor y vector.
+
+### Capa 5 — Cero Secretos e Integridad Documental (`scripts/verify_env.py`)
+- Todas las credenciales, IPs de administración, rutas del host y puertos viven en `.env` (excluido por [`.gitignore`](.gitignore) junto con la base interna de deduplicación).
+- El script [`scripts/verify_env.py`](scripts/verify_env.py) actúa como **Gate obligatorio pre-despliegue**: escanea todo el árbol de archivos y aborta cualquier operación si detecta claves API, tokens, contraseñas o valores de `.env` hardcodeados en el código.
 
 ---
 
-## Estructura del Repositorio
+## 4. Estructura del Repositorio
 
 ```text
 29N_elecciones/
 ├── .env.example                        # Plantilla documentada de variables (sin secretos)
-├── .gitignore                          # Bloquea .env, datos locales y qdrant_storage*
-├── docker-compose.yml                  # Stack aislado: qdrant_29n + backend_29n
+├── .gitignore                          # Bloquea .env, bases locales y cachés internas con IPs
+├── docker-compose.yml                  # Stack aislado: postgres_29n + qdrant_29n + backend_29n
 ├── backend/
-│   ├── Dockerfile                      # Imagen Python 3.11 slim compatible ARM64
+│   ├── Dockerfile                      # Imagen Python 3.11 slim ARM64 (usuario sin privilegios appuser)
 │   ├── requirements.txt
 │   └── app/
-│       ├── main.py                     # FastAPI, CORS, CSP y archivos estáticos
-│       ├── core/                       # config.py (.env) y security.py
-│       ├── services/                   # qdrant_service, llm_service, rag_service, telegram_service
-│       └── api/                        # routes_chat.py (/api/chat SSE, /api/health, /api/parties)
-├── frontend/                           # UI PRINT//CORE 5 (HTML/CSS/JS)
-├── ingestion/
-│   ├── scrape_29nov.py                 # Extractor de bloques temáticos (PP, PSOE, VOX, FA, SALF)
-│   ├── ingest_qdrant.py                # Indexación idempotente con FastEmbed -> Qdrant
-│   └── data/programas_29n.json         # Dataset estructurado (931 propuestas)
-├── docs/auditoria_fase2/               # Auditoría metodológica y baremos documentales v2
-├── deploy/nginx/                       # Plantilla vhost Nginx con anti-bot y SSE
+│       ├── main.py                     # Entrypoint FastAPI, CSP, ruta /secure y estáticos
+│       ├── core/                       # config.py (.env) y security.py (Anti-Injection + RateLimit)
+│       ├── services/                   # postgres_service, qdrant_service, rag_service, llm_service
+│       └── api/                        # routes_chat.py (/api/chat SSE, /api/proposals, /api/health)
+├── frontend/
+│   ├── index.html                      # Aplicación principal (3 pasos + Comparador + Chat + Veracidad)
+│   ├── metodologia.html                # Auditoría pública del algoritmo v2 y baremos
+│   ├── secure.html                     # Monitor público SOC de visitantes humanos y ataques bloqueados
+│   ├── Style/                          # Hojas de estilo PRINT//CORE 5
+│   ├── js/                             # Lógica cliente Local-First y renderizado seguro DOM
+│   └── data/                           # Datasets públicos (veracidad_2026.json y soc_public.json)
+├── ingestion/                          # Scripts de extracción e indexación (2.179 registros)
+├── docs/
+│   ├── INFORME_USUARIOS_POR_DIA.md     # Registro diario de visitantes humanos (IPs anonimizadas)
+│   ├── INFORME_ATAQUES_SEGURIDAD.md    # Registro diario de ataques bloqueados (País, IP y Vector)
+│   ├── GUIA_PRUEBAS_Y_DESPLIEGUE.md    # Manual técnico de operación y verificación
+│   └── auditoria_fase2/                # Auditoría metodológica y documental de los 12 ejes
+├── deploy/nginx/
+│   └── 29n_elecciones.conf.template    # Plantilla Nginx endurecida (TLS + Anti-Exploit 444 + SSE)
 └── scripts/
-    ├── verify_env.py                   # Gate obligatorio de validación de .env y secretos
-    └── deploy_pi.sh                    # Despliegue seguro en Raspberry Pi 5
+    ├── verify_env.py                   # Gate obligatorio de validación de .env y cero secretos
+    ├── deploy_pi.sh                    # Script de despliegue seguro en Raspberry Pi 5
+    └── audit_24h_soc.py                # Motor SOC (bloqueo iptables/Nginx + traductor JSON + informes)
 ```
 
 ---
 
-## Puesta en Marcha y Despliegue
+## 5. Puesta en Marcha y Operación
 
 1. **Configurar variables de entorno**:
    ```bash
    cp .env.example .env
-   # Rellenar credenciales reales en .env (nunca subir .env a GitHub)
+   # Completar las variables reales en .env (jamás subir .env al repositorio)
    ```
-2. **Validar Gate de Secretos (Obligatorio)**:
+2. **Validar Gate de Secretos (Obligatorio antes de desplegar o subir cambios)**:
    ```bash
    python3 scripts/verify_env.py --mode deploy
    ```
-3. **Levantar stack aislado e indexar programas**:
+3. **Desplegar servicios aislados**:
    ```bash
    ./scripts/deploy_pi.sh
-   python3 ingestion/ingest_qdrant.py
    ```
-
-
----
-
-## Test Ideológico y Metodología (v2)
-
-- **Estructura actual (`frontend/js/ideology_test.js`):** **86 preguntas** distribuidas en **12 ejes** (`49` directas y `37` inversas) más **4 matices de priorización presupuestaria** (`ctrl_1`, `ctrl_2`, `ctrl_7`, `ctrl_10`), sin puntuación global izquierda–derecha ni recomendación de voto.
-- **Baremos trazables (`PARTY_QUESTION_SCORES` + `frontend/js/results_view.js`):** Cada pregunta incluida cuenta con al menos **2 partidos** con posición documentada en `ingestion/data/programas_29n.json`. Las ausencias (`SIN MENCIÓN`) quedan como `null` (no evaluables) y se excluyen del cálculo por eje sin inventar puntuaciones.
-- **Migración local (`frontend/js/profile_store.js`):** `schemaVersion: 2` conserva las respuestas `v1` compatibles y limpia los ítems sustituidos o con polaridad modificada.
-- **Documentación completa:** [frontend/metodologia.html](frontend/metodologia.html), [docs/GUIA_PRUEBAS_Y_DESPLIEGUE.md](docs/GUIA_PRUEBAS_Y_DESPLIEGUE.md) y carpeta [docs/auditoria_fase2/](docs/auditoria_fase2/).
+4. **Ejecutar auditoría SOC y actualizar telemetría bajo demanda**:
+   ```bash
+   # En la propia Raspberry Pi (también ejecutado automáticamente por cron a las 09:00 y 21:00):
+   python3 scripts/audit_24h_soc.py --local-pi
+   ```

@@ -1,5 +1,5 @@
 {
-  "last_audit_cet": "2026-11-18 16:06:12",
+  "last_audit_cet": "2026-11-18 16:47:34",
   "visitors": {
     "total_humans": 63,
     "completed_test_bundle": 61,
@@ -11,8 +11,8 @@
         "humans": 47,
         "completed_test": 45,
         "used_comparator": 2,
-        "attacks_blocked": 139,
-        "attack_reqs": 312
+        "attacks_blocked": 142,
+        "attack_reqs": 316
       },
       {
         "day": "2026-11-17",
@@ -34,34 +34,34 @@
   },
   "security": {
     "status": "ACTIVE_SHIELD",
-    "total_attacker_ips": 361,
+    "total_attacker_ips": 364,
     "total_blocked_cidrs": 7,
-    "total_malicious_requests": 1287,
+    "total_malicious_requests": 1291,
     "by_country": [
       {
         "country": "United States",
         "count": 137,
-        "pct": 38.0
+        "pct": 37.6
       },
       {
         "country": "Germany",
         "count": 31,
-        "pct": 8.6
+        "pct": 8.5
       },
       {
         "country": "The Netherlands",
         "count": 30,
-        "pct": 8.3
+        "pct": 8.2
       },
       {
         "country": "Belgium",
-        "count": 18,
-        "pct": 5.0
+        "count": 19,
+        "pct": 5.2
       },
       {
         "country": "China",
-        "count": 12,
-        "pct": 3.3
+        "count": 13,
+        "pct": 3.6
       },
       {
         "country": "Poland",
@@ -86,12 +86,12 @@
       {
         "country": "Brazil",
         "count": 6,
-        "pct": 1.7
+        "pct": 1.6
       },
       {
         "country": "Russia",
         "count": 6,
-        "pct": 1.7
+        "pct": 1.6
       },
       {
         "country": "Canada",
@@ -114,14 +114,14 @@
         "pct": 1.4
       },
       {
-        "country": "Switzerland",
+        "country": "Singapore",
         "count": 4,
         "pct": 1.1
       },
       {
-        "country": "Singapore",
-        "count": 3,
-        "pct": 0.8
+        "country": "Switzerland",
+        "count": 4,
+        "pct": 1.1
       },
       {
         "country": "Spain",
@@ -146,32 +146,32 @@
       {
         "country": "Sweden",
         "count": 2,
-        "pct": 0.6
+        "pct": 0.5
       },
       {
         "country": "United Arab Emirates",
         "count": 2,
-        "pct": 0.6
+        "pct": 0.5
       },
       {
         "country": "Finland",
         "count": 2,
-        "pct": 0.6
+        "pct": 0.5
       },
       {
         "country": "South Africa",
         "count": 2,
-        "pct": 0.6
+        "pct": 0.5
       },
       {
         "country": "Ukraine",
         "count": 2,
-        "pct": 0.6
+        "pct": 0.5
       },
       {
         "country": "Mexico",
         "count": 2,
-        "pct": 0.6
+        "pct": 0.5
       },
       {
         "country": "Israel",
@@ -327,8 +327,8 @@
     "by_type": [
       {
         "type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
-        "ips": 161,
-        "reqs": 363
+        "ips": 162,
+        "reqs": 364
       },
       {
         "type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
@@ -337,8 +337,8 @@
       },
       {
         "type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
-        "ips": 42,
-        "reqs": 80
+        "ips": 44,
+        "reqs": 83
       },
       {
         "type": "Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP)",
@@ -404,6 +404,42 @@
       }
     ],
     "attackers": [
+      {
+        "ip": "47.84.191.55",
+        "country": "Singapore",
+        "city": "Singapore",
+        "isp": "Alibaba.com LLC",
+        "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
+        "first_seen": "2026-11-18 16:45:58",
+        "last_seen": "2026-11-18 16:45:58",
+        "total_reqs": 2,
+        "sample_payload": "\\x16\\x03\\x01\\x00\\xEE\\x01\\x00\\x00\\xEA\\x03\\x03I...",
+        "action": "DROP + 444"
+      },
+      {
+        "ip": "35.195.40.172",
+        "country": "Belgium",
+        "city": "Brussels",
+        "isp": "Google LLC",
+        "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
+        "first_seen": "2026-11-18 16:43:03",
+        "last_seen": "2026-11-18 16:43:03",
+        "total_reqs": 1,
+        "sample_payload": "GET / HTTP/1.1",
+        "action": "DROP + 444"
+      },
+      {
+        "ip": "103.203.56.2",
+        "country": "China",
+        "city": "Chaowai",
+        "isp": "Beijing Tiantexin Tech. Co., Ltd.",
+        "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+        "first_seen": "2026-11-18 16:14:19",
+        "last_seen": "2026-11-18 16:14:19",
+        "total_reqs": 1,
+        "sample_payload": "GET / HTTP/1.1",
+        "action": "DROP + 444"
+      },
       {
         "ip": "47.84.109.20",
         "country": "Singapore",
