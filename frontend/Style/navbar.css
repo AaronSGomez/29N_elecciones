@@ -113,15 +113,28 @@
 }
 
 .nav-privacy-note {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--ink-secondary);
-  border: 1.5px solid var(--border-strong);
-  border-radius: 6px;
-  padding: 0.1rem 0.45rem;
-  background: var(--bg-paper);
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--ink-primary);
+  padding: 0.05rem 0.25rem;
   letter-spacing: 0.02em;
+}
+
+.nav-privacy-note::before {
+  content: "";
+  position: absolute;
+  left: -0.08em;
+  right: -0.08em;
+  top: 0.52em;
+  bottom: -0.04em;
+  background: #4ADE80;
+  z-index: -1;
+  transform: skewX(-8deg) rotate(-1.2deg);
+  border-radius: 4px;
 }
 
 .mobile-only-note {
@@ -211,9 +224,10 @@
     font-size: 0.85rem;
   }
   .mobile-only-note {
-    display: block;
+    display: inline-block;
+    align-self: center;
     text-align: center;
-    margin-top: 0.15rem;
+    margin-top: 0.2rem;
   }
 }
 
