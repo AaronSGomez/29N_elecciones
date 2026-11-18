@@ -1,6 +1,6 @@
 /* =============================================================================
-   29N ELECCIONES — COMPARADOR DOCUMENTAL (TARJETAS + MATRIZ SUBTEMAS + PAGINACIÓN)
-   Datos directos de PostgreSQL. Sin recomendaciones ni ocultación silenciosa.
+   29N ELECCIONES — COMPARADOR DOCUMENTAL (3 TARJETAS/FILA + MATRIZ DINÁMICA + PAGINACIÓN)
+   Datos directos de PostgreSQL. Enlace directo al PDF oficial en cada tarjeta.
    ============================================================================= */
 
 (function (global) {
@@ -12,22 +12,43 @@
     { id: "salf", label: "SALF" },
   ];
 
-  function renderComparatorView(container, options) {
-    const onAskChat = options && typeof options.onAskChat === "function" ? options.onAskChat : null;
+  const CARDS_PER_PAGE = 9; // 3 columnas x 3 filas por página
+  const SUBTOPICS_PER_PAGE = 3; // 3 filas de subtemas por página
 
+  function renderComparatorView(container) {
     let selectedTopic = "Vivienda";
-    let selectedParty = "";
+    let selectedParties = []; // vacío = todos los partidos (5)
+    let comboboxOpen = false;
     let viewMode = "cards"; // cards | matrix
-    let loadedProposals = [];
-    let totalAvailable = 0;
-    let currentOffset = 0;
-    const PAGE_LIMIT = 120;
+    let allTopicProposals = [];
+    let currentPage = 1;
     let topicsCache = [];
+
+    function getActiveParties() {
+      if (!selectedParties || selectedParties.length === 0) return PARTIES;
+      return PARTIES.filter((p) => selectedParties.includes(p.id));
+    }
+
+    function getFilteredProposals() {
+      if (!selectedParties || selectedParties.length === 0) return allTopicProposals;
+      const set = new Set(selectedParties);
+      return allTopicProposals.filter((p) => set.has((p.party_id || "").toLowerCase()));
+    }
+
+    function scrollToComparatorTop(cardEl) {
+      requestAnimationFrame(() => {
+        if (cardEl && typeof cardEl.scrollIntoView === "function") {
+          cardEl.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+    }
 
     function buildProposalCard(p, compact) {
       const partyId = (p.party_id || "").toLowerCase();
       const block = document.createElement("article");
-      block.className = `proposal-block party-${partyId}`;
+      block.className = `proposal-block party-${partyId}${compact ? " compact-card" : ""}`;
 
       const header = document.createElement("div");
       header.className = "proposal-header";
@@ -45,73 +66,114 @@
 
       if (p.quote) {
         const q = document.createElement("blockquote");
-        q.className = "proposal-quote";
+        q.className = "proposal-quote comparator-clamp";
         q.textContent = `«${p.quote}»`;
         block.appendChild(q);
       }
 
-      if (!compact && p.explanation) {
-        const exp = document.createElement("div");
-        exp.className = "w-field-desc";
-        exp.textContent = `Síntesis neutral: ${p.explanation}`;
-        block.appendChild(exp);
-      }
-
-      const status = document.createElement("div");
-      status.className = "w-field-desc";
-      status.textContent = "Estado: Propuesta localizada en bloque temático (financiación/plazo no desglosados en este extracto).";
-      block.appendChild(status);
-
       if (p.source_url && p.source_url.startsWith("https://")) {
-        const link = document.createElement("a");
-        link.className = "proposal-link";
-        link.href = p.source_url;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.textContent = `${p.source_ref || "Documento original"} ↗`;
-        block.appendChild(link);
-      }
-
-      if (onAskChat) {
-        const askBtn = document.createElement("button");
-        askBtn.type = "button";
-        askBtn.className = "clear-chat-btn";
-        askBtn.style.marginTop = "0.45rem";
-        askBtn.textContent = "Preguntar sobre esta propuesta →";
-        askBtn.addEventListener("click", () => {
-          onAskChat(
-            p.topic,
-            `¿Qué propone ${p.party_name || partyId.toUpperCase()} y los demás partidos sobre "${p.title}" en ${p.topic}?`
-          );
-        });
-        block.appendChild(askBtn);
+        const btnLink = document.createElement("a");
+        btnLink.className = "proposal-direct-btn";
+        btnLink.href = p.source_url;
+        btnLink.target = "_blank";
+        btnLink.rel = "noopener noreferrer";
+        btnLink.textContent = `Ver medida en programa (${p.source_ref || "PDF"}) ↗`;
+        block.appendChild(btnLink);
+      } else if (p.source_ref) {
+        const refSpan = document.createElement("span");
+        refSpan.className = "proposal-link";
+        refSpan.textContent = p.source_ref;
+        block.appendChild(refSpan);
       }
 
       return block;
     }
 
-    function renderMatrix(targetEl) {
+    function buildPaginationBar(totalPages, cardEl) {
+      const pagBar = document.createElement("div");
+      pagBar.className = "comparator-pagination";
+
+      const prevBtn = document.createElement("button");
+      prevBtn.type = "button";
+      prevBtn.className = "w-btn";
+      prevBtn.textContent = "← Anterior";
+      prevBtn.disabled = currentPage <= 1;
+      prevBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage -= 1;
+          renderUI(true);
+        }
+      });
+      pagBar.appendChild(prevBtn);
+
+      const pagesGroup = document.createElement("div");
+      pagesGroup.className = "comparator-page-numbers";
+      for (let i = 1; i <= totalPages; i += 1) {
+        const pBtn = document.createElement("button");
+        pBtn.type = "button";
+        pBtn.className = `step-pill ${i === currentPage ? "active" : ""}`;
+        pBtn.textContent = String(i);
+        pBtn.addEventListener("click", () => {
+          if (currentPage !== i) {
+            currentPage = i;
+            renderUI(true);
+          }
+        });
+        pagesGroup.appendChild(pBtn);
+      }
+      pagBar.appendChild(pagesGroup);
+
+      const nextBtn = document.createElement("button");
+      nextBtn.type = "button";
+      nextBtn.className = "w-btn primary";
+      nextBtn.textContent = "Siguiente →";
+      nextBtn.disabled = currentPage >= totalPages;
+      nextBtn.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage += 1;
+          renderUI(true);
+        }
+      });
+      pagBar.appendChild(nextBtn);
+
+      const pageInfo = document.createElement("span");
+      pageInfo.className = "comparator-page-info";
+      pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+      pagBar.appendChild(pageInfo);
+
+      return pagBar;
+    }
+
+    function renderMatrix(targetEl, filteredProposals, cardEl) {
       const bySubtopic = new Map();
-      loadedProposals.forEach((p) => {
+      filteredProposals.forEach((p) => {
         const sub = p.subtopic || "General";
         if (!bySubtopic.has(sub)) bySubtopic.set(sub, []);
         bySubtopic.get(sub).push(p);
       });
 
-      bySubtopic.forEach((items, subtopic) => {
-        const card = document.createElement("section");
-        card.className = "matrix-subtopic-card";
+      const subtopicEntries = Array.from(bySubtopic.entries());
+      const totalPages = Math.max(1, Math.ceil(subtopicEntries.length / SUBTOPICS_PER_PAGE));
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const startIdx = (currentPage - 1) * SUBTOPICS_PER_PAGE;
+      const pageEntries = subtopicEntries.slice(startIdx, startIdx + SUBTOPICS_PER_PAGE);
+      const activeParties = getActiveParties();
+
+      pageEntries.forEach(([subtopic, items]) => {
+        const subCard = document.createElement("section");
+        subCard.className = "matrix-subtopic-card";
 
         const head = document.createElement("div");
         head.className = "matrix-subtopic-title";
         head.textContent = `${selectedTopic} › ${subtopic}`;
-        card.appendChild(head);
+        subCard.appendChild(head);
 
-        const grid5 = document.createElement("div");
-        grid5.className = "matrix-grid-5";
+        const grid = document.createElement("div");
+        grid.className = "matrix-grid-5";
+        grid.style.setProperty("--matrix-cols", String(activeParties.length));
 
-        PARTIES.forEach((party) => {
-          if (selectedParty && selectedParty !== party.id) return;
+        activeParties.forEach((party) => {
           const col = document.createElement("div");
           col.className = "matrix-col";
 
@@ -124,20 +186,27 @@
           if (partyItems.length === 0) {
             const empty = document.createElement("div");
             empty.className = "matrix-empty-state";
-            empty.textContent = "Sin evidencia clasificada en este bloque temático (no implica ausencia en el PDF completo).";
+            empty.textContent = "Sin medida clasificada en este subtema.";
             col.appendChild(empty);
           } else {
-            partyItems.forEach((it) => col.appendChild(buildProposalCard(it, true)));
+            const itemsWrap = document.createElement("div");
+            itemsWrap.className = activeParties.length <= 2 ? "matrix-col-items wide-cols" : "matrix-col-items";
+            partyItems.forEach((it) => itemsWrap.appendChild(buildProposalCard(it, true)));
+            col.appendChild(itemsWrap);
           }
-          grid5.appendChild(col);
+          grid.appendChild(col);
         });
 
-        card.appendChild(grid5);
-        targetEl.appendChild(card);
+        subCard.appendChild(grid);
+        targetEl.appendChild(subCard);
       });
+
+      if (totalPages > 1) {
+        targetEl.appendChild(buildPaginationBar(totalPages, cardEl));
+      }
     }
 
-    function renderUI() {
+    function renderUI(shouldScroll = false) {
       container.textContent = "";
       const card = document.createElement("div");
       card.className = "wizard-card";
@@ -152,11 +221,13 @@
 
       const sub = document.createElement("p");
       sub.className = "hero-subtitle";
-      sub.textContent = "Se muestran los bloques temáticos clasificados de los cinco partidos. Si una celda no tiene evidencia clasificada, se indica expresamente sin asumir ausencia de propuesta en el programa completo.";
+      sub.textContent =
+        "Selecciona una materia y uno o varios partidos para comparar sus medidas oficiales con enlace directo al PDF de cada programa. Mostramos 3 filas por página para facilitar la lectura.";
 
       const controls = document.createElement("div");
       controls.className = "wizard-fields-grid";
 
+      // 1. Selector de Materia
       const topicBox = document.createElement("div");
       topicBox.className = "w-field";
       const tLabel = document.createElement("label");
@@ -171,31 +242,130 @@
       });
       tSelect.addEventListener("change", () => {
         selectedTopic = tSelect.value;
-        fetchPage(true);
+        currentPage = 1;
+        fetchTopicProposals();
       });
       topicBox.append(tLabel, tSelect);
 
+      // 2. Combobox multiselección de Partidos
       const partyBox = document.createElement("div");
-      partyBox.className = "w-field";
+      partyBox.className = "w-field party-combobox-field";
       const pLabel = document.createElement("label");
-      pLabel.textContent = "Filtrar partido";
-      const pSelect = document.createElement("select");
-      [["", "Todos los partidos (5)"], ...PARTIES.map((x) => [x.id, x.label])].forEach(([val, txt]) => {
-        const o = document.createElement("option");
-        o.value = val;
-        o.textContent = txt;
-        if (selectedParty === val) o.selected = true;
-        pSelect.appendChild(o);
-      });
-      pSelect.addEventListener("change", () => {
-        selectedParty = pSelect.value;
-        fetchPage(true);
-      });
-      partyBox.append(pLabel, pSelect);
+      pLabel.textContent = "Partidos a comparar (puedes elegir varios)";
 
+      const comboWrap = document.createElement("div");
+      comboWrap.className = "party-combobox-wrap";
+
+      const comboBtn = document.createElement("button");
+      comboBtn.type = "button";
+      comboBtn.className = "party-combobox-btn";
+      const activeList = getActiveParties();
+      const summaryText =
+        selectedParties.length === 0 || selectedParties.length === PARTIES.length
+          ? "Todos los partidos (5)"
+          : `${activeList.length} seleccionados: ${activeList.map((p) => p.label).join(", ")}`;
+      const btnSpan = document.createElement("span");
+      btnSpan.textContent = summaryText;
+      const caretSpan = document.createElement("span");
+      caretSpan.textContent = comboboxOpen ? "▴" : "▾";
+      comboBtn.append(btnSpan, caretSpan);
+      comboBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        comboboxOpen = !comboboxOpen;
+        renderUI(false);
+      });
+      comboWrap.appendChild(comboBtn);
+
+      if (comboboxOpen) {
+        const dropdown = document.createElement("div");
+        dropdown.className = "party-combobox-dropdown";
+        dropdown.addEventListener("click", (e) => e.stopPropagation());
+
+        // Opción "Todos los partidos"
+        const allRow = document.createElement("label");
+        allRow.className = "party-combo-option";
+        const allCb = document.createElement("input");
+        allCb.type = "checkbox";
+        allCb.checked = selectedParties.length === 0 || selectedParties.length === PARTIES.length;
+        allCb.addEventListener("change", () => {
+          selectedParties = [];
+          currentPage = 1;
+          renderUI(false);
+        });
+        const allTxt = document.createElement("span");
+        allTxt.textContent = "Todos los partidos (5)";
+        allRow.append(allCb, allTxt);
+        dropdown.appendChild(allRow);
+
+        PARTIES.forEach((p) => {
+          const row = document.createElement("label");
+          row.className = "party-combo-option";
+          const cb = document.createElement("input");
+          cb.type = "checkbox";
+          cb.checked = selectedParties.includes(p.id);
+          cb.addEventListener("change", () => {
+            if (cb.checked) {
+              if (!selectedParties.includes(p.id)) selectedParties.push(p.id);
+              if (selectedParties.length === PARTIES.length) selectedParties = [];
+            } else {
+              selectedParties = selectedParties.filter((id) => id !== p.id);
+            }
+            currentPage = 1;
+            renderUI(false);
+          });
+          const txt = document.createElement("span");
+          txt.textContent = p.label;
+          row.append(cb, txt);
+          dropdown.appendChild(row);
+        });
+
+        comboWrap.appendChild(dropdown);
+      }
+
+      // Píldoras rápidas debajo del combobox para marcar/desmarcar con 1 toque en móvil y PC
+      const quickChips = document.createElement("div");
+      quickChips.className = "w-checkbox-group";
+      quickChips.style.marginTop = "0.4rem";
+
+      const allChip = document.createElement("button");
+      allChip.type = "button";
+      const allActive = selectedParties.length === 0;
+      allChip.className = `step-pill ${allActive ? "active" : ""}`;
+      allChip.textContent = "TODOS (5)";
+      allChip.addEventListener("click", () => {
+        selectedParties = [];
+        comboboxOpen = false;
+        currentPage = 1;
+        renderUI(false);
+      });
+      quickChips.appendChild(allChip);
+
+      PARTIES.forEach((p) => {
+        const isSel = selectedParties.includes(p.id);
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = `step-pill ${isSel ? "active" : ""}`;
+        chip.textContent = p.label;
+        chip.addEventListener("click", () => {
+          if (isSel) {
+            selectedParties = selectedParties.filter((id) => id !== p.id);
+          } else {
+            selectedParties = [...selectedParties, p.id];
+            if (selectedParties.length === PARTIES.length) selectedParties = [];
+          }
+          comboboxOpen = false;
+          currentPage = 1;
+          renderUI(false);
+        });
+        quickChips.appendChild(chip);
+      });
+
+      partyBox.append(pLabel, comboWrap, quickChips);
       controls.append(topicBox, partyBox);
 
-      // Barra de modo de vista + contador real + botón Preguntar al Chat
+      const filteredProposals = getFilteredProposals();
+
+      // Barra de modo de vista + contador real
       const toolbar = document.createElement("div");
       toolbar.className = "w-actions-bar";
       toolbar.style.marginTop = "1rem";
@@ -206,19 +376,23 @@
       const btnCards = document.createElement("button");
       btnCards.type = "button";
       btnCards.className = `w-btn ${viewMode === "cards" ? "primary" : ""}`;
-      btnCards.textContent = "VISTA TARJETAS";
+      btnCards.textContent = "VISTA TARJETAS (3 POR FILA)";
       btnCards.addEventListener("click", () => {
         viewMode = "cards";
-        renderUI();
+        currentPage = 1;
+        comboboxOpen = false;
+        renderUI(false);
       });
 
       const btnMatrix = document.createElement("button");
       btnMatrix.type = "button";
       btnMatrix.className = `w-btn ${viewMode === "matrix" ? "primary" : ""}`;
-      btnMatrix.textContent = "VISTA MATRIZ POR SUBTEMAS";
+      btnMatrix.textContent = "VISTA POR SUBTEMAS";
       btnMatrix.addEventListener("click", () => {
         viewMode = "matrix";
-        renderUI();
+        currentPage = 1;
+        comboboxOpen = false;
+        renderUI(false);
       });
 
       leftTools.append(btnCards, btnMatrix);
@@ -228,57 +402,44 @@
       const countBadge = document.createElement("span");
       countBadge.className = "clear-chat-btn";
       countBadge.style.cursor = "default";
-      countBadge.textContent = `Mostrando ${loadedProposals.length} de ${totalAvailable} propuestas`;
+      countBadge.textContent = `${filteredProposals.length} propuestas en ${selectedTopic}`;
       rightTools.appendChild(countBadge);
-
-      if (onAskChat) {
-        const askTopicBtn = document.createElement("button");
-        askTopicBtn.type = "button";
-        askTopicBtn.className = "w-btn";
-        askTopicBtn.textContent = `Preguntar al Chat sobre ${selectedTopic} →`;
-        askTopicBtn.addEventListener("click", () => {
-          onAskChat(selectedTopic, `¿Qué propone cada partido sobre ${selectedTopic}?`);
-        });
-        rightTools.appendChild(askTopicBtn);
-      }
 
       toolbar.append(leftTools, rightTools);
 
       const resultsWrap = document.createElement("div");
-      if (loadedProposals.length === 0) {
+      if (filteredProposals.length === 0) {
         resultsWrap.className = "security-notice";
         resultsWrap.style.marginTop = "1rem";
-        resultsWrap.textContent = "No se han localizado propuestas clasificadas en esta materia para el filtro seleccionado.";
+        resultsWrap.textContent = "No se han localizado propuestas clasificadas en esta materia para los partidos seleccionados.";
       } else if (viewMode === "matrix") {
-        renderMatrix(resultsWrap);
+        renderMatrix(resultsWrap, filteredProposals, card);
       } else {
-        resultsWrap.className = "sources-blocks";
-        resultsWrap.style.marginTop = "1.25rem";
-        loadedProposals.forEach((p) => resultsWrap.appendChild(buildProposalCard(p, false)));
+        const totalPages = Math.max(1, Math.ceil(filteredProposals.length / CARDS_PER_PAGE));
+        if (currentPage > totalPages) currentPage = totalPages;
+        const startIdx = (currentPage - 1) * CARDS_PER_PAGE;
+        const pageItems = filteredProposals.slice(startIdx, startIdx + CARDS_PER_PAGE);
+
+        const cardsGrid = document.createElement("div");
+        cardsGrid.className = "sources-blocks comparator-cards-grid";
+        cardsGrid.style.marginTop = "1rem";
+        pageItems.forEach((p) => cardsGrid.appendChild(buildProposalCard(p, false)));
+        resultsWrap.appendChild(cardsGrid);
+
+        if (totalPages > 1) {
+          resultsWrap.appendChild(buildPaginationBar(totalPages, card));
+        }
       }
 
       card.append(tag, h2, sub, controls, toolbar, resultsWrap);
-
-      if (loadedProposals.length < totalAvailable) {
-        const pagBar = document.createElement("div");
-        pagBar.className = "w-actions-bar";
-        const loadMoreBtn = document.createElement("button");
-        loadMoreBtn.type = "button";
-        loadMoreBtn.className = "w-btn primary";
-        loadMoreBtn.textContent = `CARGAR MÁS PROPUESTAS (${loadedProposals.length}/${totalAvailable})`;
-        loadMoreBtn.addEventListener("click", () => fetchPage(false));
-        pagBar.appendChild(loadMoreBtn);
-        card.appendChild(pagBar);
-      }
-
       container.appendChild(card);
+
+      if (shouldScroll) {
+        scrollToComparatorTop(card);
+      }
     }
 
-    async function fetchPage(reset) {
-      if (reset) {
-        currentOffset = 0;
-        loadedProposals = [];
-      }
+    async function fetchTopicProposals() {
       try {
         if (topicsCache.length === 0) {
           const tRes = await fetch("/api/topics");
@@ -287,28 +448,28 @@
         }
         const params = new URLSearchParams({
           topic: selectedTopic,
-          limit: String(PAGE_LIMIT),
-          offset: String(currentOffset),
+          limit: "250",
+          offset: "0",
         });
-        if (selectedParty) params.set("party_id", selectedParty);
 
         const pRes = await fetch(`/api/proposals?${params.toString()}`);
         const pData = await pRes.json();
-        const incoming = pData.proposals || [];
-        totalAvailable = Number(pData.total ?? incoming.length);
-
-        const existingIds = new Set(loadedProposals.map((x) => x.id));
-        incoming.forEach((item) => {
-          if (!existingIds.has(item.id)) loadedProposals.push(item);
-        });
-        currentOffset += incoming.length;
-        renderUI();
+        allTopicProposals = pData.proposals || [];
+        currentPage = 1;
+        renderUI(false);
       } catch {
         container.textContent = "Error consultando el comparador en PostgreSQL.";
       }
     }
 
-    fetchPage(true);
+    document.addEventListener("click", () => {
+      if (comboboxOpen) {
+        comboboxOpen = false;
+        renderUI(false);
+      }
+    });
+
+    fetchTopicProposals();
   }
 
   global.ComparatorView29N = { render: renderComparatorView };
