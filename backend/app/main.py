@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.api.routes_chat import router as chat_router
@@ -89,6 +90,12 @@ app.include_router(chat_router)
 frontend_dir = Path(__file__).resolve().parent.parent / "frontend"
 if not frontend_dir.exists():
     frontend_dir = Path(__file__).resolve().parent.parent.parent / "frontend"
+
+
+@app.get("/secure", include_in_schema=False)
+async def serve_secure_page():
+    return FileResponse(str(frontend_dir / "secure.html"))
+
 
 if frontend_dir.exists():
     app.mount("/", StaticFiles(directory=str(frontend_dir), html=True), name="frontend")

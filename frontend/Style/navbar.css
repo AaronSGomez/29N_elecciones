@@ -132,6 +132,13 @@
   }
 }
 
+.masthead-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
 .nav-privacy-note {
   position: relative;
   display: inline-block;
@@ -154,6 +161,37 @@
   background: #4ADE80;
   z-index: -1;
   transform: skewX(-8deg) rotate(-1.2deg);
+  border-radius: 4px;
+}
+
+.nav-visitors-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: var(--ink-primary);
+  background: var(--accent-yellow);
+  border: 2px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 0.12rem 0.5rem;
+  text-decoration: none;
+  box-shadow: 2px 2px 0px var(--border-strong);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.nav-visitors-badge:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--border-strong);
+  background: #4ADE80;
+}
+
+.nav-visitors-badge strong {
+  font-weight: 900;
+  padding: 0 0.2rem;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-strong);
   border-radius: 4px;
 }
 

@@ -1,25 +1,26 @@
 {
-  "last_audit_cet": "2026-11-18 10:15:37",
+  "last_audit_cet": "2026-11-18 16:06:12",
   "users_cutoff_cet": "2026-11-17 21:00:00",
-  "total_legit_users": 45,
-  "total_attacker_ips": 292,
+  "total_legit_users": 63,
+  "total_attacker_ips": 361,
   "users": [
     {
       "ip": "178.139.239.99",
       "day": "2026-11-17",
       "days_active": [
-        "2026-11-17"
+        "2026-11-17",
+        "2026-11-18"
       ],
       "first_seen": "2026-11-17 21:05:39",
-      "last_seen": "2026-11-17 22:58:57",
-      "total_reqs": 106,
+      "last_seen": "2026-11-18 14:16:30",
+      "total_reqs": 183,
       "completed_bundle": true,
       "used_comparator": true,
       "used_promises": true,
       "used_chat": false,
       "read_methodology": false,
-      "device": "Desktop",
-      "ua": "WhatsApp/2.23.20.0",
+      "device": "Android",
+      "ua": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
       "country": "Spain",
       "city": "Córdoba",
       "isp": "Vodafone Espana S.A.U."
@@ -179,8 +180,8 @@
       "used_promises": false,
       "used_chat": false,
       "read_methodology": false,
-      "device": "Linux PC",
-      "ua": "Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:24.0) Gecko/20100101 Firefox/24.0 Chrome/80.0.3987.132 Safari/537.36",
+      "device": "Android",
+      "ua": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
       "country": "Spain",
       "city": "Gijón",
       "isp": "R Cable y Telecable Telecomunicaciones, S.A.U."
@@ -381,8 +382,8 @@
       "used_promises": false,
       "used_chat": false,
       "read_methodology": false,
-      "device": "Desktop",
-      "ua": "WhatsApp/2.23.20.0",
+      "device": "Android",
+      "ua": "Mozilla/5.0 (Linux; Android 16;) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
       "country": "Spain",
       "city": "Madrid",
       "isp": "Vodafone Global Enterprise Inc."
@@ -494,8 +495,8 @@
         "2026-11-18"
       ],
       "first_seen": "2026-11-18 08:24:41",
-      "last_seen": "2026-11-18 08:24:41",
-      "total_reqs": 15,
+      "last_seen": "2026-11-18 11:08:47",
+      "total_reqs": 30,
       "completed_bundle": true,
       "used_comparator": false,
       "used_promises": false,
@@ -781,8 +782,8 @@
       "used_promises": false,
       "used_chat": false,
       "read_methodology": false,
-      "device": "Linux PC",
-      "ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
+      "device": "Android",
+      "ua": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
       "country": "Spain",
       "city": "Madrid",
       "isp": "Digi Spain Telecom S.L"
@@ -906,6 +907,366 @@
       "country": "Spain",
       "city": "Torre del Mar",
       "isp": "Digi Spain Telecom S.A"
+    },
+    {
+      "ip": "77.224.52.250",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 10:37:30",
+      "last_seen": "2026-11-18 10:37:30",
+      "total_reqs": 16,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "Android",
+      "ua": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
+      "country": "Spain",
+      "city": "Gijón",
+      "isp": "IPCOM"
+    },
+    {
+      "ip": "46.27.53.137",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 10:39:58",
+      "last_seen": "2026-11-18 10:40:29",
+      "total_reqs": 19,
+      "completed_bundle": true,
+      "used_comparator": true,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "iPhone (iOS)",
+      "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 [LinkedInApp]/9.32.5491",
+      "country": "Spain",
+      "city": "Marchamalo",
+      "isp": "Vodafone-BB Global"
+    },
+    {
+      "ip": "178.139.237.157",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 10:47:03",
+      "last_seen": "2026-11-18 10:47:04",
+      "total_reqs": 15,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "iPhone (iOS)",
+      "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.2 Mobile/15E148 Safari/604.1",
+      "country": "Spain",
+      "city": "Gijón",
+      "isp": "Vodafone Espana S.A.U."
+    },
+    {
+      "ip": "81.9.209.85",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 10:48:25",
+      "last_seen": "2026-11-18 10:48:26",
+      "total_reqs": 14,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "Android",
+      "ua": "Mozilla/5.0 (Android 11; Mobile; rv:160.0) Gecko/160.0 Firefox/160.0",
+      "country": "Spain",
+      "city": "Barakaldo",
+      "isp": "Euskaltel S.A."
+    },
+    {
+      "ip": "35.89.160.239",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:12:19",
+      "last_seen": "2026-11-18 11:12:25",
+      "total_reqs": 30,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "Windows PC",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.8103.38 Safari/537.36",
+      "country": "United States",
+      "city": "Boardman",
+      "isp": "Amazon.com, Inc."
+    },
+    {
+      "ip": "83.43.175.204",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:13:57",
+      "last_seen": "2026-11-18 11:13:57",
+      "total_reqs": 16,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "Android",
+      "ua": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
+      "country": "Spain",
+      "city": "Tortosa",
+      "isp": "Telefonica de Espana SAU"
+    },
+    {
+      "ip": "79.117.44.155",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:19:48",
+      "last_seen": "2026-11-18 11:19:48",
+      "total_reqs": 16,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "Android",
+      "ua": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
+      "country": "Spain",
+      "city": "Torremolinos",
+      "isp": "Digi Spain Telecom S.A"
+    },
+    {
+      "ip": "104.28.88.118",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:20:47",
+      "last_seen": "2026-11-18 11:20:47",
+      "total_reqs": 15,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "iPhone (iOS)",
+      "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0.1 Mobile/15E148 Safari/604.1",
+      "country": "Spain",
+      "city": "Bilbao",
+      "isp": "Cloudflare, Inc."
+    },
+    {
+      "ip": "150.214.174.240",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:43:18",
+      "last_seen": "2026-11-18 12:08:45",
+      "total_reqs": 30,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "Windows PC",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
+      "country": "Spain",
+      "city": "Huelva",
+      "isp": "Centro Informatico Cientifico de Andalucia - CICA"
+    },
+    {
+      "ip": "79.116.122.231",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:50:37",
+      "last_seen": "2026-11-18 11:50:38",
+      "total_reqs": 16,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "Android",
+      "ua": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/31.0 Chrome/148.0.0.0 Mobile Safari/537.36",
+      "country": "Spain",
+      "city": "Barakaldo",
+      "isp": "Digi Spain Telecom S.A"
+    },
+    {
+      "ip": "139.47.71.176",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:55:09",
+      "last_seen": "2026-11-18 11:55:10",
+      "total_reqs": 16,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "Android",
+      "ua": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
+      "country": "Spain",
+      "city": "Madrid",
+      "isp": "Xtra Telecom S.A."
+    },
+    {
+      "ip": "31.4.206.135",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:02:00",
+      "last_seen": "2026-11-18 12:02:01",
+      "total_reqs": 16,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "Android",
+      "ua": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
+      "country": "Spain",
+      "city": "Tarragona",
+      "isp": "VODAFONE-NETWORK"
+    },
+    {
+      "ip": "31.4.241.206",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:17:31",
+      "last_seen": "2026-11-18 12:17:32",
+      "total_reqs": 23,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "Windows PC",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:160.0) Gecko/20100101 Firefox/160.0",
+      "country": "Spain",
+      "city": "Ciudad Lineal",
+      "isp": "Vodafone Espana S.A.U."
+    },
+    {
+      "ip": "213.94.61.66",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:23:53",
+      "last_seen": "2026-11-18 12:24:39",
+      "total_reqs": 18,
+      "completed_bundle": true,
+      "used_comparator": true,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "iPhone (iOS)",
+      "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Mobile/15E148 Safari/604.1",
+      "country": "Spain",
+      "city": "Madrid",
+      "isp": "Ibercom Telecom"
+    },
+    {
+      "ip": "79.117.177.187",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:50:11",
+      "last_seen": "2026-11-18 12:50:12",
+      "total_reqs": 14,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "iPhone (iOS)",
+      "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 [LinkedInApp]/9.32.5705",
+      "country": "Spain",
+      "city": "Oviedo",
+      "isp": "Digi Spain Telecom S.A"
+    },
+    {
+      "ip": "79.117.213.62",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 13:01:22",
+      "last_seen": "2026-11-18 13:01:22",
+      "total_reqs": 14,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "Android",
+      "ua": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
+      "country": "Spain",
+      "city": "Gijón",
+      "isp": "Digi Spain Telecom S.A"
+    },
+    {
+      "ip": "176.83.16.105",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 13:25:33",
+      "last_seen": "2026-11-18 13:25:35",
+      "total_reqs": 16,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "Android",
+      "ua": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Mobile Safari/537.36",
+      "country": "Spain",
+      "city": "Alcantarilla",
+      "isp": "Telefonica De Espana S.A.U."
+    },
+    {
+      "ip": "88.28.6.199",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 15:04:55",
+      "last_seen": "2026-11-18 15:04:55",
+      "total_reqs": 16,
+      "completed_bundle": true,
+      "used_comparator": false,
+      "used_promises": false,
+      "used_chat": false,
+      "read_methodology": false,
+      "device": "Android",
+      "ua": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Mobile Safari/537.36",
+      "country": "Spain",
+      "city": "Madrid",
+      "isp": "Telefonica De Espana"
     }
   ],
   "attackers": [
@@ -943,7 +1304,7 @@
       ],
       "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "vc-detect/1.0",
+      "ua": "Mozilla/5.0 (vc-detect)",
       "country": "Israel",
       "city": "Tel Aviv",
       "isp": "Alferov Aleksey Aleksandrovich"
@@ -1415,7 +1776,7 @@
       ],
       "attack_type": "Fuzzing TLS / Handshake Corrupto (HTTP 400)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
       "country": "United States",
       "city": "Las Vegas",
       "isp": "CariNet, Inc."
@@ -1492,7 +1853,7 @@
       ],
       "attack_type": "Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWe",
+      "ua": "-",
       "country": "United States",
       "city": "Los Angeles",
       "isp": "UCloud Information Technology (HK) Limited"
@@ -1819,7 +2180,7 @@
       ],
       "attack_type": "Fuzzing TLS / Handshake Corrupto (HTTP 400)",
       "sample_payload": "\\x16\\x03\\x01\\x00\\xEA\\x01\\x00\\x00\\xE6\\x03\\x03\\...",
-      "ua": "-",
+      "ua": "0day",
       "country": "Germany",
       "city": "Langen",
       "isp": "Pfcloud UG (haftungsbeschrankt)"
@@ -1899,7 +2260,7 @@
       ],
       "attack_type": "Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
       "country": "Belgium",
       "city": "Brussels",
       "isp": "Google Ireland Limited"
@@ -2109,7 +2470,7 @@
       ],
       "attack_type": "Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
       "country": "Belgium",
       "city": "Brussels",
       "isp": "Google Ireland Limited"
@@ -2150,7 +2511,7 @@
       ],
       "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 zgrab/0.x",
       "country": "United States",
       "city": "Fremont",
       "isp": "Akamai Technologies, Inc."
@@ -2342,7 +2703,7 @@
       ],
       "attack_type": "Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
       "country": "Belgium",
       "city": "Brussels",
       "isp": "Google Ireland Limited"
@@ -2383,7 +2744,7 @@
       ],
       "attack_type": "Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
       "country": "Belgium",
       "city": "Brussels",
       "isp": "Google Ireland Limited"
@@ -2403,7 +2764,7 @@
       ],
       "attack_type": "Fuzzing TLS / Handshake Corrupto (HTTP 400)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHT",
       "country": "United States",
       "city": "Pleasanton",
       "isp": "Hurricane Electric LLC"
@@ -2423,7 +2784,7 @@
       ],
       "attack_type": "Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
       "country": "Belgium",
       "city": "Brussels",
       "isp": "Google Ireland Limited"
@@ -2443,7 +2804,7 @@
       ],
       "attack_type": "Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP)",
       "sample_payload": "GET / HTTP/1.0",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (compatible; GenomeCrawlerd/1.0; +https://w",
       "country": "France",
       "city": "Paris",
       "isp": "SCALEWAY"
@@ -2714,7 +3075,7 @@
       ],
       "attack_type": "Abuso de Proxy Abierto / SOCKS / WebDAV (CONNECT, PROPFIND)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWe",
       "country": "United States",
       "city": "Los Angeles",
       "isp": "UCLOUD INFORMATION TECHNOLOGY (HK) LIMITED"
@@ -2755,7 +3116,7 @@
       ],
       "attack_type": "Fuzzing TLS / Handshake Corrupto (HTTP 400)",
       "sample_payload": "\\x16\\x03\\x02\\x01o\\x01\\x00\\x01k\\x03\\x02RH\\xC5\\...",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/604.1 (KHTM",
       "country": "The Netherlands",
       "city": "Utrecht",
       "isp": "IP Volume inc"
@@ -2929,7 +3290,7 @@
       ],
       "attack_type": "Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP)",
       "sample_payload": "GET /login.cgi HTTP/1.1",
-      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/138",
       "country": "The Netherlands",
       "city": "Amsterdam",
       "isp": "NForce Entertainment B.V."
@@ -3316,7 +3677,7 @@
       ],
       "attack_type": "Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gec",
+      "ua": "-",
       "country": "Norway",
       "city": "Oslo",
       "isp": "Blix Solutions"
@@ -3355,7 +3716,7 @@
       ],
       "attack_type": "Abuso de Proxy Abierto / SOCKS / WebDAV (CONNECT, PROPFIND)",
       "sample_payload": "CONNECT cloudflare.com:443 HTTP/1.1",
-      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ua": "-",
       "country": "The Netherlands",
       "city": "Amsterdam",
       "isp": "SpectraIP B.V."
@@ -3492,7 +3853,7 @@
       ],
       "attack_type": "Robo de Secretos / Repositorios (.env, .git, .kube)",
       "sample_payload": "GET /.aws/credentials HTTP/1.1",
-      "ua": "Peach/1.01 (Ubuntu 8.04 LTS; U; en)",
+      "ua": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/53",
       "country": "The Netherlands",
       "city": "Amsterdam",
       "isp": "Techoff SRV Limited"
@@ -3552,7 +3913,7 @@
       ],
       "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "curl/7.74.0",
+      "ua": "curl/7.64.1",
       "country": "United States",
       "city": "Minkler",
       "isp": "Alibaba Cloud LLC"
@@ -4053,7 +4414,7 @@
       ],
       "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "curl/7.74.0",
+      "ua": "curl/7.64.1",
       "country": "United States",
       "city": "Minkler",
       "isp": "Alibaba.com LLC"
@@ -4209,7 +4570,7 @@
       ],
       "attack_type": "Robo de Secretos / Repositorios (.env, .git, .kube)",
       "sample_payload": "GET /.git/config HTTP/1.1",
-      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gec",
+      "ua": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:133.0) Gecko",
       "country": "United States",
       "city": "North Charleston",
       "isp": "Google LLC"
@@ -4500,7 +4861,7 @@
       ],
       "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
       "country": "United States",
       "city": "Washington",
       "isp": "Google LLC"
@@ -5073,7 +5434,7 @@
       ],
       "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "visionheight.com/scan Mozilla/5.0 (Macintosh; Intel Mac",
+      "ua": "-",
       "country": "United States",
       "city": "Columbus",
       "isp": "Amazon.com, Inc."
@@ -5131,7 +5492,7 @@
       ],
       "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 zgrab/0.x",
       "country": "Canada",
       "city": "Toronto",
       "isp": "DigitalOcean, LLC"
@@ -5245,7 +5606,7 @@
       ],
       "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
       "sample_payload": "GET / HTTP/1.0",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHT",
       "country": "United States",
       "city": "Dallas",
       "isp": "CDS Global Cloud Co., Ltd"
@@ -5265,7 +5626,7 @@
       ],
       "attack_type": "Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "visionheight.com/scan Mozilla/5.0 (Macintosh; Intel Mac",
+      "ua": "-",
       "country": "United States",
       "city": "Columbus",
       "isp": "Amazon.com, Inc."
@@ -5361,7 +5722,7 @@
       ],
       "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Hello World",
       "country": "Germany",
       "city": "Frankfurt am Main",
       "isp": "Velcom"
@@ -5654,7 +6015,7 @@
       ],
       "attack_type": "Robo de Secretos / Repositorios (.env, .git, .kube)",
       "sample_payload": "HEAD / HTTP/1.1",
-      "ua": "python-requests/2.34.2",
+      "ua": "python-httpx/0.28.1",
       "country": "Poland",
       "city": "Warsaw",
       "isp": "SCALEWAY"
@@ -5750,7 +6111,7 @@
       ],
       "attack_type": "Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
       "country": "Belgium",
       "city": "Brussels",
       "isp": "Google Ireland Limited"
@@ -5770,7 +6131,7 @@
       ],
       "attack_type": "Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
       "country": "Belgium",
       "city": "Brussels",
       "isp": "Google Ireland Limited"
@@ -5790,7 +6151,7 @@
       ],
       "attack_type": "Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
       "country": "Belgium",
       "city": "Brussels",
       "isp": "Google Ireland Limited"
@@ -5829,7 +6190,7 @@
       ],
       "attack_type": "Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
       "country": "Belgium",
       "city": "Brussels",
       "isp": "Google Ireland Limited"
@@ -5887,7 +6248,7 @@
       ],
       "attack_type": "Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
       "country": "Belgium",
       "city": "Brussels",
       "isp": "Google Ireland Limited"
@@ -5907,7 +6268,7 @@
       ],
       "attack_type": "Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP)",
       "sample_payload": "GET / HTTP/1.0",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (compatible; GenomeCrawlerd/1.0; +https://w",
       "country": "France",
       "city": "Massy",
       "isp": "Google LLC"
@@ -6236,7 +6597,7 @@
       ],
       "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
       "sample_payload": "GET / HTTP/1.1",
-      "ua": "-",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
       "country": "United States",
       "city": "North Charleston",
       "isp": "Google LLC"
@@ -6564,6 +6925,1328 @@
       "country": "United States",
       "city": "Cedar Knolls",
       "isp": "Akamai Technologies, Inc."
+    },
+    {
+      "ip": "170.84.8.243",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 10:33:14",
+      "last_seen": "2026-11-18 10:33:17",
+      "total_reqs": 2,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Trinidad and Tobago",
+      "city": "Chaguanas",
+      "isp": "Digicel Trinidad and Tobago Ltd."
+    },
+    {
+      "ip": "39.37.170.229",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 10:33:15",
+      "last_seen": "2026-11-18 10:33:15",
+      "total_reqs": 1,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-login.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Pakistan",
+      "city": "Lahore",
+      "isp": "Pakistan Telecommuication company limited"
+    },
+    {
+      "ip": "119.92.52.91",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 10:33:16",
+      "last_seen": "2026-11-18 10:33:16",
+      "total_reqs": 1,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "POST /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Philippines",
+      "city": "Makati City",
+      "isp": "Philippine Long Distance Telephone Co."
+    },
+    {
+      "ip": "193.176.31.226",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:26:09",
+      "last_seen": "2026-11-18 11:26:09",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 (compatible; Infrawatch/1.0; +https://infra",
+      "country": "The Netherlands",
+      "city": "Amsterdam",
+      "isp": "Hydra Communications Ltd"
+    },
+    {
+      "ip": "194.88.98.117",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:26:18",
+      "last_seen": "2026-11-18 11:26:18",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 (compatible; Infrawatch/1.0; +https://infra",
+      "country": "Germany",
+      "city": "Frankfurt am Main",
+      "isp": "Hydra Communications Ltd"
+    },
+    {
+      "ip": "69.5.169.183",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:26:18",
+      "last_seen": "2026-11-18 11:26:18",
+      "total_reqs": 1,
+      "statuses": [
+        400
+      ],
+      "attack_type": "Fuzzing TLS / Handshake Corrupto (HTTP 400)",
+      "sample_payload": "\\x00\\x0E8,\\x08\\xC8\\xAF,7\\x80\\x0F\\x00\\x00\\x00\\...",
+      "ua": "-",
+      "country": "Germany",
+      "city": "Frankfurt am Main",
+      "isp": "Hydra Communications Ltd"
+    },
+    {
+      "ip": "69.5.169.133",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:26:18",
+      "last_seen": "2026-11-18 11:26:18",
+      "total_reqs": 1,
+      "statuses": [
+        400
+      ],
+      "attack_type": "Fuzzing TLS / Handshake Corrupto (HTTP 400)",
+      "sample_payload": "\\x16\\x03\\x01\\x02\\x9F\\x01\\x00\\x02\\x9B\\x03\\x03x...",
+      "ua": "-",
+      "country": "Germany",
+      "city": "Frankfurt am Main",
+      "isp": "Hydra Communications Ltd"
+    },
+    {
+      "ip": "69.5.169.170",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:26:18",
+      "last_seen": "2026-11-18 11:26:18",
+      "total_reqs": 1,
+      "statuses": [
+        400
+      ],
+      "attack_type": "Fuzzing TLS / Handshake Corrupto (HTTP 400)",
+      "sample_payload": "\\x16\\x03\\x01\\x02\\x90\\x01\\x00\\x02\\x8C\\x03\\x03I...",
+      "ua": "-",
+      "country": "Germany",
+      "city": "Frankfurt am Main",
+      "isp": "Hydra Communications Ltd"
+    },
+    {
+      "ip": "69.5.169.181",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:26:18",
+      "last_seen": "2026-11-18 11:26:18",
+      "total_reqs": 1,
+      "statuses": [
+        400
+      ],
+      "attack_type": "Fuzzing TLS / Handshake Corrupto (HTTP 400)",
+      "sample_payload": "\\x16\\x03\\x01\\x02\\xA2\\x01\\x00\\x02\\x9E\\x03\\x03Q...",
+      "ua": "-",
+      "country": "Germany",
+      "city": "Frankfurt am Main",
+      "isp": "Hydra Communications Ltd"
+    },
+    {
+      "ip": "69.5.169.234",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:26:18",
+      "last_seen": "2026-11-18 11:26:18",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 (compatible; Infrawatch/1.0; +https://infra",
+      "country": "Germany",
+      "city": "Frankfurt am Main",
+      "isp": "Hydra Communications Ltd"
+    },
+    {
+      "ip": "181.224.223.32",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:33:11",
+      "last_seen": "2026-11-18 11:33:12",
+      "total_reqs": 2,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-login.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Argentina",
+      "city": "Juan Bautista Alberdi",
+      "isp": "ALDERETE RIVAS JORDAN TOMAS SEBASTIAN (COMUNICATE INTERNET)"
+    },
+    {
+      "ip": "37.41.212.223",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:33:11",
+      "last_seen": "2026-11-18 11:33:11",
+      "total_reqs": 1,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Oman",
+      "city": "Muscat",
+      "isp": "OmanMobile Telecommunication company LLC"
+    },
+    {
+      "ip": "103.224.65.70",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:33:17",
+      "last_seen": "2026-11-18 11:33:17",
+      "total_reqs": 1,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-admin/ HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Indonesia",
+      "city": "Jember",
+      "isp": "BLAMBANGAN"
+    },
+    {
+      "ip": "199.165.159.65",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:40:04",
+      "last_seen": "2026-11-18 11:40:04",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "United States",
+      "city": "Pleasanton",
+      "isp": "The Shadowserver Foundation, Inc."
+    },
+    {
+      "ip": "199.165.159.69",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:43:54",
+      "last_seen": "2026-11-18 11:43:54",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "United States",
+      "city": "Pleasanton",
+      "isp": "The Shadowserver Foundation, Inc."
+    },
+    {
+      "ip": "40.124.80.46",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:49:37",
+      "last_seen": "2026-11-18 11:49:37",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP)",
+      "sample_payload": "GET /owa/auth/x.js HTTP/1.1",
+      "ua": "Mozilla/5.0 zgrab/0.x",
+      "country": "United States",
+      "city": "San Antonio",
+      "isp": "Microsoft Corporation"
+    },
+    {
+      "ip": "105.108.75.158",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:50:08",
+      "last_seen": "2026-11-18 11:50:08",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Algeria",
+      "city": "Sétif",
+      "isp": "Algerie Telecom"
+    },
+    {
+      "ip": "178.72.99.85",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:50:09",
+      "last_seen": "2026-11-18 11:50:09",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-login.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Russia",
+      "city": "Nizhnevartovsk",
+      "isp": "MTS PJSC"
+    },
+    {
+      "ip": "103.135.252.132",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:50:16",
+      "last_seen": "2026-11-18 11:50:16",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Bangladesh",
+      "city": "Chittagong",
+      "isp": "Md Abul Khaer"
+    },
+    {
+      "ip": "104.28.196.110",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:50:17",
+      "last_seen": "2026-11-18 11:50:17",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-login.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Russia",
+      "city": "St Petersburg",
+      "isp": "Cloudflare, Inc."
+    },
+    {
+      "ip": "103.191.131.237",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:50:28",
+      "last_seen": "2026-11-18 11:50:28",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-admin/ HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Nepal",
+      "city": "Itahari",
+      "isp": "Dish Media Network Public Limited"
+    },
+    {
+      "ip": "106.205.153.227",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:50:36",
+      "last_seen": "2026-11-18 11:50:36",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-admin/ HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "India",
+      "city": "Jaipur",
+      "isp": "Bharti Airtel"
+    },
+    {
+      "ip": "186.219.234.148",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:50:41",
+      "last_seen": "2026-11-18 11:50:41",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "POST /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Brazil",
+      "city": "Palmital",
+      "isp": "Mateus Freitas Antonio Ltda"
+    },
+    {
+      "ip": "154.12.2.130",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:53:44",
+      "last_seen": "2026-11-18 11:53:44",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
+      "sample_payload": "GET /redfish/v1/ HTTP/1.1",
+      "ua": "curl/7.81.0",
+      "country": "United States",
+      "city": "Waltham",
+      "isp": "Charles River Operation"
+    },
+    {
+      "ip": "20.118.235.80",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 11:54:53",
+      "last_seen": "2026-11-18 11:54:53",
+      "total_reqs": 1,
+      "statuses": [
+        400
+      ],
+      "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 zgrab/0.x",
+      "country": "United States",
+      "city": "Des Moines",
+      "isp": "Microsoft Corporation"
+    },
+    {
+      "ip": "185.180.141.39",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:00:00",
+      "last_seen": "2026-11-18 12:00:27",
+      "total_reqs": 3,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chro",
+      "country": "United States",
+      "city": "Chicago",
+      "isp": "Zenlayer Inc"
+    },
+    {
+      "ip": "185.180.141.38",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:00:00",
+      "last_seen": "2026-11-18 12:00:07",
+      "total_reqs": 2,
+      "statuses": [
+        400,
+        444
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chro",
+      "country": "United States",
+      "city": "Chicago",
+      "isp": "Zenlayer Inc"
+    },
+    {
+      "ip": "185.180.141.37",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:00:32",
+      "last_seen": "2026-11-18 12:00:32",
+      "total_reqs": 3,
+      "statuses": [
+        400
+      ],
+      "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
+      "sample_payload": "POST /mcp HTTP/1.1",
+      "ua": "python-httpx/0.28.1",
+      "country": "United States",
+      "city": "Chicago",
+      "isp": "Zenlayer Inc"
+    },
+    {
+      "ip": "128.201.51.16",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:15:30",
+      "last_seen": "2026-11-18 12:15:35",
+      "total_reqs": 2,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Brazil",
+      "city": "Mogi das Cruzes",
+      "isp": "Redes Metro"
+    },
+    {
+      "ip": "119.73.116.7",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:15:30",
+      "last_seen": "2026-11-18 12:15:31",
+      "total_reqs": 2,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Pakistan",
+      "city": "Faisalabad",
+      "isp": "LDNPK"
+    },
+    {
+      "ip": "103.83.93.255",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:15:31",
+      "last_seen": "2026-11-18 12:15:31",
+      "total_reqs": 1,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-login.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Indonesia",
+      "city": "Bogor",
+      "isp": "PT. Mora Telematika Indonesia"
+    },
+    {
+      "ip": "189.135.152.193",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:15:31",
+      "last_seen": "2026-11-18 12:15:31",
+      "total_reqs": 1,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "POST /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Mexico",
+      "city": "Jacona de Plancarte",
+      "isp": "Uninet S.A. de C.V"
+    },
+    {
+      "ip": "37.79.174.223",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:15:32",
+      "last_seen": "2026-11-18 12:15:32",
+      "total_reqs": 1,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "POST /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Russia",
+      "city": "Perm",
+      "isp": "Rostelecom networks"
+    },
+    {
+      "ip": "213.230.78.204",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:15:34",
+      "last_seen": "2026-11-18 12:15:34",
+      "total_reqs": 1,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-login.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Uzbekistan",
+      "city": "Tashkent",
+      "isp": "\"Uzbektelekom\" Joint Stock Company"
+    },
+    {
+      "ip": "82.205.66.16",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:17:40",
+      "last_seen": "2026-11-18 12:17:40",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Palestine",
+      "city": "Hebron",
+      "isp": "Router Hadara"
+    },
+    {
+      "ip": "197.185.184.48",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:17:40",
+      "last_seen": "2026-11-18 12:17:40",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-login.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "South Africa",
+      "city": "Johannesburg",
+      "isp": "RAIN GROUP HOLDINGS (PTY) LTD"
+    },
+    {
+      "ip": "103.181.162.96",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:17:46",
+      "last_seen": "2026-11-18 12:17:46",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Bangladesh",
+      "city": "Bherāmāra",
+      "isp": "Business Zone Limited"
+    },
+    {
+      "ip": "45.166.205.172",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:17:47",
+      "last_seen": "2026-11-18 12:17:47",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-login.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Brazil",
+      "city": "Palhoça",
+      "isp": "Vero S.A"
+    },
+    {
+      "ip": "68.101.216.80",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:17:54",
+      "last_seen": "2026-11-18 12:17:54",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "POST /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "United States",
+      "city": "Chula Vista",
+      "isp": "Cox Communications Inc."
+    },
+    {
+      "ip": "103.88.170.227",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:17:54",
+      "last_seen": "2026-11-18 12:17:54",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-admin/ HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Indonesia",
+      "city": "Ploso",
+      "isp": "PT Mitra Lintas Multimedia"
+    },
+    {
+      "ip": "178.212.250.74",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:18:00",
+      "last_seen": "2026-11-18 12:18:00",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-admin/ HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Russia",
+      "city": "Pushkino",
+      "isp": "Cross-I Ltd."
+    },
+    {
+      "ip": "201.231.231.151",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:18:01",
+      "last_seen": "2026-11-18 12:18:01",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "POST /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Argentina",
+      "city": "Río Tercero",
+      "isp": "Telecom Argentina S.A"
+    },
+    {
+      "ip": "138.246.253.24",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:36:15",
+      "last_seen": "2026-11-18 12:36:16",
+      "total_reqs": 2,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "GET /robots.txt HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Germany",
+      "city": "Munich",
+      "isp": "Leibniz-Rechenzentrum"
+    },
+    {
+      "ip": "43.155.188.157",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:54:16",
+      "last_seen": "2026-11-18 12:54:16",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X",
+      "country": "South Korea",
+      "city": "Seoul",
+      "isp": "Aceville Pte.ltd"
+    },
+    {
+      "ip": "172.236.228.38",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:56:26",
+      "last_seen": "2026-11-18 12:56:27",
+      "total_reqs": 2,
+      "statuses": [
+        400,
+        444
+      ],
+      "attack_type": "Fuzzing TLS / Handshake Corrupto (HTTP 400)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_1) AppleWebKi",
+      "country": "United States",
+      "city": "Los Angeles",
+      "isp": "Akamai Technologies, Inc."
+    },
+    {
+      "ip": "43.130.116.87",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 12:57:29",
+      "last_seen": "2026-11-18 12:57:29",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X",
+      "country": "United States",
+      "city": "Ashburn",
+      "isp": "Shenzhen Tencent Computer Systems Company Limited"
+    },
+    {
+      "ip": "91.231.89.2",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 13:03:02",
+      "last_seen": "2026-11-18 13:03:02",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:134.0) Gecko",
+      "country": "France",
+      "city": "Gravelines",
+      "isp": "Onyphe SAS"
+    },
+    {
+      "ip": "102.107.239.62",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 13:14:27",
+      "last_seen": "2026-11-18 13:14:29",
+      "total_reqs": 2,
+      "statuses": [
+        200
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Tunisia",
+      "city": "Aryanah",
+      "isp": "Ooredoo Tunisie SA"
+    },
+    {
+      "ip": "202.37.47.48",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 13:14:29",
+      "last_seen": "2026-11-18 13:14:29",
+      "total_reqs": 1,
+      "statuses": [
+        200
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-login.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Bangladesh",
+      "city": "Tangail",
+      "isp": "IP Communications Limited"
+    },
+    {
+      "ip": "103.148.115.46",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 13:14:37",
+      "last_seen": "2026-11-18 13:14:37",
+      "total_reqs": 1,
+      "statuses": [
+        405
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "POST /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Bangladesh",
+      "city": "Muktāgācha",
+      "isp": "Virtual Communications"
+    },
+    {
+      "ip": "20.55.19.38",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 13:32:27",
+      "last_seen": "2026-11-18 13:32:27",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP)",
+      "sample_payload": "GET /developmentserver/metadatauploader HTTP/1.1",
+      "ua": "Mozilla/5.0 zgrab/0.x",
+      "country": "United States",
+      "city": "Boydton",
+      "isp": "Microsoft Corporation"
+    },
+    {
+      "ip": "85.217.140.28",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 13:34:33",
+      "last_seen": "2026-11-18 13:34:33",
+      "total_reqs": 2,
+      "statuses": [
+        400,
+        444
+      ],
+      "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHT",
+      "country": "France",
+      "city": "Gravelines",
+      "isp": "Modat B.V."
+    },
+    {
+      "ip": "196.3.216.31",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 14:01:25",
+      "last_seen": "2026-11-18 14:01:26",
+      "total_reqs": 2,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-login.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Barbados",
+      "city": "Bridgetown",
+      "isp": "Digicel Barbados Ltd"
+    },
+    {
+      "ip": "148.222.132.44",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 14:01:25",
+      "last_seen": "2026-11-18 14:01:25",
+      "total_reqs": 1,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Mexico",
+      "city": "Mexico City",
+      "isp": "Space Exploration Technologies Corporation"
+    },
+    {
+      "ip": "103.214.217.25",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 14:01:27",
+      "last_seen": "2026-11-18 14:01:27",
+      "total_reqs": 1,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-admin/ HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Bangladesh",
+      "city": "Mātuail",
+      "isp": "MD SHIRAJUL HAIDER"
+    },
+    {
+      "ip": "5.78.86.19",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 14:04:55",
+      "last_seen": "2026-11-18 14:05:09",
+      "total_reqs": 39,
+      "statuses": [
+        200,
+        301,
+        404,
+        429,
+        444
+      ],
+      "attack_type": "Robo de Secretos / Repositorios (.env, .git, .kube)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "python-requests/2.34.2",
+      "country": "United States",
+      "city": "Hillsboro",
+      "isp": "Hetzner Online GmbH"
+    },
+    {
+      "ip": "78.174.78.67",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 14:15:13",
+      "last_seen": "2026-11-18 14:15:16",
+      "total_reqs": 2,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-login.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Türkiye",
+      "city": "Kahramanmaraş",
+      "isp": "Turk Telekomunikasyon A.S"
+    },
+    {
+      "ip": "38.10.113.165",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 14:15:14",
+      "last_seen": "2026-11-18 14:15:14",
+      "total_reqs": 1,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /xmlrpc.php HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Argentina",
+      "city": "Recreo",
+      "isp": "Internet Services S.A"
+    },
+    {
+      "ip": "190.6.255.27",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 14:15:15",
+      "last_seen": "2026-11-18 14:15:15",
+      "total_reqs": 1,
+      "statuses": [
+        404
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-admin/ HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "Argentina",
+      "city": "Tortuguitas",
+      "isp": "Cooperativa de Provisión de Servicios Publicos de Tortuguitas"
+    },
+    {
+      "ip": "20.203.179.237",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 14:21:58",
+      "last_seen": "2026-11-18 14:21:58",
+      "total_reqs": 4,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Explotación CMS / WordPress (wp-login, xmlrpc)",
+      "sample_payload": "GET /wp-content/plugins/hellopress/wp_fileman...",
+      "ua": "-",
+      "country": "Switzerland",
+      "city": "Zurich",
+      "isp": "Microsoft Corporation"
+    },
+    {
+      "ip": "134.122.60.26",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 14:25:38",
+      "last_seen": "2026-11-18 14:25:38",
+      "total_reqs": 1,
+      "statuses": [
+        400
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "SSTP_DUPLEX_POST /sra_{BA195980-CD49-458b-9E2...",
+      "ua": "-",
+      "country": "The Netherlands",
+      "city": "Amsterdam",
+      "isp": "DigitalOcean, LLC"
+    },
+    {
+      "ip": "77.239.124.252",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 14:37:56",
+      "last_seen": "2026-11-18 14:37:56",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "GET / HTTP/1.0",
+      "ua": "Shodan-Pull/1.0",
+      "country": "France",
+      "city": "Paris",
+      "isp": "Banatsync SRL"
+    },
+    {
+      "ip": "216.180.246.100",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 14:48:27",
+      "last_seen": "2026-11-18 14:48:27",
+      "total_reqs": 1,
+      "statuses": [
+        400
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "GET / HTTP/1.0",
+      "ua": "-",
+      "country": "France",
+      "city": "Massy",
+      "isp": "Google LLC"
+    },
+    {
+      "ip": "187.17.228.241",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 14:54:56",
+      "last_seen": "2026-11-18 14:54:56",
+      "total_reqs": 1,
+      "statuses": [
+        444
+      ],
+      "attack_type": "Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP)",
+      "sample_payload": "GET /admin/config.php HTTP/1.0",
+      "ua": "ivre-masscan/1.3 https://github.com/robertdavidgraham/",
+      "country": "Brazil",
+      "city": "Rio Negrinho",
+      "isp": "SIM INTERNET PROVEDORES DE INTERNET EIRELI."
+    },
+    {
+      "ip": "66.132.186.187",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 14:56:12",
+      "last_seen": "2026-11-18 14:56:40",
+      "total_reqs": 6,
+      "statuses": [
+        400,
+        444
+      ],
+      "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 (compatible; CensysInspect/1.1; +https://ab",
+      "country": "United States",
+      "city": "Ann Arbor",
+      "isp": "Censys, Inc."
+    },
+    {
+      "ip": "34.148.112.84",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 14:58:06",
+      "last_seen": "2026-11-18 14:58:08",
+      "total_reqs": 2,
+      "statuses": [
+        301,
+        444
+      ],
+      "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 (compatible; CMS-Checker/1.0; +https://exam",
+      "country": "United States",
+      "city": "North Charleston",
+      "isp": "Google LLC"
+    },
+    {
+      "ip": "45.74.28.176",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 15:09:49",
+      "last_seen": "2026-11-18 15:09:49",
+      "total_reqs": 2,
+      "statuses": [
+        400,
+        444
+      ],
+      "attack_type": "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5",
+      "country": "The Netherlands",
+      "city": "Eygelshoven",
+      "isp": "Secure Internet LLC"
+    },
+    {
+      "ip": "66.132.159.77",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 15:50:48",
+      "last_seen": "2026-11-18 15:51:12",
+      "total_reqs": 3,
+      "statuses": [
+        400
+      ],
+      "attack_type": "Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "Mozilla/5.0 (compatible; CensysInspect/1.1; +https://ab",
+      "country": "United States",
+      "city": "Ann Arbor",
+      "isp": "Censys, Inc."
+    },
+    {
+      "ip": "47.84.109.20",
+      "day": "2026-11-18",
+      "days_active": [
+        "2026-11-18"
+      ],
+      "first_seen": "2026-11-18 16:00:35",
+      "last_seen": "2026-11-18 16:00:46",
+      "total_reqs": 3,
+      "statuses": [
+        400,
+        444
+      ],
+      "attack_type": "Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)",
+      "sample_payload": "GET / HTTP/1.1",
+      "ua": "curl/7.64.1",
+      "country": "Singapore",
+      "city": "Singapore",
+      "isp": "Alibaba.com LLC"
     }
   ]
 }

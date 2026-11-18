@@ -51,7 +51,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Space+Grotesk:wght@600;700;800&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/Style/base.css">
-  <link rel="stylesheet" href="/Style/navbar.css?v=20261118h">
+  <link rel="stylesheet" href="/Style/navbar.css?v=20261118s">
   <link rel="stylesheet" href="/Style/chat.css?v=20261118c">
   <link rel="stylesheet" href="/Style/wizard.css?v=20261117p">
   <link rel="stylesheet" href="/Style/home.css?v=20261117p">
@@ -63,7 +63,13 @@
       <span class="status-dot" id="status-dot"></span>
       <div class="masthead-title-stack">
         <h1 class="brand-title">A quién votar estas elecciones 29N</h1>
-        <span class="nav-privacy-note">NO USAMOS NI GUARDAMOS TUS DATOS</span>
+        <div class="masthead-meta-row">
+          <span class="nav-privacy-note">NO USAMOS NI GUARDAMOS TUS DATOS</span>
+          <a href="/secure" class="nav-visitors-badge" title="Contador exclusivo de visitantes humanos reales (sin bots) · Ver panel de seguridad SOC (/secure)">
+            <span>VISITANTES:</span>
+            <strong class="js-visitors-count">63</strong>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -436,6 +442,9 @@
           <a class="footer-privacy-btn" href="/metodologia.html">
             ALGORITMO Y BAREMOS DE CÁLCULO &rarr;
           </a>
+          <a class="footer-privacy-btn" href="/secure">
+            MONITOR SOC DE SEGURIDAD Y ATAQUES (/SECURE) &rarr;
+          </a>
         </div>
       </div>
 
@@ -490,5 +499,6 @@
   <script src="/js/comparator_view.js?v=20261118c"></script>
   <script src="/js/promises_view.js?v=20261118d"></script>
   <script src="/js/chat.js?v=20261117q"></script>
+  <script src="/js/visitors_counter.js?v=20261118s"></script>
 </body>
 </html>

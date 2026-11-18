@@ -34,7 +34,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Space+Grotesk:wght@600;700;800&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/Style/base.css">
-  <link rel="stylesheet" href="/Style/navbar.css?v=20261118h">
+  <link rel="stylesheet" href="/Style/navbar.css?v=20261118s">
   <link rel="stylesheet" href="/Style/chat.css?v=20261118c">
   <link rel="stylesheet" href="/Style/wizard.css?v=20261117p">
 </head>
@@ -45,7 +45,13 @@
       <span class="status-dot"></span>
       <div class="masthead-title-stack">
         <h1 class="brand-title">Transparencia del Algoritmo · 29N</h1>
-        <span class="nav-privacy-note">NO USAMOS NI GUARDAMOS TUS DATOS</span>
+        <div class="masthead-meta-row">
+          <span class="nav-privacy-note">NO USAMOS NI GUARDAMOS TUS DATOS</span>
+          <a href="/secure" class="nav-visitors-badge" title="Contador exclusivo de visitantes humanos reales (sin bots) · Ver panel de seguridad SOC (/secure)">
+            <span>VISITANTES:</span>
+            <strong class="js-visitors-count">63</strong>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -173,5 +179,6 @@
     </article>
   </main>
 
+  <script src="/js/visitors_counter.js?v=20261118s"></script>
 </body>
 </html>

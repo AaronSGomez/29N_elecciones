@@ -1,8 +1,9 @@
 # Informe de Ataques y Auditoría de Seguridad (SOC 24h) — Elecciones 29N
 
-- **Última actualización de auditoría (Ciclo 24h)**: `2026-11-18 10:15:37 CET`
-- **Total IPs Atacantes Identificadas y Bloqueadas**: **292 IPs únicas** + **7 subredes CIDR de escaneo masivo** (`1151` peticiones maliciosas interceptadas)
+- **Última actualización de auditoría (Ciclo 24h)**: `2026-11-18 16:06:12 CET`
+- **Total IPs Atacantes Identificadas y Bloqueadas**: **361 IPs únicas** + **7 subredes CIDR de escaneo masivo** (`1287` peticiones maliciosas interceptadas)
 - **Estado del Sistema**: **SECURIZADO** — Bloqueo activo en capa de red (`iptables` cadenas `DOCKER-USER` e `INPUT` -> `BLOCKLIST_29N`) y en capa de aplicación (`/etc/nginx/conf.d/00_blocklist_ips.conf` + reglas anti-exploit en `29n_elecciones.conf`).
+- **Panel Web Público en Vivo**: Disponible en `/secure` (`frontend/secure.html`), alimentado por `frontend/data/soc_public.json`.
 
 ---
 
@@ -10,12 +11,12 @@
 
 | Tipo de Ataque | IPs Únicas | Peticiones Interceptadas | Mitigación Aplicada |
 | :--- | :---: | :---: | :--- |
-| **Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)** | 146 | 343 | Drop en Firewall (`BLOCKLIST_29N`) + Cierre TCP `444` en Nginx |
-| **Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)** | 35 | 62 | Drop en Firewall (`BLOCKLIST_29N`) + Cierre TCP `444` en Nginx |
-| **Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP)** | 33 | 139 | Drop en Firewall (`BLOCKLIST_29N`) + Cierre TCP `444` en Nginx |
-| **Fuzzing TLS / Handshake Corrupto (HTTP 400)** | 20 | 44 | Drop en Firewall (`BLOCKLIST_29N`) + Cierre TCP `444` en Nginx |
-| **Robo de Secretos / Repositorios (.env, .git, .kube)** | 18 | 389 | Drop en Firewall (`BLOCKLIST_29N`) + Cierre TCP `444` en Nginx |
-| **Explotación CMS / WordPress (wp-login, xmlrpc)** | 17 | 41 | Drop en Firewall (`BLOCKLIST_29N`) + Cierre TCP `444` en Nginx |
+| **Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)** | 161 | 363 | Drop en Firewall (`BLOCKLIST_29N`) + Cierre TCP `444` en Nginx |
+| **Explotación CMS / WordPress (wp-login, xmlrpc)** | 54 | 88 | Drop en Firewall (`BLOCKLIST_29N`) + Cierre TCP `444` en Nginx |
+| **Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots)** | 42 | 80 | Drop en Firewall (`BLOCKLIST_29N`) + Cierre TCP `444` en Nginx |
+| **Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP)** | 37 | 145 | Drop en Firewall (`BLOCKLIST_29N`) + Cierre TCP `444` en Nginx |
+| **Fuzzing TLS / Handshake Corrupto (HTTP 400)** | 25 | 50 | Drop en Firewall (`BLOCKLIST_29N`) + Cierre TCP `444` en Nginx |
+| **Robo de Secretos / Repositorios (.env, .git, .kube)** | 19 | 428 | Drop en Firewall (`BLOCKLIST_29N`) + Cierre TCP `444` en Nginx |
 | **Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB)** | 14 | 84 | Drop en Firewall (`BLOCKLIST_29N`) + Cierre TCP `444` en Nginx |
 | **Abuso de Proxy Abierto / SOCKS / WebDAV (CONNECT, PROPFIND)** | 9 | 49 | Drop en Firewall (`BLOCKLIST_29N`) + Cierre TCP `444` en Nginx |
 
@@ -25,34 +26,38 @@
 
 | País de Origen | IPs Atacantes | % sobre el Total |
 | :--- | :---: | :---: |
-| **United States** | 121 | 41.4% |
-| **The Netherlands** | 27 | 9.2% |
-| **Germany** | 24 | 8.2% |
-| **Belgium** | 18 | 6.2% |
-| **China** | 12 | 4.1% |
-| **Poland** | 11 | 3.8% |
-| **Hong Kong** | 11 | 3.8% |
-| **United Kingdom** | 9 | 3.1% |
-| **Canada** | 5 | 1.7% |
-| **France** | 5 | 1.7% |
-| **Switzerland** | 3 | 1.0% |
-| **Spain** | 3 | 1.0% |
-| **Sweden** | 2 | 0.7% |
-| **Singapore** | 2 | 0.7% |
-| **Brazil** | 2 | 0.7% |
-| **Russia** | 2 | 0.7% |
-| **Türkiye** | 2 | 0.7% |
-| **United Arab Emirates** | 2 | 0.7% |
-| **Indonesia** | 2 | 0.7% |
-| **Finland** | 2 | 0.7% |
-| **Ukraine** | 2 | 0.7% |
-| **India** | 2 | 0.7% |
+| **United States** | 137 | 38.0% |
+| **Germany** | 31 | 8.6% |
+| **The Netherlands** | 30 | 8.3% |
+| **Belgium** | 18 | 5.0% |
+| **China** | 12 | 3.3% |
+| **Poland** | 11 | 3.0% |
+| **Hong Kong** | 11 | 3.0% |
+| **United Kingdom** | 9 | 2.5% |
+| **France** | 9 | 2.5% |
+| **Brazil** | 6 | 1.7% |
+| **Russia** | 6 | 1.7% |
+| **Canada** | 5 | 1.4% |
+| **Indonesia** | 5 | 1.4% |
+| **Argentina** | 5 | 1.4% |
+| **Bangladesh** | 5 | 1.4% |
+| **Switzerland** | 4 | 1.1% |
+| **Singapore** | 3 | 0.8% |
+| **Spain** | 3 | 0.8% |
+| **Pakistan** | 3 | 0.8% |
+| **Türkiye** | 3 | 0.8% |
+| **India** | 3 | 0.8% |
+| **Sweden** | 2 | 0.6% |
+| **United Arab Emirates** | 2 | 0.6% |
+| **Finland** | 2 | 0.6% |
+| **South Africa** | 2 | 0.6% |
+| **Ukraine** | 2 | 0.6% |
+| **Mexico** | 2 | 0.6% |
 | **Israel** | 1 | 0.3% |
 | **Slovenia** | 1 | 0.3% |
 | **Kazakhstan** | 1 | 0.3% |
 | **Qatar** | 1 | 0.3% |
 | **Norway** | 1 | 0.3% |
-| **Pakistan** | 1 | 0.3% |
 | **Bulgaria** | 1 | 0.3% |
 | **Chile** | 1 | 0.3% |
 | **Netherlands** | 1 | 0.3% |
@@ -60,16 +65,24 @@
 | **Romania** | 1 | 0.3% |
 | **Costa Rica** | 1 | 0.3% |
 | **Czechia** | 1 | 0.3% |
-| **Argentina** | 1 | 0.3% |
 | **Italy** | 1 | 0.3% |
 | **Croatia** | 1 | 0.3% |
 | **Latvia** | 1 | 0.3% |
-| **South Africa** | 1 | 0.3% |
 | **Seychelles** | 1 | 0.3% |
 | **Colombia** | 1 | 0.3% |
 | **Burkina Faso** | 1 | 0.3% |
 | **Iraq** | 1 | 0.3% |
 | **Malaysia** | 1 | 0.3% |
+| **Trinidad and Tobago** | 1 | 0.3% |
+| **Philippines** | 1 | 0.3% |
+| **Oman** | 1 | 0.3% |
+| **Algeria** | 1 | 0.3% |
+| **Nepal** | 1 | 0.3% |
+| **Uzbekistan** | 1 | 0.3% |
+| **Palestine** | 1 | 0.3% |
+| **South Korea** | 1 | 0.3% |
+| **Tunisia** | 1 | 0.3% |
+| **Barbados** | 1 | 0.3% |
 
 ---
 
@@ -77,92 +90,161 @@
 
 | Subred CIDR | País / Red | Motivo del Bloqueo de Rango Completo |
 | :--- | :--- | :--- |
-| `45.138.12.0/24` | Países Bajos / Rusia (Hosting) | Escaneo coordinado rotando IPs (`.6`, `.16`, `.42`, `.216`, `.217`) buscando `/.env`, `/.git/config` y `/.svn` |
-| `89.248.171.0/24` | Países Bajos (Quasi Networks) | Escaneo masivo de puertos y fuzzing HTTP `400` |
-| `89.248.172.0/24` | Países Bajos (Quasi Networks) | Escaneo masivo de vulnerabilidades (`.11`, `.33`) |
-| `89.248.173.0/24` | Países Bajos (Quasi Networks) | Sondeo automatizado distribuido (`.160`, `.161`) |
-| `198.235.24.0/24` | Estados Unidos ( Palo Alto / Censys ) | Inyección de handshakes TLS malformados (`.143`, `.251`) |
-| `91.92.40.0/24` | Bulgaria (Hosting malicioso) | Sondeo continuo mediante `POST /` y escaneo de paneles (`.12`, `.236`) |
-| `35.210.0.0/16` | Francia / Bélgica (GCP Botnet) | Inyección de protocolos binarios `NTLMSSP`, `admin.$cmd` (MongoDB) y TLS corrupto |
+| `45.138.12.0/24` | Países Bajos / Rusia (Hosting) | Escaneo coordinado rotando IPs buscando /.env, /.git/config y /.svn |
+| `89.248.171.0/24` | Países Bajos (Quasi Networks) | Escaneo masivo de puertos y fuzzing HTTP 400 |
+| `89.248.172.0/24` | Países Bajos (Quasi Networks) | Escaneo masivo de vulnerabilidades (.11, .33) |
+| `89.248.173.0/24` | Países Bajos (Quasi Networks) | Sondeo automatizado distribuido (.160, .161) |
+| `198.235.24.0/24` | Estados Unidos (Censys / Scanners) | Inyección de handshakes TLS malformados (.143, .251) |
+| `91.92.40.0/24` | Bulgaria (Hosting malicioso) | Sondeo continuo mediante POST / y escaneo de paneles (.12, .236) |
+| `35.210.0.0/16` | Francia / Bélgica (GCP Botnet) | Inyección de protocolos binarios NTLMSSP, admin.$cmd (MongoDB) y TLS corrupto |
 
 ---
 
 ## 4. Registro Detallado de Ataques por Día (País, IP y Tipo de Ataque)
 
-### 🛡️ Día 2026-11-18 (70 IPs atacantes registradas y bloqueadas)
+### 🛡️ Día 2026-11-18 (139 IPs atacantes registradas y bloqueadas)
 
 | # | País | IP Atacante | Tipo de Ataque | Hora Detección (CET) | Reqs | Vector / Muestra de Payload | Estado |
 | :-: | :--- | :--- | :--- | :--- | :-: | :--- | :--- |
 | 1 | Poland (Warsaw) | `151.115.90.240` | Robo de Secretos / Repositorios (.env, .git, .kube) | `2026-11-18 03:16:21` | 40 | `HEAD / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 2 | France (Massy) | `216.180.246.105` | Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP) | `2026-11-18 06:33:08` | 19 | `GET / HTTP/1.0` | Bloqueado (`DROP` + `444`) |
-| 3 | Canada (Toronto) | `137.184.166.170` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 08:15:00` | 9 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 4 | United States (North Charleston) | `35.231.176.11` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 08:37:11` | 4 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 5 | Seychelles (Pier Ward) | `5.181.86.60` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 08:08:25` | 4 | `\x03\x00\x00/*\xE0\x00\x00\x00\x00\x00Cookie:...` | Bloqueado (`DROP` + `444`) |
-| 6 | Belgium (Brussels) | `35.210.142.71` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 05:37:18` | 4 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 7 | Belgium (Brussels) | `35.210.216.203` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 05:14:48` | 4 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 8 | Belgium (Brussels) | `35.210.89.162` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 05:03:55` | 4 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 9 | United States (San Diego) | `71.6.167.142` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 00:44:46` | 4 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 10 | Belgium (Brussels) | `35.210.219.194` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 05:17:10` | 3 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 11 | Germany (Frankfurt am Main) | `164.90.214.124` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 02:09:24` | 3 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 12 | Hong Kong (Sheung Wan) | `45.138.12.217` | Robo de Secretos / Repositorios (.env, .git, .kube) | `2026-11-18 02:05:15` | 3 | `GET /.env HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 13 | United States (Columbus) | `18.218.118.203` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 00:43:46` | 3 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 14 | United States (Dallas) | `148.153.188.246` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 00:42:55` | 3 | `GET / HTTP/1.0` | Bloqueado (`DROP` + `444`) |
-| 15 | Colombia (Medellín) | `201.233.199.182` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:02:03` | 2 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 16 | United States (Cedar Knolls) | `172.104.215.178` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 08:49:52` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 17 | Finland (Helsinki) | `80.66.83.80` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 08:28:44` | 2 | `\x03\x00\x00/*\xE0\x00\x00\x00\x00\x00Cookie:...` | Bloqueado (`DROP` + `444`) |
-| 18 | United States (Cedar Knolls) | `45.33.90.118` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 08:17:09` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 19 | The Netherlands (Eygelshoven) | `45.74.28.158` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 06:34:08` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 20 | Belgium (Brussels) | `35.210.171.133` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 05:54:10` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 21 | United Kingdom (Poplar) | `192.248.150.180` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 04:34:58` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 22 | Hong Kong (Sheung Wan) | `45.138.12.42` | Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP) | `2026-11-18 03:31:00` | 2 | `GET /api/session/properties HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 23 | Poland (Warsaw) | `162.158.103.128` | Robo de Secretos / Repositorios (.env, .git, .kube) | `2026-11-18 03:04:49` | 2 | `GET /.git/HEAD HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 24 | Germany (Frankfurt am Main) | `104.234.112.201` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 03:00:05` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 25 | Hong Kong (Sheung Wan) | `45.138.12.216` | Robo de Secretos / Repositorios (.env, .git, .kube) | `2026-11-18 02:05:15` | 2 | `GET /.env HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 26 | Germany (Frankfurt am Main) | `104.234.112.203` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 01:40:53` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 27 | Poland (Warsaw) | `162.158.103.76` | Robo de Secretos / Repositorios (.env, .git, .kube) | `2026-11-18 01:09:49` | 2 | `GET /.git/config HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 28 | United States (Cedar Knolls) | `66.175.213.4` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 09:48:46` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 29 | United States (Santa Clara) | `205.169.39.41` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 09:34:50` | 1 | `GET /favicon.ico HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 30 | India (Kota) | `157.48.82.46` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:56` | 1 | `GET /wp-admin/ HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 31 | Malaysia (Seberang Jaya) | `180.75.242.0` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:50` | 1 | `POST /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 32 | Russia (Bishtyubinka) | `5.43.131.177` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:49` | 1 | `GET /wp-admin/ HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 33 | Ukraine (Dnipro) | `195.96.143.50` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:43` | 1 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 34 | United States (Homer Glen) | `73.111.38.11` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:43` | 1 | `POST /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 35 | India (Proddatūr) | `103.178.156.18` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:37` | 1 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 36 | Iraq (Baghdad) | `37.238.213.19` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:34` | 1 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 37 | Ukraine (Odesa) | `195.62.36.78` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:30` | 1 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 38 | Indonesia (Bekasi) | `118.137.223.102` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:02:07` | 1 | `POST /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 39 | Burkina Faso (Ouagadougou) | `102.179.207.235` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:02:03` | 1 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 40 | China (Guangzhou) | `183.204.62.122` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 08:52:34` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 41 | United States (Atlanta) | `45.79.207.110` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 08:49:30` | 1 | `\x16\x03\x01\x00u\x01\x00\x00q\x03\x03\xD2` | Bloqueado (`DROP` + `444`) |
-| 42 | United States (San Antonio) | `20.65.219.156` | Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP) | `2026-11-18 08:40:31` | 1 | `GET /ReportServer HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 43 | Singapore (Singapore) | `43.159.36.180` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 07:57:03` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 44 | United States (Santa Clara) | `43.153.54.138` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 07:53:17` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 45 | Belgium (Brussels) | `34.77.125.222` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 07:47:25` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 46 | United States (Pleasanton) | `65.49.1.24` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 07:38:14` | 1 | `\x16\x03\x01\x00{\x01\x00\x00w\x03\x03\x14J*J...` | Bloqueado (`DROP` + `444`) |
-| 47 | United States (Atlanta) | `172.105.157.139` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 07:37:08` | 1 | `GET /robots.txt HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 48 | United States (Minkler) | `47.88.94.28` | Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP) | `2026-11-18 07:27:27` | 1 | `GET /static/admin/javascript/hetong.js HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 49 | United States (Minkler) | `47.88.101.3` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 07:27:26` | 1 | `GET /Public/home/js/check.js HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 50 | United States (Santa Clara) | `47.251.11.3` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 07:27:24` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 51 | Belgium (Brussels) | `34.53.201.24` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 07:27:15` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 52 | United Kingdom (Slough) | `178.62.39.132` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 07:21:00` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 53 | United States (Cedar Knolls) | `173.255.225.25` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 07:10:58` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 54 | United States (North Bergen) | `198.199.86.152` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 05:45:18` | 1 | `GET /robots.txt HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 55 | The Netherlands (Amsterdam) | `91.92.40.236` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 05:38:22` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 56 | Belgium (Brussels) | `35.210.108.150` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 05:30:58` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 57 | United States (Des Moines) | `20.84.147.59` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 03:58:39` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 58 | United States (Pleasanton) | `199.165.159.153` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 03:33:24` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 59 | France (Gravelines) | `85.217.140.48` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 02:58:37` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 60 | United States (Ashburn) | `43.165.65.117` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 02:36:33` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 61 | Germany (Frankfurt am Main) | `49.51.141.76` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 02:33:34` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 62 | United States (North Bergen) | `159.223.98.198` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 02:32:20` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 63 | The Netherlands (Amsterdam) | `89.248.173.161` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 02:25:17` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 64 | United States (Boydton) | `20.124.80.76` | Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP) | `2026-11-18 02:07:00` | 1 | `GET /developmentserver/metadatauploader HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 65 | Poland (Warsaw) | `172.69.155.7` | Robo de Secretos / Repositorios (.env, .git, .kube) | `2026-11-18 01:51:07` | 1 | `GET /.git/HEAD HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 66 | Poland (Warsaw) | `172.69.155.6` | Robo de Secretos / Repositorios (.env, .git, .kube) | `2026-11-18 01:51:07` | 1 | `GET /.git/config HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 67 | Belgium (Brussels) | `34.156.156.224` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 01:47:50` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 68 | The Netherlands (Amsterdam) | `89.248.173.160` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 01:34:01` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 69 | Germany (Frankfurt am Main) | `164.92.132.165` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 01:12:20` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
-| 70 | United States (Santa Clara) | `205.210.31.242` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 00:22:32` | 1 | `GET / HTTP/1.0` | Bloqueado (`DROP` + `444`) |
+| 2 | United States (Hillsboro) | `5.78.86.19` | Robo de Secretos / Repositorios (.env, .git, .kube) | `2026-11-18 14:04:55` | 39 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 3 | France (Massy) | `216.180.246.105` | Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP) | `2026-11-18 06:33:08` | 19 | `GET / HTTP/1.0` | Bloqueado (`DROP` + `444`) |
+| 4 | Canada (Toronto) | `137.184.166.170` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 08:15:00` | 9 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 5 | United States (Ann Arbor) | `66.132.186.187` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 14:56:12` | 6 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 6 | Switzerland (Zurich) | `20.203.179.237` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 14:21:58` | 4 | `GET /wp-content/plugins/hellopress/wp_fileman...` | Bloqueado (`DROP` + `444`) |
+| 7 | United States (North Charleston) | `35.231.176.11` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 08:37:11` | 4 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 8 | Seychelles (Pier Ward) | `5.181.86.60` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 08:08:25` | 4 | `\x03\x00\x00/*\xE0\x00\x00\x00\x00\x00Cookie:...` | Bloqueado (`DROP` + `444`) |
+| 9 | Belgium (Brussels) | `35.210.142.71` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 05:37:18` | 4 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 10 | Belgium (Brussels) | `35.210.216.203` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 05:14:48` | 4 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 11 | Belgium (Brussels) | `35.210.89.162` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 05:03:55` | 4 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 12 | United States (San Diego) | `71.6.167.142` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 00:44:46` | 4 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 13 | Singapore (Singapore) | `47.84.109.20` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 16:00:35` | 3 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 14 | United States (Ann Arbor) | `66.132.159.77` | Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP) | `2026-11-18 15:50:48` | 3 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 15 | United States (Chicago) | `185.180.141.37` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 12:00:32` | 3 | `POST /mcp HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 16 | United States (Chicago) | `185.180.141.39` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 12:00:00` | 3 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 17 | Belgium (Brussels) | `35.210.219.194` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 05:17:10` | 3 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 18 | Germany (Frankfurt am Main) | `164.90.214.124` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 02:09:24` | 3 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 19 | Hong Kong (Sheung Wan) | `45.138.12.217` | Robo de Secretos / Repositorios (.env, .git, .kube) | `2026-11-18 02:05:15` | 3 | `GET /.env HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 20 | United States (Columbus) | `18.218.118.203` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 00:43:46` | 3 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 21 | United States (Dallas) | `148.153.188.246` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 00:42:55` | 3 | `GET / HTTP/1.0` | Bloqueado (`DROP` + `444`) |
+| 22 | The Netherlands (Eygelshoven) | `45.74.28.176` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 15:09:49` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 23 | United States (North Charleston) | `34.148.112.84` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 14:58:06` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 24 | Türkiye (Kahramanmaraş) | `78.174.78.67` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 14:15:13` | 2 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 25 | Barbados (Bridgetown) | `196.3.216.31` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 14:01:25` | 2 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 26 | France (Gravelines) | `85.217.140.28` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 13:34:33` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 27 | Tunisia (Aryanah) | `102.107.239.62` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 13:14:27` | 2 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 28 | United States (Los Angeles) | `172.236.228.38` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 12:56:26` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 29 | Germany (Munich) | `138.246.253.24` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 12:36:15` | 2 | `GET /robots.txt HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 30 | Brazil (Mogi das Cruzes) | `128.201.51.16` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 12:15:30` | 2 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 31 | Pakistan (Faisalabad) | `119.73.116.7` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 12:15:30` | 2 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 32 | United States (Chicago) | `185.180.141.38` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 12:00:00` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 33 | Argentina (Juan Bautista Alberdi) | `181.224.223.32` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 11:33:11` | 2 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 34 | Trinidad and Tobago (Chaguanas) | `170.84.8.243` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 10:33:14` | 2 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 35 | Colombia (Medellín) | `201.233.199.182` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:02:03` | 2 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 36 | United States (Cedar Knolls) | `172.104.215.178` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 08:49:52` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 37 | Finland (Helsinki) | `80.66.83.80` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 08:28:44` | 2 | `\x03\x00\x00/*\xE0\x00\x00\x00\x00\x00Cookie:...` | Bloqueado (`DROP` + `444`) |
+| 38 | United States (Cedar Knolls) | `45.33.90.118` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 08:17:09` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 39 | The Netherlands (Eygelshoven) | `45.74.28.158` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 06:34:08` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 40 | Belgium (Brussels) | `35.210.171.133` | Inyección Protocolo Binario (RDP / SMB NTLM / MongoDB) | `2026-11-18 05:54:10` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 41 | United Kingdom (Poplar) | `192.248.150.180` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 04:34:58` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 42 | Hong Kong (Sheung Wan) | `45.138.12.42` | Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP) | `2026-11-18 03:31:00` | 2 | `GET /api/session/properties HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 43 | Poland (Warsaw) | `162.158.103.128` | Robo de Secretos / Repositorios (.env, .git, .kube) | `2026-11-18 03:04:49` | 2 | `GET /.git/HEAD HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 44 | Germany (Frankfurt am Main) | `104.234.112.201` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 03:00:05` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 45 | Hong Kong (Sheung Wan) | `45.138.12.216` | Robo de Secretos / Repositorios (.env, .git, .kube) | `2026-11-18 02:05:15` | 2 | `GET /.env HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 46 | Germany (Frankfurt am Main) | `104.234.112.203` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 01:40:53` | 2 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 47 | Poland (Warsaw) | `162.158.103.76` | Robo de Secretos / Repositorios (.env, .git, .kube) | `2026-11-18 01:09:49` | 2 | `GET /.git/config HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 48 | Brazil (Rio Negrinho) | `187.17.228.241` | Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP) | `2026-11-18 14:54:56` | 1 | `GET /admin/config.php HTTP/1.0` | Bloqueado (`DROP` + `444`) |
+| 49 | France (Massy) | `216.180.246.100` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 14:48:27` | 1 | `GET / HTTP/1.0` | Bloqueado (`DROP` + `444`) |
+| 50 | France (Paris) | `77.239.124.252` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 14:37:56` | 1 | `GET / HTTP/1.0` | Bloqueado (`DROP` + `444`) |
+| 51 | The Netherlands (Amsterdam) | `134.122.60.26` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 14:25:38` | 1 | `SSTP_DUPLEX_POST /sra_{BA195980-CD49-458b-9E2...` | Bloqueado (`DROP` + `444`) |
+| 52 | Argentina (Tortuguitas) | `190.6.255.27` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 14:15:15` | 1 | `GET /wp-admin/ HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 53 | Argentina (Recreo) | `38.10.113.165` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 14:15:14` | 1 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 54 | Bangladesh (Mātuail) | `103.214.217.25` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 14:01:27` | 1 | `GET /wp-admin/ HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 55 | Mexico (Mexico City) | `148.222.132.44` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 14:01:25` | 1 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 56 | United States (Boydton) | `20.55.19.38` | Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP) | `2026-11-18 13:32:27` | 1 | `GET /developmentserver/metadatauploader HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 57 | Bangladesh (Muktāgācha) | `103.148.115.46` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 13:14:37` | 1 | `POST /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 58 | Bangladesh (Tangail) | `202.37.47.48` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 13:14:29` | 1 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 59 | France (Gravelines) | `91.231.89.2` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 13:03:02` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 60 | United States (Ashburn) | `43.130.116.87` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 12:57:29` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 61 | South Korea (Seoul) | `43.155.188.157` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 12:54:16` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 62 | Argentina (Río Tercero) | `201.231.231.151` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 12:18:01` | 1 | `POST /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 63 | Russia (Pushkino) | `178.212.250.74` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 12:18:00` | 1 | `GET /wp-admin/ HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 64 | United States (Chula Vista) | `68.101.216.80` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 12:17:54` | 1 | `POST /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 65 | Indonesia (Ploso) | `103.88.170.227` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 12:17:54` | 1 | `GET /wp-admin/ HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 66 | Brazil (Palhoça) | `45.166.205.172` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 12:17:47` | 1 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 67 | Bangladesh (Bherāmāra) | `103.181.162.96` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 12:17:46` | 1 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 68 | Palestine (Hebron) | `82.205.66.16` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 12:17:40` | 1 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 69 | South Africa (Johannesburg) | `197.185.184.48` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 12:17:40` | 1 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 70 | Uzbekistan (Tashkent) | `213.230.78.204` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 12:15:34` | 1 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 71 | Russia (Perm) | `37.79.174.223` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 12:15:32` | 1 | `POST /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 72 | Indonesia (Bogor) | `103.83.93.255` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 12:15:31` | 1 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 73 | Mexico (Jacona de Plancarte) | `189.135.152.193` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 12:15:31` | 1 | `POST /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 74 | United States (Des Moines) | `20.118.235.80` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 11:54:53` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 75 | United States (Waltham) | `154.12.2.130` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 11:53:44` | 1 | `GET /redfish/v1/ HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 76 | Brazil (Palmital) | `186.219.234.148` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 11:50:41` | 1 | `POST /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 77 | India (Jaipur) | `106.205.153.227` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 11:50:36` | 1 | `GET /wp-admin/ HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 78 | Nepal (Itahari) | `103.191.131.237` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 11:50:28` | 1 | `GET /wp-admin/ HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 79 | Russia (St Petersburg) | `104.28.196.110` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 11:50:17` | 1 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 80 | Bangladesh (Chittagong) | `103.135.252.132` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 11:50:16` | 1 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 81 | Russia (Nizhnevartovsk) | `178.72.99.85` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 11:50:09` | 1 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 82 | Algeria (Sétif) | `105.108.75.158` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 11:50:08` | 1 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 83 | United States (San Antonio) | `40.124.80.46` | Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP) | `2026-11-18 11:49:37` | 1 | `GET /owa/auth/x.js HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 84 | United States (Pleasanton) | `199.165.159.69` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 11:43:54` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 85 | United States (Pleasanton) | `199.165.159.65` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 11:40:04` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 86 | Indonesia (Jember) | `103.224.65.70` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 11:33:17` | 1 | `GET /wp-admin/ HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 87 | Oman (Muscat) | `37.41.212.223` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 11:33:11` | 1 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 88 | Germany (Frankfurt am Main) | `194.88.98.117` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 11:26:18` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 89 | Germany (Frankfurt am Main) | `69.5.169.183` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 11:26:18` | 1 | `\x00\x0E8,\x08\xC8\xAF,7\x80\x0F\x00\x00\x00\...` | Bloqueado (`DROP` + `444`) |
+| 90 | Germany (Frankfurt am Main) | `69.5.169.133` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 11:26:18` | 1 | `\x16\x03\x01\x02\x9F\x01\x00\x02\x9B\x03\x03x...` | Bloqueado (`DROP` + `444`) |
+| 91 | Germany (Frankfurt am Main) | `69.5.169.170` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 11:26:18` | 1 | `\x16\x03\x01\x02\x90\x01\x00\x02\x8C\x03\x03I...` | Bloqueado (`DROP` + `444`) |
+| 92 | Germany (Frankfurt am Main) | `69.5.169.181` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 11:26:18` | 1 | `\x16\x03\x01\x02\xA2\x01\x00\x02\x9E\x03\x03Q...` | Bloqueado (`DROP` + `444`) |
+| 93 | Germany (Frankfurt am Main) | `69.5.169.234` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 11:26:18` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 94 | The Netherlands (Amsterdam) | `193.176.31.226` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 11:26:09` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 95 | Philippines (Makati City) | `119.92.52.91` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 10:33:16` | 1 | `POST /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 96 | Pakistan (Lahore) | `39.37.170.229` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 10:33:15` | 1 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 97 | United States (Cedar Knolls) | `66.175.213.4` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 09:48:46` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 98 | United States (Santa Clara) | `205.169.39.41` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 09:34:50` | 1 | `GET /favicon.ico HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 99 | India (Kota) | `157.48.82.46` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:56` | 1 | `GET /wp-admin/ HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 100 | Malaysia (Seberang Jaya) | `180.75.242.0` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:50` | 1 | `POST /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 101 | Russia (Bishtyubinka) | `5.43.131.177` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:49` | 1 | `GET /wp-admin/ HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 102 | Ukraine (Dnipro) | `195.96.143.50` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:43` | 1 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 103 | United States (Homer Glen) | `73.111.38.11` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:43` | 1 | `POST /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 104 | India (Proddatūr) | `103.178.156.18` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:37` | 1 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 105 | Iraq (Baghdad) | `37.238.213.19` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:34` | 1 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 106 | Ukraine (Odesa) | `195.62.36.78` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:26:30` | 1 | `GET /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 107 | Indonesia (Bekasi) | `118.137.223.102` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:02:07` | 1 | `POST /xmlrpc.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 108 | Burkina Faso (Ouagadougou) | `102.179.207.235` | Explotación CMS / WordPress (wp-login, xmlrpc) | `2026-11-18 09:02:03` | 1 | `GET /wp-login.php HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 109 | China (Guangzhou) | `183.204.62.122` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 08:52:34` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 110 | United States (Atlanta) | `45.79.207.110` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 08:49:30` | 1 | `\x16\x03\x01\x00u\x01\x00\x00q\x03\x03\xD2` | Bloqueado (`DROP` + `444`) |
+| 111 | United States (San Antonio) | `20.65.219.156` | Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP) | `2026-11-18 08:40:31` | 1 | `GET /ReportServer HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 112 | Singapore (Singapore) | `43.159.36.180` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 07:57:03` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 113 | United States (Santa Clara) | `43.153.54.138` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 07:53:17` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 114 | Belgium (Brussels) | `34.77.125.222` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 07:47:25` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 115 | United States (Pleasanton) | `65.49.1.24` | Fuzzing TLS / Handshake Corrupto (HTTP 400) | `2026-11-18 07:38:14` | 1 | `\x16\x03\x01\x00{\x01\x00\x00w\x03\x03\x14J*J...` | Bloqueado (`DROP` + `444`) |
+| 116 | United States (Atlanta) | `172.105.157.139` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 07:37:08` | 1 | `GET /robots.txt HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 117 | United States (Minkler) | `47.88.94.28` | Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP) | `2026-11-18 07:27:27` | 1 | `GET /static/admin/javascript/hetong.js HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 118 | United States (Minkler) | `47.88.101.3` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 07:27:26` | 1 | `GET /Public/home/js/check.js HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 119 | United States (Santa Clara) | `47.251.11.3` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 07:27:24` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 120 | Belgium (Brussels) | `34.53.201.24` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 07:27:15` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 121 | United Kingdom (Slough) | `178.62.39.132` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 07:21:00` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 122 | United States (Cedar Knolls) | `173.255.225.25` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 07:10:58` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 123 | United States (North Bergen) | `198.199.86.152` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 05:45:18` | 1 | `GET /robots.txt HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 124 | The Netherlands (Amsterdam) | `91.92.40.236` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 05:38:22` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 125 | Belgium (Brussels) | `35.210.108.150` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 05:30:58` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 126 | United States (Des Moines) | `20.84.147.59` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 03:58:39` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 127 | United States (Pleasanton) | `199.165.159.153` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 03:33:24` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 128 | France (Gravelines) | `85.217.140.48` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 02:58:37` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 129 | United States (Ashburn) | `43.165.65.117` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 02:36:33` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 130 | Germany (Frankfurt am Main) | `49.51.141.76` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 02:33:34` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 131 | United States (North Bergen) | `159.223.98.198` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 02:32:20` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 132 | The Netherlands (Amsterdam) | `89.248.173.161` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 02:25:17` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 133 | United States (Boydton) | `20.124.80.76` | Exploit RCE / Paneles Admin (Hikvision SDK, Cisco, OWA, PHP) | `2026-11-18 02:07:00` | 1 | `GET /developmentserver/metadatauploader HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 134 | Poland (Warsaw) | `172.69.155.7` | Robo de Secretos / Repositorios (.env, .git, .kube) | `2026-11-18 01:51:07` | 1 | `GET /.git/HEAD HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 135 | Poland (Warsaw) | `172.69.155.6` | Robo de Secretos / Repositorios (.env, .git, .kube) | `2026-11-18 01:51:07` | 1 | `GET /.git/config HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 136 | Belgium (Brussels) | `34.156.156.224` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 01:47:50` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 137 | The Netherlands (Amsterdam) | `89.248.173.160` | Escaneo Directo a IP / Sondeo de Host (HTTP 444/400) | `2026-11-18 01:34:01` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 138 | Germany (Frankfurt am Main) | `164.92.132.165` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 01:12:20` | 1 | `GET / HTTP/1.1` | Bloqueado (`DROP` + `444`) |
+| 139 | United States (Santa Clara) | `205.210.31.242` | Escáner Automatizado de Vulnerabilidades (ZGrab, Censys, Bots) | `2026-11-18 00:22:32` | 1 | `GET / HTTP/1.0` | Bloqueado (`DROP` + `444`) |
 
 ### 🛡️ Día 2026-11-17 (214 IPs atacantes registradas y bloqueadas)
 

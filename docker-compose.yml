@@ -42,6 +42,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    volumes:
+      - ./frontend/data:/app/frontend/data
     ports:
       - "127.0.0.1:${APP_PORT}:${APP_PORT}"
     depends_on:

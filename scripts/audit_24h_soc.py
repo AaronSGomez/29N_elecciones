@@ -1,31 +1,56 @@
 #!/usr/bin/env python3
 """
-Auditoría SOC 24h — 29N Elecciones
-----------------------------------
-Conecta por SSH a la Raspberry Pi 5 (usando variables de .env), analiza los logs
-de rpi_nginx_proxy, separa usuarios legítimos del test frente a intentos de ataque,
-geolocaliza País/Ciudad/ISP, bloquea automáticamente las IPs atacantes en iptables
-(DOCKER-USER / INPUT -> BLOCKLIST_29N) y Nginx (00_blocklist_ips.conf), y actualiza:
-  1. docs/INFORME_USUARIOS_POR_DIA.md
-  2. docs/INFORME_ATAQUES_SEGURIDAD.md
-  3. docs/registro_usuarios_29n.json
+Auditoría SOC 24h y Traductor JSON Público — 29N Elecciones
+-----------------------------------------------------------
+Funciona tanto en modo remoto (Windows -> SSH Raspberry Pi usando .env)
+como en modo local dentro de la propia Raspberry Pi (cron 24/7).
+
+1. Analiza los logs de rpi_nginx_proxy.
+2. Filtra estrictamente visitantes humanos reales (0 bots, 0 crawlers, 0 admin).
+3. Detecta, clasifica y geolocaliza todas las IPs atacantes (País, Ciudad, ISP, Tipo).
+4. Bloquea automáticamente las IPs/subredes maliciosas en iptables (BLOCKLIST_29N) y Nginx.
+5. Genera el traductor JSON público (frontend/data/soc_public.json) sin exponer jamás
+   las IPs de los visitantes humanos.
+6. Actualiza docs/INFORME_USUARIOS_POR_DIA.md, docs/INFORME_ATAQUES_SEGURIDAD.md
+   y docs/registro_usuarios_29n.json.
 """
 
 from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
 import ipaddress
 import json
-from pathlib import Path
 import os
+from pathlib import Path
 import re
+import subprocess
+import sys
 import time
 import urllib.request
-import paramiko
-from dotenv import load_dotenv
+
+def load_env_file(env_path: Path) -> None:
+    """Carga variables de .env usando solo la librería estándar (compatible con cron en Pi sin pip)."""
+    try:
+        from dotenv import load_dotenv
+
+        load_dotenv(env_path)
+        return
+    except ImportError:
+        pass
+
+    if not env_path.exists():
+        return
+    for raw in env_path.read_text(encoding="utf-8", errors="replace").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, v = line.split("=", 1)
+        os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DOCS_DIR = ROOT_DIR / "docs"
+FRONTEND_DATA_DIR = ROOT_DIR / "frontend" / "data"
 JSON_DB_PATH = DOCS_DIR / "registro_usuarios_29n.json"
+PUBLIC_JSON_PATH = FRONTEND_DATA_DIR / "soc_public.json"
 USERS_MD_PATH = DOCS_DIR / "INFORME_USUARIOS_POR_DIA.md"
 ATTACKS_MD_PATH = DOCS_DIR / "INFORME_ATAQUES_SEGURIDAD.md"
 
@@ -34,13 +59,41 @@ LINE_RE = re.compile(
 )
 
 ATTACKER_CIDRS = [
-    "45.138.12.0/24",
-    "89.248.171.0/24",
-    "89.248.172.0/24",
-    "89.248.173.0/24",
-    "198.235.24.0/24",
-    "91.92.40.0/24",
-    "35.210.0.0/16",
+    {
+        "cidr": "45.138.12.0/24",
+        "origin": "Países Bajos / Rusia (Hosting)",
+        "reason": "Escaneo coordinado rotando IPs buscando /.env, /.git/config y /.svn",
+    },
+    {
+        "cidr": "89.248.171.0/24",
+        "origin": "Países Bajos (Quasi Networks)",
+        "reason": "Escaneo masivo de puertos y fuzzing HTTP 400",
+    },
+    {
+        "cidr": "89.248.172.0/24",
+        "origin": "Países Bajos (Quasi Networks)",
+        "reason": "Escaneo masivo de vulnerabilidades (.11, .33)",
+    },
+    {
+        "cidr": "89.248.173.0/24",
+        "origin": "Países Bajos (Quasi Networks)",
+        "reason": "Sondeo automatizado distribuido (.160, .161)",
+    },
+    {
+        "cidr": "198.235.24.0/24",
+        "origin": "Estados Unidos (Censys / Scanners)",
+        "reason": "Inyección de handshakes TLS malformados (.143, .251)",
+    },
+    {
+        "cidr": "91.92.40.0/24",
+        "origin": "Bulgaria (Hosting malicioso)",
+        "reason": "Sondeo continuo mediante POST / y escaneo de paneles (.12, .236)",
+    },
+    {
+        "cidr": "35.210.0.0/16",
+        "origin": "Francia / Bélgica (GCP Botnet)",
+        "reason": "Inyección de protocolos binarios NTLMSSP, admin.$cmd (MongoDB) y TLS corrupto",
+    },
 ]
 
 
@@ -135,19 +188,35 @@ def classify_attack_type(reqs: list[str], uas: list[str]) -> str:
     return "Escaneo Directo a IP / Sondeo de Host (HTTP 444/400)"
 
 
-def main() -> None:
-    load_dotenv(ROOT_DIR / ".env")
-    pi_host = os.environ["PI_HOST"]
-    pi_port = int(os.environ.get("PI_PORT", "22"))
-    pi_user = os.environ["PI_USER"]
-    pi_password = os.environ["PI_PASSWORD"]
+def is_local_pi() -> bool:
+    return (
+        "--local-pi" in sys.argv
+        or Path("/home/makpi5/Odoo18_AuntomatizacionesIA/docker_compose/nginx/conf.d").exists()
+    )
 
-    # Load previous geo cache if available
+
+def main() -> None:
+    load_env_file(ROOT_DIR / ".env")
+    local_mode = is_local_pi()
+
+    # Load previous geo cache AND historical users/attackers so log rotation never loses history
     geo_cache = {}
+    historical_users = {}
+    historical_attackers = {}
+
     if JSON_DB_PATH.exists():
         try:
             old_db = json.loads(JSON_DB_PATH.read_text(encoding="utf-8"))
-            for item in old_db.get("users", []) + old_db.get("attackers", []):
+            for item in old_db.get("users", []):
+                historical_users[item["ip"]] = item
+                if item.get("country") and item.get("country") != "Desconocido":
+                    geo_cache[item["ip"]] = {
+                        "country": item["country"],
+                        "city": item.get("city", "-"),
+                        "isp": item.get("isp", "-"),
+                    }
+            for item in old_db.get("attackers", []):
+                historical_attackers[item["ip"]] = item
                 if item.get("country") and item.get("country") != "Desconocido":
                     geo_cache[item["ip"]] = {
                         "country": item["country"],
@@ -157,14 +226,30 @@ def main() -> None:
         except Exception:
             pass
 
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(pi_host, port=pi_port, username=pi_user, password=pi_password, timeout=15)
+    ssh = None
+    if local_mode:
+        proc = subprocess.run(
+            ["docker", "logs", "--since", "2026-11-16T23:00:00", "rpi_nginx_proxy"],
+            capture_output=True,
+            text=True,
+            errors="replace",
+        )
+        raw_logs = (proc.stdout or "") + "\n" + (proc.stderr or "")
+    else:
+        import paramiko
 
-    _, out, _ = ssh.exec_command(
-        "docker logs --since '2026-11-16T23:00:00' rpi_nginx_proxy 2>&1"
-    )
-    raw_logs = out.read().decode("utf-8", errors="replace")
+        pi_host = os.environ["PI_HOST"]
+        pi_port = int(os.environ.get("PI_PORT", "22"))
+        pi_user = os.environ["PI_USER"]
+        pi_password = os.environ["PI_PASSWORD"]
+
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(pi_host, port=pi_port, username=pi_user, password=pi_password, timeout=15)
+        _, out, _ = ssh.exec_command(
+            "docker logs --since '2026-11-16T23:00:00' rpi_nginx_proxy 2>&1"
+        )
+        raw_logs = out.read().decode("utf-8", errors="replace")
 
     entries = []
     for raw in raw_logs.splitlines():
@@ -202,7 +287,7 @@ def main() -> None:
         "72.152.84.15",
     }
     iaodoo_users = {"5.102.169.100", "5.102.169.101", "5.102.169.102"}
-    legit_users = {}
+    legit_users = dict(historical_users)
 
     for ip, evs in sorted(since_21h_by_ip.items(), key=lambda x: x[1][0]["dt_cet"]):
         if (
@@ -216,7 +301,19 @@ def main() -> None:
             continue
         reqs = [e["req"] for e in evs]
         uas = list(set(e["ua"] for e in evs))
-        if any("LinkedInBot" in u for u in uas):
+        if any(
+            b in u
+            for u in uas
+            for b in [
+                "LinkedInBot",
+                "Googlebot",
+                "Twitterbot",
+                "TelegramBot",
+                "facebookexternalhit",
+                "bingbot",
+                "Baiduspider",
+            ]
+        ):
             social_bots.add(ip)
             continue
         has_test_js = any("ideology_test.js" in r or "profile_wizard.js" in r for r in reqs)
@@ -252,7 +349,7 @@ def main() -> None:
                 "ua": ua0,
             }
 
-    attackers = {}
+    attackers = dict(historical_attackers)
     for ip, evs in sorted(all_by_ip.items(), key=lambda x: x[1][0]["dt_cet"]):
         if (
             ip.startswith("172.19.")
@@ -375,44 +472,46 @@ def main() -> None:
     ]
     for i in range(0, len(missing_ips), 100):
         batch = missing_ips[i : i + 100]
-        payload = [
-            {"query": ip, "fields": "query,country,city,isp"} for ip in batch
-        ]
-        req = urllib.request.Request(
-            "http://ip-api.com/batch",
-            data=json.dumps(payload).encode("utf-8"),
-            headers={"Content-Type": "application/json"},
-            method="POST",
-        )
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            for item in json.loads(resp.read().decode("utf-8")):
-                geo_cache[item["query"]] = {
-                    "country": item.get("country", "Desconocido"),
-                    "city": item.get("city", "-"),
-                    "isp": item.get("isp", "-"),
-                }
-        time.sleep(0.3)
+        payload = [{"query": ip, "fields": "query,country,city,isp"} for ip in batch]
+        try:
+            req = urllib.request.Request(
+                "http://ip-api.com/batch",
+                data=json.dumps(payload).encode("utf-8"),
+                headers={"Content-Type": "application/json"},
+                method="POST",
+            )
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                for item in json.loads(resp.read().decode("utf-8")):
+                    geo_cache[item["query"]] = {
+                        "country": item.get("country", "Desconocido"),
+                        "city": item.get("city", "-"),
+                        "isp": item.get("isp", "-"),
+                    }
+            time.sleep(0.3)
+        except Exception:
+            pass
 
     for ip, u in legit_users.items():
         g = geo_cache.get(ip, {})
-        u["country"] = g.get("country", "Desconocido")
-        u["city"] = g.get("city", "-")
-        u["isp"] = g.get("isp", "-")
+        u["country"] = g.get("country", u.get("country", "Desconocido"))
+        u["city"] = g.get("city", u.get("city", "-"))
+        u["isp"] = g.get("isp", u.get("isp", "-"))
 
     for ip, a in attackers.items():
         g = geo_cache.get(ip, {})
-        a["country"] = g.get("country", "Desconocido")
-        a["city"] = g.get("city", "-")
-        a["isp"] = g.get("isp", "-")
+        a["country"] = g.get("country", a.get("country", "Desconocido"))
+        a["city"] = g.get("city", a.get("city", "-"))
+        a["isp"] = g.get("isp", a.get("isp", "-"))
 
     # Apply blocks on Pi
-    cidr_nets = [ipaddress.ip_network(c) for c in ATTACKER_CIDRS]
+    cidr_list_str = [c["cidr"] for c in ATTACKER_CIDRS]
+    cidr_nets = [ipaddress.ip_network(c) for c in cidr_list_str]
     individual_ips = [
         ip
         for ip in sorted(attackers.keys())
         if not any(ipaddress.ip_address(ip) in net for net in cidr_nets)
     ]
-    all_targets = ATTACKER_CIDRS + individual_ips
+    all_targets = cidr_list_str + individual_ips
 
     blocklist_conf = "\n".join(
         [
@@ -433,32 +532,24 @@ def main() -> None:
         ]
     ) + "\n"
 
-    sftp = ssh.open_sftp()
-    with sftp.file(
-        "/home/makpi5/Odoo18_AuntomatizacionesIA/docker_compose/nginx/conf.d/00_blocklist_ips.conf",
-        "w",
-    ) as f:
-        f.write(blocklist_conf)
-    with sftp.file("/tmp/apply_fw_29n.sh", "w") as f:
-        f.write(fw_script)
-    sftp.close()
-
-    ssh.exec_command("chmod +x /tmp/apply_fw_29n.sh && /tmp/apply_fw_29n.sh")[1].read()
-    ssh.exec_command("docker exec rpi_nginx_proxy nginx -s reload")[1].read()
-    ssh.close()
+    nginx_conf_host_path = "/home/makpi5/Odoo18_AuntomatizacionesIA/docker_compose/nginx/conf.d/00_blocklist_ips.conf"
+    if local_mode:
+        Path(nginx_conf_host_path).write_text(blocklist_conf, encoding="utf-8")
+        Path("/tmp/apply_fw_29n.sh").write_text(fw_script, encoding="utf-8")
+        subprocess.run(["chmod", "+x", "/tmp/apply_fw_29n.sh"], check=False)
+        subprocess.run(["/tmp/apply_fw_29n.sh"], check=False)
+        subprocess.run(["docker", "exec", "rpi_nginx_proxy", "nginx", "-s", "reload"], check=False)
+    elif ssh is not None:
+        sftp = ssh.open_sftp()
+        with sftp.file(nginx_conf_host_path, "w") as f:
+            f.write(blocklist_conf)
+        with sftp.file("/tmp/apply_fw_29n.sh", "w") as f:
+            f.write(fw_script)
+        sftp.close()
+        ssh.exec_command("chmod +x /tmp/apply_fw_29n.sh && /tmp/apply_fw_29n.sh")[1].read()
+        ssh.exec_command("docker exec rpi_nginx_proxy nginx -s reload")[1].read()
 
     now_str = datetime.now(timezone(timedelta(hours=1))).strftime("%Y-%m-%d %H:%M:%S")
-
-    # Save JSON DB
-    soc_db = {
-        "last_audit_cet": now_str,
-        "users_cutoff_cet": "2026-11-17 21:00:00",
-        "total_legit_users": len(legit_users),
-        "total_attacker_ips": len(attackers),
-        "users": list(legit_users.values()),
-        "attackers": list(attackers.values()),
-    }
-    JSON_DB_PATH.write_text(json.dumps(soc_db, indent=2, ensure_ascii=False), encoding="utf-8")
 
     # Group users and attackers by day
     users_by_day = defaultdict(list)
@@ -471,6 +562,125 @@ def main() -> None:
 
     all_days = sorted(set(users_by_day.keys()) | set(attacks_by_day.keys()), reverse=True)
 
+    # Save internal JSON DB
+    soc_db = {
+        "last_audit_cet": now_str,
+        "users_cutoff_cet": "2026-11-17 21:00:00",
+        "total_legit_users": len(legit_users),
+        "total_attacker_ips": len(attackers),
+        "users": list(legit_users.values()),
+        "attackers": list(attackers.values()),
+    }
+    DOCS_DIR.mkdir(parents=True, exist_ok=True)
+    JSON_DB_PATH.write_text(json.dumps(soc_db, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    # =========================================================================
+    # GENERATE PUBLIC JSON TRANSLATOR (frontend/data/soc_public.json)
+    # 0% Human IPs exposed -> Only aggregate human counter + full attacker list
+    # =========================================================================
+    country_counts = Counter(a["country"] for a in attackers.values())
+    type_counts = Counter(a["attack_type"] for a in attackers.values())
+
+    by_day_public = []
+    for d in all_days:
+        u_list = users_by_day.get(d, [])
+        a_list = attacks_by_day.get(d, [])
+        by_day_public.append(
+            {
+                "day": d,
+                "humans": len(u_list),
+                "completed_test": sum(1 for u in u_list if u["completed_bundle"]),
+                "used_comparator": sum(
+                    1 for u in u_list if u["used_comparator"] or u["used_promises"]
+                ),
+                "attacks_blocked": len(a_list),
+                "attack_reqs": sum(a["total_reqs"] for a in a_list),
+            }
+        )
+
+    sorted_attackers_public = sorted(
+        attackers.values(),
+        key=lambda x: (x["last_seen"], x["total_reqs"]),
+        reverse=True,
+    )
+
+    public_json = {
+        "last_audit_cet": now_str,
+        "visitors": {
+            "total_humans": len(legit_users),
+            "completed_test_bundle": sum(
+                1 for u in legit_users.values() if u["completed_bundle"]
+            ),
+            "used_comparator_or_promises": sum(
+                1
+                for u in legit_users.values()
+                if u["used_comparator"] or u["used_promises"]
+            ),
+            "bots_excluded_note": "Solo se contabilizan navegadores humanos reales. Bots, crawlers e IPs de administración quedan excluidos. Las IPs de visitantes legítimos jamás se publican.",
+            "by_day": by_day_public,
+        },
+        "security": {
+            "status": "ACTIVE_SHIELD",
+            "total_attacker_ips": len(attackers),
+            "total_blocked_cidrs": len(ATTACKER_CIDRS),
+            "total_malicious_requests": sum(
+                a["total_reqs"] for a in attackers.values()
+            ),
+            "by_country": [
+                {
+                    "country": c,
+                    "count": cnt,
+                    "pct": round((cnt / len(attackers)) * 100, 1) if attackers else 0.0,
+                }
+                for c, cnt in country_counts.most_common()
+            ],
+            "by_type": [
+                {
+                    "type": t,
+                    "ips": cnt,
+                    "reqs": sum(
+                        a["total_reqs"]
+                        for a in attackers.values()
+                        if a["attack_type"] == t
+                    ),
+                }
+                for t, cnt in type_counts.most_common()
+            ],
+            "blocked_cidrs": ATTACKER_CIDRS,
+            "attackers": [
+                {
+                    "ip": a["ip"],
+                    "country": a["country"],
+                    "city": a["city"],
+                    "isp": a["isp"],
+                    "attack_type": a["attack_type"],
+                    "first_seen": a["first_seen"],
+                    "last_seen": a["last_seen"],
+                    "total_reqs": a["total_reqs"],
+                    "sample_payload": a["sample_payload"],
+                    "action": "DROP + 444",
+                }
+                for a in sorted_attackers_public
+            ],
+        },
+    }
+
+    FRONTEND_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    public_json_str = json.dumps(public_json, indent=2, ensure_ascii=False)
+    PUBLIC_JSON_PATH.write_text(public_json_str, encoding="utf-8")
+
+    # If running remotely via SSH, also push soc_public.json to the Pi deployment folder if present
+    if ssh is not None:
+        try:
+            pi_deploy_dir = os.environ.get("PI_DEPLOY_DIR", "/opt/29n_elecciones")
+            sftp = ssh.open_sftp()
+            with sftp.file(f"{pi_deploy_dir}/frontend/data/soc_public.json", "w") as f:
+                f.write(public_json_str)
+            sftp.close()
+        except Exception:
+            pass
+        ssh.close()
+
     # =========================================================================
     # 1. GENERATE docs/INFORME_USUARIOS_POR_DIA.md
     # =========================================================================
@@ -479,14 +689,14 @@ def main() -> None:
         "",
         f"- **Última auditoría SOC (Ciclo 24h)**: `{now_str} CET`",
         "- **Inicio de contabilización de usuarios del test**: `2026-11-17 21:00:00 CET`",
-        f"- **Total acumulado de usuarios únicos reales**: **{len(legit_users)} usuarios** (`{sum(1 for u in legit_users.values() if u['completed_bundle'])}` con carga completa del Test de 12 Ejes y `{sum(1 for u in legit_users.values() if not u['completed_bundle'])}` aperturas parciales desde móvil)",
-        "- **Garantía de Privacidad**: El sistema **no almacena respuestas del test ni datos personales** (todo el cálculo se ejecuta en `localStorage` del navegador del usuario). Este registro únicamente contabiliza las sesiones de red a nivel de proxy para auditoría de uso frente a tráfico malicioso.",
+        f"- **Total acumulado de usuarios únicos reales (Solo Humanos)**: **{len(legit_users)} usuarios** (`{sum(1 for u in legit_users.values() if u['completed_bundle'])}` con carga completa del Test de 12 Ejes y `{sum(1 for u in legit_users.values() if not u['completed_bundle'])}` aperturas parciales desde móvil)",
+        "- **Garantía de Privacidad**: El sistema **no almacena respuestas del test ni datos personales** (todo el cálculo se ejecuta en `localStorage` del navegador del usuario). En el traductor público (`frontend/data/soc_public.json`) **jamás se exponen las IPs de los visitantes humanos**.",
         "",
         "---",
         "",
         "## 1. Balance Diario: Usuarios Legítimos vs. Intentos de Ataque",
         "",
-        "| Fecha (CET) | Usuarios Únicos (Nuevos) | Carga Completa Test 12 Ejes | Uso Comparador / Promesas | IPs Atacantes Detectadas y Bloqueadas | Peticiones de Ataque Mitigadas |",
+        "| Fecha (CET) | Usuarios Humanos (Nuevos) | Carga Completa Test 12 Ejes | Uso Comparador / Promesas | IPs Atacantes Bloqueadas | Peticiones de Ataque Mitigadas |",
         "| :---: | :---: | :---: | :---: | :---: | :---: |",
     ]
 
@@ -503,7 +713,7 @@ def main() -> None:
 
     u_md.extend(
         [
-            f"| **TOTAL ACUMULADO** | **{len(legit_users)} usuarios** | **{sum(1 for u in legit_users.values() if u['completed_bundle'])}** | **{sum(1 for u in legit_users.values() if u['used_comparator'] or u['used_promises'])}** | **{len(attackers)} IPs** | **{sum(a['total_reqs'] for a in attackers.values())} reqs** |",
+            f"| **TOTAL ACUMULADO** | **{len(legit_users)} humanos** | **{sum(1 for u in legit_users.values() if u['completed_bundle'])}** | **{sum(1 for u in legit_users.values() if u['used_comparator'] or u['used_promises'])}** | **{len(attackers)} IPs** | **{sum(a['total_reqs'] for a in attackers.values())} reqs** |",
             "",
             "---",
             "",
@@ -516,7 +726,7 @@ def main() -> None:
         u_list = users_by_day.get(d, [])
         if not u_list:
             continue
-        u_md.append(f"### 📅 Día {d} ({len(u_list)} usuarios únicos)")
+        u_md.append(f"### 📅 Día {d} ({len(u_list)} usuarios humanos únicos)")
         u_md.append("")
         u_md.append(
             "| # | IP | Primera conexión (CET) | Última actividad (CET) | País (Ciudad) | Operador (ISP) | Dispositivo | Reqs | Módulos utilizados |"
@@ -543,7 +753,7 @@ def main() -> None:
         [
             "---",
             "",
-            "## 3. Bots Oficiales de Previsualización e Indexación (Permitidos)",
+            "## 3. Bots Oficiales de Previsualización e Indexación (Excluidos del Contador Humano)",
             "",
             "| IP | Fecha/Hora (CET) | Servicio / User-Agent | Función en la plataforma |",
             "| :--- | :--- | :--- | :--- |",
@@ -557,11 +767,9 @@ def main() -> None:
             "",
             "## 4. Bitácora de Auditorías SOC (Ciclo 24h)",
             "",
-            "| Fecha/Hora Corte (CET) | Usuarios Acumulados | Atacantes Bloqueados | Acción Ejecutada |",
+            "| Fecha/Hora Corte (CET) | Usuarios Humanos | Atacantes Bloqueados | Acción Ejecutada |",
             "| :--- | :---: | :---: | :--- |",
-            f"| `{now_str}` | **{len(legit_users)}** | **{len(attackers)} IPs + 7 Subredes CIDR** | Corte inicial, geolocalización, bloqueo en `BLOCKLIST_29N` (`iptables`) + Nginx (`00_blocklist_ips.conf`) y actualización de informes. |",
-            "",
-            "> **Cómo ejecutar el siguiente corte de 24h**: `python scripts/audit_24h_soc.py`",
+            f"| `{now_str}` | **{len(legit_users)}** | **{len(attackers)} IPs + 7 Subredes CIDR** | Sincronización de traductor JSON (`soc_public.json`), bloqueo en `BLOCKLIST_29N` + Nginx y actualización de informes. |",
             "",
         ]
     )
@@ -571,15 +779,13 @@ def main() -> None:
     # =========================================================================
     # 2. GENERATE docs/INFORME_ATAQUES_SEGURIDAD.md
     # =========================================================================
-    country_counts = Counter(a["country"] for a in attackers.values())
-    type_counts = Counter(a["attack_type"] for a in attackers.values())
-
     a_md = [
         "# Informe de Ataques y Auditoría de Seguridad (SOC 24h) — Elecciones 29N",
         "",
         f"- **Última actualización de auditoría (Ciclo 24h)**: `{now_str} CET`",
         f"- **Total IPs Atacantes Identificadas y Bloqueadas**: **{len(attackers)} IPs únicas** + **7 subredes CIDR de escaneo masivo** (`{sum(a['total_reqs'] for a in attackers.values())}` peticiones maliciosas interceptadas)",
         "- **Estado del Sistema**: **SECURIZADO** — Bloqueo activo en capa de red (`iptables` cadenas `DOCKER-USER` e `INPUT` -> `BLOCKLIST_29N`) y en capa de aplicación (`/etc/nginx/conf.d/00_blocklist_ips.conf` + reglas anti-exploit en `29n_elecciones.conf`).",
+        "- **Panel Web Público en Vivo**: Disponible en `/secure` (`frontend/secure.html`), alimentado por `frontend/data/soc_public.json`.",
         "",
         "---",
         "",
@@ -620,13 +826,13 @@ def main() -> None:
             "",
             "| Subred CIDR | País / Red | Motivo del Bloqueo de Rango Completo |",
             "| :--- | :--- | :--- |",
-            "| `45.138.12.0/24` | Países Bajos / Rusia (Hosting) | Escaneo coordinado rotando IPs (`.6`, `.16`, `.42`, `.216`, `.217`) buscando `/.env`, `/.git/config` y `/.svn` |",
-            "| `89.248.171.0/24` | Países Bajos (Quasi Networks) | Escaneo masivo de puertos y fuzzing HTTP `400` |",
-            "| `89.248.172.0/24` | Países Bajos (Quasi Networks) | Escaneo masivo de vulnerabilidades (`.11`, `.33`) |",
-            "| `89.248.173.0/24` | Países Bajos (Quasi Networks) | Sondeo automatizado distribuido (`.160`, `.161`) |",
-            "| `198.235.24.0/24` | Estados Unidos ( Palo Alto / Censys ) | Inyección de handshakes TLS malformados (`.143`, `.251`) |",
-            "| `91.92.40.0/24` | Bulgaria (Hosting malicioso) | Sondeo continuo mediante `POST /` y escaneo de paneles (`.12`, `.236`) |",
-            "| `35.210.0.0/16` | Francia / Bélgica (GCP Botnet) | Inyección de protocolos binarios `NTLMSSP`, `admin.$cmd` (MongoDB) y TLS corrupto |",
+        ]
+    )
+    for c in ATTACKER_CIDRS:
+        a_md.append(f"| `{c['cidr']}` | {c['origin']} | {c['reason']} |")
+
+    a_md.extend(
+        [
             "",
             "---",
             "",
@@ -657,13 +863,8 @@ def main() -> None:
 
     ATTACKS_MD_PATH.write_text("\n".join(a_md), encoding="utf-8")
 
-    # Remove old duplicate markdown file if present
-    old_md = DOCS_DIR / "registro_usuarios_29n.md"
-    if old_md.exists():
-        old_md.unlink()
-
     print(
-        f"[OK] Auditoría SOC 24h completada: {len(legit_users)} usuarios, {len(attackers)} IPs atacantes bloqueadas."
+        f"[OK] Auditoría SOC 24h completada: {len(legit_users)} visitantes humanos, {len(attackers)} IPs atacantes bloqueadas. JSON público escrito en {PUBLIC_JSON_PATH}"
     )
 
 
