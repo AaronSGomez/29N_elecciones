@@ -195,6 +195,29 @@
   border-radius: 4px;
 }
 
+.footer-visitors-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: var(--accent-yellow);
+  color: var(--ink-primary);
+  border: 1.5px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 0.1rem 0.45rem;
+  white-space: nowrap;
+}
+
+.footer-visitors-pill strong {
+  font-weight: 900;
+  background: var(--bg-surface);
+  padding: 0 0.2rem;
+  border-radius: 3px;
+  border: 1px solid var(--border-strong);
+}
+
 .mobile-only-note {
   display: none;
 }
@@ -248,7 +271,8 @@
     font-size: 0.95rem;
     line-height: 1.15;
   }
-  .masthead-title-stack .nav-privacy-note {
+  .masthead-title-stack .nav-privacy-note,
+  .masthead-title-stack .nav-visitors-badge {
     display: none;
   }
   .nav-hamburger-btn {

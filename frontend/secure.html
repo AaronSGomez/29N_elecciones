@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Monitor SOC de Seguridad, Ataques y Visitantes · Elecciones 29N</title>
-  <meta name="description" content="Panel público de ciberseguridad SOC 24h de Elecciones 29N: contador de visitantes humanos (sin bots) y registro transparente de ataques bloqueados, IPs atacantes y países de origen.">
+  <meta name="description" content="Panel público de ciberseguridad SOC de Elecciones 29N: contador de visitantes humanos (sin bots) y registro transparente de ataques bloqueados, IPs atacantes y países de origen.">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#FBF8F1">
   <link rel="canonical" href="https://elecciones29n.duckdns.org/secure">
@@ -16,13 +16,35 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Space+Grotesk:wght@600;700;800&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/Style/base.css">
-  <link rel="stylesheet" href="/Style/navbar.css?v=20261118s">
+  <link rel="stylesheet" href="/Style/navbar.css?v=20261118t">
   <link rel="stylesheet" href="/Style/chat.css?v=20261118c">
   <link rel="stylesheet" href="/Style/wizard.css?v=20261117p">
   <style>
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    .wizard-shell,
+    .wizard-card,
+    .home-section-block,
+    .home-rule-card {
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .hero-subtitle code {
+      word-break: break-all;
+    }
+    .soc-top-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
     .soc-kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 0.9rem;
       margin: 1.1rem 0 1.4rem;
     }
@@ -32,6 +54,7 @@
       border-radius: 12px;
       padding: 0.95rem 1.05rem;
       box-shadow: 4px 4px 0px var(--border-strong);
+      min-width: 0;
     }
     .soc-kpi-card.kpi-humans {
       background: #ECFDF5;
@@ -66,20 +89,25 @@
     }
     .soc-two-col {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1.1rem;
       margin-top: 0.8rem;
     }
     .soc-bar-row {
       margin-bottom: 0.6rem;
       font-family: var(--font-mono);
-      font-size: 0.76rem;
+      font-size: 0.75rem;
+      min-width: 0;
     }
     .soc-bar-head {
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.25rem;
       font-weight: 700;
       margin-bottom: 0.2rem;
+      word-break: break-word;
     }
     .soc-bar-track {
       height: 11px;
@@ -101,6 +129,7 @@
       gap: 0.65rem;
       margin: 0.75rem 0;
       align-items: center;
+      min-width: 0;
     }
     .soc-input, .soc-select {
       font-family: var(--font-mono);
@@ -110,10 +139,23 @@
       border-radius: 8px;
       background: var(--bg-primary);
       color: var(--ink-primary);
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
     }
     .soc-input {
-      flex: 1;
-      min-width: 220px;
+      flex: 1 1 220px;
+    }
+    .soc-select {
+      flex: 0 1 260px;
+      text-overflow: ellipsis;
+    }
+    .soc-table-scroll {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 2px solid var(--border-strong);
     }
     .soc-table {
       width: 100%;
@@ -121,7 +163,6 @@
       font-family: var(--font-mono);
       font-size: 0.75rem;
       background: var(--bg-primary);
-      border: 2px solid var(--border-strong);
     }
     .soc-table th, .soc-table td {
       padding: 0.5rem 0.6rem;
@@ -146,7 +187,7 @@
     }
     .soc-payload-code {
       display: inline-block;
-      max-width: 260px;
+      max-width: 240px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -154,6 +195,77 @@
       padding: 0.1rem 0.35rem;
       border-radius: 4px;
       border: 1px solid var(--border-subtle);
+    }
+    .soc-back-nav {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .soc-back-btn {
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 900px) {
+      .soc-back-nav {
+        width: auto;
+        padding-top: 0;
+        border-top: none;
+      }
+      .soc-back-btn {
+        width: auto;
+        padding: 0.38rem 0.68rem;
+        font-size: 0.76rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .wizard-shell {
+        padding: 0 0.65rem;
+        margin: 0.85rem auto 1.5rem;
+      }
+      .wizard-card {
+        padding: 1rem 0.85rem;
+        border-width: 3px;
+        border-radius: 14px;
+      }
+      .soc-kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.55rem;
+      }
+      .soc-kpi-card {
+        padding: 0.7rem 0.75rem;
+        box-shadow: 2px 2px 0px var(--border-strong);
+      }
+      .soc-kpi-value {
+        font-size: 1.35rem;
+      }
+      .soc-kpi-label, .soc-kpi-sub {
+        font-size: 0.66rem;
+      }
+      .soc-two-col {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.75rem;
+      }
+      .soc-filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+      }
+      .soc-input, .soc-select {
+        flex: 1 1 auto;
+        width: 100%;
+        font-size: 0.76rem;
+      }
+      .soc-table {
+        font-size: 0.7rem;
+      }
+      .soc-table th, .soc-table td {
+        padding: 0.4rem 0.45rem;
+      }
+      .soc-payload-code {
+        max-width: 150px;
+      }
     }
   </style>
 </head>
@@ -167,68 +279,68 @@
         <div class="masthead-meta-row">
           <span class="nav-privacy-note">NO USAMOS NI GUARDAMOS TUS DATOS</span>
           <a href="/secure" class="nav-visitors-badge" title="Visitantes humanos reales (sin bots)">
-            <span>VISITANTES HUMANOS:</span>
+            <span>VISITANTES:</span>
             <strong class="js-visitors-count" id="soc-header-humans">63</strong>
           </a>
         </div>
       </div>
     </div>
 
-    <nav class="masthead-nav" style="display:flex;" aria-label="Volver">
-      <a class="nav-tab-btn active" href="/">← VOLVER A LA WEB PRINCIPAL</a>
+    <nav class="soc-back-nav" aria-label="Volver">
+      <a class="nav-tab-btn active soc-back-btn" href="/">← VOLVER</a>
     </nav>
   </header>
 
   <main class="wizard-shell">
     <article class="wizard-card">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
-        <div class="panel-header-tag">TELEMETRÍA DE CIBERSEGURIDAD · AUDITORÍA AUTOMÁTICA RASPBERRY PI 5</div>
-        <span style="font-family:var(--font-mono); font-size:0.75rem; font-weight:700;" id="soc-last-audit">Último corte SOC: cargando...</span>
+      <div class="soc-top-meta">
+        <div class="panel-header-tag">TELEMETRÍA DE CIBERSEGURIDAD · RASPBERRY PI 5</div>
+        <span style="font-family:var(--font-mono); font-size:0.74rem; font-weight:700;" id="soc-last-audit">Último corte SOC: cargando...</span>
       </div>
 
-      <h2 class="hero-title" style="font-size: 1.6rem; margin-top:0.35rem;">Visitantes Humanos vs. Ataques Bloqueados (IPs y Orígenes)</h2>
+      <h2 class="hero-title" style="font-size: 1.45rem; margin-top:0.35rem;">Visitantes Humanos vs. Ataques Bloqueados (IPs y Orígenes)</h2>
       <p class="hero-subtitle">
-        Esta página traduce en tiempo real el archivo <code>/data/soc_public.json</code> generado por la auditoría de seguridad en la Raspberry Pi 5.
-        <strong>Las IPs de los visitantes legítimos jamás se almacenan ni se exponen en este panel</strong> (solo se contabiliza el total numérico de humanos reales, excluyendo bots). Por el contrario, todas las <strong>IPs atacantes, escáneres de vulnerabilidades y bots maliciosos</strong> quedan registrados y bloqueados en el firewall del kernel (<code>iptables DOCKER-USER</code>) y en Nginx (<code>HTTP 444</code>).
+        Esta página traduce en tiempo real el archivo <code>/data/soc_public.json</code> generado por la auditoría automática en la Raspberry Pi 5.
+        <strong>Las IPs de los visitantes legítimos jamás se almacenan ni se exponen en este panel</strong> (solo se contabiliza el total numérico de humanos reales, excluyendo bots). Todas las <strong>IPs atacantes, escáneres de vulnerabilidades y bots maliciosos</strong> quedan registrados y bloqueados en el firewall del kernel (<code>iptables DOCKER-USER</code>) y en Nginx (<code>HTTP 444</code>).
       </p>
 
       <!-- KPIs -->
       <div class="soc-kpi-grid">
         <div class="soc-kpi-card kpi-humans">
-          <div class="soc-kpi-label">👥 Visitantes Humanos (Sin Bots)</div>
+          <div class="soc-kpi-label">👥 Visitantes Humanos</div>
           <div class="soc-kpi-value" id="kpi-total-humans">--</div>
-          <div class="soc-kpi-sub" id="kpi-sub-humans">Solo navegadores reales · 0 IPs expuestas</div>
+          <div class="soc-kpi-sub" id="kpi-sub-humans">Solo humanos · 0 IPs expuestas</div>
         </div>
         <div class="soc-kpi-card kpi-attacks">
-          <div class="soc-kpi-label">🛡️ IPs Atacantes Bloqueadas</div>
+          <div class="soc-kpi-label">🛡️ IPs Bloqueadas</div>
           <div class="soc-kpi-value" id="kpi-total-attackers">--</div>
-          <div class="soc-kpi-sub">Bloqueo en Kernel (DROP) + Nginx (444)</div>
+          <div class="soc-kpi-sub">Kernel (DROP) + Nginx (444)</div>
         </div>
         <div class="soc-kpi-card kpi-cidrs">
-          <div class="soc-kpi-label">🌐 Subredes CIDR Neutralizadas</div>
+          <div class="soc-kpi-label">🌐 Subredes CIDR</div>
           <div class="soc-kpi-value" id="kpi-total-cidrs">--</div>
-          <div class="soc-kpi-sub">Rangos completos de botnets / escáneres</div>
+          <div class="soc-kpi-sub">Rangos de botnets neutralizados</div>
         </div>
         <div class="soc-kpi-card">
-          <div class="soc-kpi-label">⚡ Peticiones Malignas Cortadas</div>
+          <div class="soc-kpi-label">⚡ Peticiones Cortadas</div>
           <div class="soc-kpi-value" id="kpi-total-reqs">--</div>
-          <div class="soc-kpi-sub">Exploits .env, .git, WordPress, RDP, NTLM</div>
+          <div class="soc-kpi-sub">Exploits .env, .git, WP, RDP, NTLM</div>
         </div>
       </div>
 
       <!-- SECCIÓN 1: BALANCE DIARIO -->
       <div class="home-section-block">
         <h3 class="home-section-title">1. Evolución Diaria: Visitantes Humanos vs. Ataques Interceptados</h3>
-        <div style="overflow-x:auto; margin-top:0.65rem;">
+        <div class="soc-table-scroll" style="margin-top:0.65rem;">
           <table class="soc-table">
             <thead>
               <tr>
                 <th>Fecha (CET)</th>
-                <th>Visitantes Humanos Reales</th>
-                <th>Test 12 Ejes Cargado</th>
-                <th>Uso Comparador / Promesas</th>
-                <th>IPs Atacantes Bloqueadas</th>
-                <th>Peticiones de Ataque Mitigadas</th>
+                <th>Visitantes Humanos</th>
+                <th>Test 12 Ejes</th>
+                <th>Comparador / Promesas</th>
+                <th>IPs Bloqueadas</th>
+                <th>Peticiones Mitigadas</th>
               </tr>
             </thead>
             <tbody id="soc-daily-tbody"></tbody>
@@ -241,11 +353,11 @@
         <h3 class="home-section-title">2. Orígenes Geográficos de los Ataques y Vectores Detectados</h3>
         <div class="soc-two-col">
           <div class="home-rule-card">
-            <h4 style="font-family:var(--font-mono); font-size:0.85rem; margin-bottom:0.75rem;">🌍 Top Países de Origen (IPs Atacantes)</h4>
+            <h4 style="font-family:var(--font-mono); font-size:0.82rem; margin-bottom:0.75rem;">🌍 Top Países de Origen (IPs Atacantes)</h4>
             <div id="soc-countries-bars"></div>
           </div>
           <div class="home-rule-card">
-            <h4 style="font-family:var(--font-mono); font-size:0.85rem; margin-bottom:0.75rem;">🎯 Distribución por Tipo de Ataque</h4>
+            <h4 style="font-family:var(--font-mono); font-size:0.82rem; margin-bottom:0.75rem;">🎯 Distribución por Tipo de Ataque</h4>
             <div id="soc-types-bars"></div>
           </div>
         </div>
@@ -254,7 +366,7 @@
       <!-- SECCIÓN 3: SUBREDES CIDR BLOQUEADAS -->
       <div class="home-section-block">
         <h3 class="home-section-title">3. Subredes CIDR Bloqueadas por Escaneo Coordinado</h3>
-        <div style="overflow-x:auto; margin-top:0.65rem;">
+        <div class="soc-table-scroll" style="margin-top:0.65rem;">
           <table class="soc-table">
             <thead>
               <tr>
@@ -272,22 +384,22 @@
       <div class="home-section-block">
         <h3 class="home-section-title">4. Registro de IPs Atacantes, Orígenes y Payloads Interceptados</h3>
         <div class="soc-filter-bar">
-          <input type="search" id="soc-search-input" class="soc-input" placeholder="Buscar por IP, país, ciudad, ISP o payload (ej. .env, Estados Unidos, China)...">
+          <input type="search" id="soc-search-input" class="soc-input" placeholder="Buscar por IP, país, ciudad, ISP o payload...">
           <select id="soc-country-filter" class="soc-select" aria-label="Filtrar por país">
             <option value="">Todos los países</option>
           </select>
           <select id="soc-type-filter" class="soc-select" aria-label="Filtrar por tipo de ataque">
             <option value="">Todos los tipos de ataque</option>
           </select>
-          <span style="font-family:var(--font-mono); font-size:0.76rem; font-weight:800;" id="soc-filter-count">Mostrando -- IPs</span>
+          <span style="font-family:var(--font-mono); font-size:0.75rem; font-weight:800;" id="soc-filter-count">Mostrando -- IPs</span>
         </div>
 
-        <div style="overflow-x:auto; max-height: 540px; overflow-y: auto; border: 2px solid var(--border-strong);">
-          <table class="soc-table" style="border:none;">
+        <div class="soc-table-scroll" style="max-height: 520px; overflow-y: auto;">
+          <table class="soc-table">
             <thead style="position: sticky; top: 0; z-index: 2;">
               <tr>
                 <th>#</th>
-                <th> País (Ciudad)</th>
+                <th>País (Ciudad)</th>
                 <th>IP Atacante</th>
                 <th>Tipo de Ataque</th>
                 <th>Red / ISP</th>
@@ -304,7 +416,81 @@
     </article>
   </main>
 
-  <script src="/js/visitors_counter.js?v=20261118s"></script>
-  <script src="/js/secure_view.js?v=20261118s"></script>
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <h4 class="footer-col-title">Programas Electorales Oficiales (PDF)</h4>
+        <div class="footer-programs-wrap">
+          <a class="footer-prog-link pp" href="https://www.pp.es/wp-content/uploads/2026/11/LA-RECONSTRUCCION-NACIONAL.pdf" target="_blank" rel="noopener noreferrer">PP (82 págs.) &nearr;</a>
+          <a class="footer-prog-link psoe" href="https://www.democrata.es/uploads/s1/35/40/05/6/programapsoe29n26.pdf" target="_blank" rel="noopener noreferrer">PSOE (114 págs.) &nearr;</a>
+          <a class="footer-prog-link vox" href="https://www.democrata.es/uploads/s1/35/26/90/2/programa-elecct-vox.pdf" target="_blank" rel="noopener noreferrer">VOX (55 págs.) &nearr;</a>
+          <a class="footer-prog-link fa" href="https://frenteamplio.info/pdf/ProgramaFrenteAmplio.pdf" target="_blank" rel="noopener noreferrer">Frente Amplio (151 págs.) &nearr;</a>
+          <a class="footer-prog-link salf" href="https://theobjective.com/wp-content/uploads/2026/11/salf.pdf" target="_blank" rel="noopener noreferrer">SALF (42 págs.) &nearr;</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Privacidad y Algoritmo Transparente</h4>
+        <p class="footer-privacy-text">
+          Perfil, test y prioridades permanecen en tu navegador. Las preguntas voluntarias del chat se envían al backend y a Groq; Nginx y FastAPI registran metadatos técnicos HTTP.
+        </p>
+        <div style="display:flex; flex-direction:column; gap:0.5rem;">
+          <button type="button" class="footer-privacy-btn" id="open-privacy-btn">
+            POLÍTICA DE PRIVACIDAD (0 % DATOS) &rarr;
+          </button>
+          <a class="footer-privacy-btn" href="/metodologia.html">
+            ALGORITMO Y BAREMOS DE CÁLCULO &rarr;
+          </a>
+          <a class="footer-privacy-btn" href="/secure" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+            <span>MONITOR SOC Y ATAQUES (/SECURE) &rarr;</span>
+            <span class="footer-visitors-pill">VISITANTES: <strong class="js-visitors-count">63</strong></span>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Autor &amp; Redes Sociales</h4>
+        <ul class="footer-link-list">
+          <li>
+            <a href="https://aaronsgomez.es" target="_blank" rel="noopener noreferrer">
+              <span>🏴‍☠️</span>
+              <span>aaronsgomez.es &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/aaronsgomez/" target="_blank" rel="noopener noreferrer">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9h2.79v8.37H6.46v-8.37M7.86 6.54a1.63 1.63 0 1 0 0 3.26 1.63 1.63 0 0 0 0-3.26z"/></svg>
+              <span>LinkedIn · Aaron S. Gómez &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/AaronSGomez" target="_blank" rel="noopener noreferrer">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              <span>GitHub @AaronSGomez &rarr;</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <div class="privacy-modal-backdrop hidden-panel" id="privacy-modal" role="dialog" aria-modal="true" aria-label="Política de privacidad">
+    <div class="privacy-modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+        <span class="panel-header-tag" style="margin:0;">TRANSPARENCIA REAL · ARQUITECTURA LOCAL-FIRST</span>
+        <button type="button" class="clear-chat-btn" id="close-privacy-btn">[ CERRAR ✕ ]</button>
+      </div>
+      <h3>Política de Privacidad y Uso de Datos</h3>
+      <ul>
+        <li><strong>Almacenamiento local (navegador):</strong> Tu perfil de 6 bloques, las respuestas del test ideológico, las preguntas de control y tus prioridades se guardan únicamente en <code>localStorage</code>. Nunca se transmiten al backend ni se guardan en PostgreSQL o Qdrant.</li>
+        <li><strong>Monitor SOC (/secure):</strong> Las IPs de los visitantes humanos reales jamás se almacenan ni se exponen públicamente; solo se muestra el contador numérico total y las IPs de atacantes/escáneres bloqueados.</li>
+      </ul>
+    </div>
+  </div>
+
+  <button type="button" id="scroll-top-btn" class="scroll-top-btn" aria-label="Volver arriba" title="Volver arriba">&uarr;</button>
+
+  <script src="/js/visitors_counter.js?v=20261118t"></script>
+  <script src="/js/secure_view.js?v=20261118t"></script>
 </body>
 </html>
