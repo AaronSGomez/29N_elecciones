@@ -24,6 +24,94 @@
     let currentPage = 1;
     let topicsCache = [];
 
+    function openProposalModal(p) {
+      const existing = document.getElementById("proposal-detail-modal");
+      if (existing) existing.remove();
+
+      const partyId = (p.party_id || "").toLowerCase();
+      const backdrop = document.createElement("div");
+      backdrop.id = "proposal-detail-modal";
+      backdrop.className = "proposal-modal-backdrop";
+      backdrop.setAttribute("role", "dialog");
+      backdrop.setAttribute("aria-modal", "true");
+
+      const modalCard = document.createElement("div");
+      modalCard.className = `proposal-modal-card party-${partyId}`;
+
+      const topBar = document.createElement("div");
+      topBar.className = "proposal-modal-header";
+
+      const meta = document.createElement("div");
+      meta.className = "proposal-modal-meta";
+      meta.textContent = `${p.party_name || partyId.toUpperCase()} · ${p.subtopic || p.topic || ""}`;
+
+      const closeBtn = document.createElement("button");
+      closeBtn.type = "button";
+      closeBtn.className = "proposal-modal-close";
+      closeBtn.setAttribute("aria-label", "Cerrar");
+      closeBtn.textContent = "✕";
+
+      function closeModal() {
+        document.removeEventListener("keydown", onEsc);
+        backdrop.remove();
+      }
+      function onEsc(e) {
+        if (e.key === "Escape") closeModal();
+      }
+
+      closeBtn.addEventListener("click", closeModal);
+      backdrop.addEventListener("click", (e) => {
+        if (e.target === backdrop) closeModal();
+      });
+      document.addEventListener("keydown", onEsc);
+
+      topBar.append(meta, closeBtn);
+
+      const body = document.createElement("div");
+      body.className = "proposal-modal-body";
+
+      const title = document.createElement("h3");
+      title.className = "proposal-modal-title";
+      title.textContent = p.title || "";
+      body.appendChild(title);
+
+      if (p.quote) {
+        const q = document.createElement("blockquote");
+        q.className = "proposal-modal-quote";
+        q.textContent = `«${p.quote}»`;
+        body.appendChild(q);
+      }
+
+      if (p.explanation) {
+        const exp = document.createElement("p");
+        exp.className = "proposal-modal-explanation";
+        exp.textContent = p.explanation;
+        body.appendChild(exp);
+      }
+
+      const footer = document.createElement("div");
+      footer.className = "proposal-modal-footer";
+
+      if (p.source_url && p.source_url.startsWith("https://")) {
+        const pdfBtn = document.createElement("a");
+        pdfBtn.className = "proposal-direct-btn";
+        pdfBtn.href = p.source_url;
+        pdfBtn.target = "_blank";
+        pdfBtn.rel = "noopener noreferrer";
+        pdfBtn.textContent = `Abrir en programa oficial (${p.source_ref || "PDF"}) ↗`;
+        footer.appendChild(pdfBtn);
+      } else if (p.source_ref) {
+        const ref = document.createElement("span");
+        ref.className = "proposal-link";
+        ref.textContent = p.source_ref;
+        footer.appendChild(ref);
+      }
+
+      modalCard.append(topBar, body, footer);
+      backdrop.appendChild(modalCard);
+      document.body.appendChild(backdrop);
+    }
+
     function getActiveParties() {
       if (!selectedParties || selectedParties.length === 0) return PARTIES;
       return PARTIES.filter((p) => selectedParties.includes(p.id));
@@ -48,7 +136,17 @@
     function buildProposalCard(p, compact) {
       const partyId = (p.party_id || "").toLowerCase();
       const block = document.createElement("article");
-      block.className = `proposal-block party-${partyId}${compact ? " compact-card" : ""}`;
+      block.className = `proposal-block comparator-clickable party-${partyId}${compact ? " compact-card" : ""}`;
+      block.tabIndex = 0;
+      block.setAttribute("role", "button");
+      block.setAttribute("aria-label", `Abrir medida completa: ${p.title || ""}`);
+      block.addEventListener("click", () => openProposalModal(p));
+      block.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openProposalModal(p);
+        }
+      });
 
       const header = document.createElement("div");
       header.className = "proposal-header";
@@ -71,6 +169,11 @@
         block.appendChild(q);
       }
 
+      const hint = document.createElement("span");
+      hint.className = "proposal-readmore-hint";
+      hint.textContent = "Pulsa para leer completa ⤢";
+      block.appendChild(hint);
+
       if (p.source_url && p.source_url.startsWith("https://")) {
         const btnLink = document.createElement("a");
         btnLink.className = "proposal-direct-btn";
@@ -78,6 +181,7 @@
         btnLink.target = "_blank";
         btnLink.rel = "noopener noreferrer";
         btnLink.textContent = `Ver medida en programa (${p.source_ref || "PDF"}) ↗`;
+        btnLink.addEventListener("click", (e) => e.stopPropagation());
         block.appendChild(btnLink);
       } else if (p.source_ref) {
         const refSpan = document.createElement("span");

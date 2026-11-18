@@ -934,23 +934,46 @@
 /* --- MATRIZ COMPARATIVA POR SUBTEMAS Y COMPARADOR 3 COLUMNAS --- */
 .comparator-cards-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.85rem;
+  gap: 0.95rem;
+}
+
+.comparator-cards-grid .proposal-block {
+  min-height: 290px;
+}
+
+.proposal-block.comparator-clickable {
+  cursor: pointer;
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+
+.proposal-block.comparator-clickable:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--border-strong);
 }
 
 .proposal-quote.comparator-clamp {
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 7;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  flex: 1;
+}
+
+.proposal-readmore-hint {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink-muted);
 }
 
 .proposal-block.compact-card {
-  padding: 0.6rem 0.7rem;
-  gap: 0.35rem;
+  padding: 0.65rem 0.75rem;
+  gap: 0.38rem;
   border-radius: 10px;
   border-width: 2px;
   border-top-width: 5px;
   box-shadow: 2px 2px 0px var(--border-strong);
+  min-height: 175px;
 }
 
 .proposal-block.compact-card .proposal-header {
@@ -963,8 +986,115 @@
 }
 
 .proposal-block.compact-card .proposal-quote.comparator-clamp {
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 4;
   font-size: 0.78rem;
+}
+
+/* Modal de lectura completa centrado en viewport (no mueve ni resetea el scroll) */
+.proposal-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(18, 19, 22, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem;
+}
+
+.proposal-modal-card {
+  width: min(100%, 640px);
+  max-height: 85dvh;
+  background: var(--bg-surface);
+  border: 3px solid var(--border-strong);
+  border-top-width: 8px;
+  border-radius: 16px;
+  box-shadow: 6px 6px 0px var(--border-strong);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.proposal-modal-card.party-pp { border-top-color: #1D4ED8; }
+.proposal-modal-card.party-psoe { border-top-color: #D92B2B; }
+.proposal-modal-card.party-vox { border-top-color: #16A34A; }
+.proposal-modal-card.party-frente-amplio { border-top-color: #7C3AED; }
+.proposal-modal-card.party-salf { border-top-color: #111111; }
+
+.proposal-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-secondary);
+  border-bottom: 2px solid var(--border-strong);
+  flex-shrink: 0;
+}
+
+.proposal-modal-meta {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--ink-primary);
+}
+
+.proposal-modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 2px solid var(--border-strong);
+  background: var(--bg-surface);
+  font-weight: 900;
+  font-size: 0.95rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.proposal-modal-close:hover {
+  background: var(--accent-yellow);
+}
+
+.proposal-modal-body {
+  padding: 1rem 1.1rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.proposal-modal-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1.3;
+  color: var(--ink-primary);
+}
+
+.proposal-modal-quote {
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  background: var(--bg-primary);
+  border-left: 4px solid var(--accent-vermilion);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--ink-primary);
+}
+
+.proposal-modal-explanation {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--ink-secondary);
+}
+
+.proposal-modal-footer {
+  padding: 0.75rem 1rem;
+  border-top: 2px solid var(--border-subtle);
+  background: var(--bg-primary);
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
 }
 
 .proposal-direct-btn {
@@ -1185,10 +1315,17 @@
   .chat-input {
     min-width: 0;
   }
-  /* En móvil mostramos solo titulares y enlace en medidas/citas */
+  /* En móvil mostramos citas cortas solo en tarjetas del comparador; ocultas en chat/veracidad */
   .proposal-quote,
   .veracity-quote,
   .veracity-detail {
     display: none !important;
+  }
+  .comparator-cards-grid .proposal-quote.comparator-clamp {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 5;
+  }
+  .comparator-cards-grid .proposal-block {
+    min-height: 215px;
   }
 }
