@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import hashlib
+import re
+import unicodedata
 from collections.abc import AsyncIterator
 from typing import Any
 from cachetools import TTLCache
@@ -29,6 +31,54 @@ OUT_OF_SCOPE_MSG = (
     "del 29N cargados en Qdrant que superen el umbral de relevancia. "
     "Por favor, pregunta sobre medidas concretas de los programas (vivienda, impuestos, sanidad, empleo, etc.)."
 )
+
+HELP_RESPONSE_MSG = (
+    "Soy el asistente documental de los programas electorales del 29N. Puedo hacer lo siguiente:\n"
+    "1. Responder preguntas concretas sobre vivienda, ocupación, impuestos, sanidad, educación, empleo, pensiones, inmigración o energía usando solo los programas oficiales de PP, PSOE, VOX, Frente Amplio, Podemos y SALF.\n"
+    "2. Comparar directamente dos o más partidos si los nombras en tu pregunta (ejemplo: \"Compara PP y Vox en vivienda\" o \"Diferencias entre PSOE y Podemos en pensiones\"), o usando los filtros de la izquierda.\n"
+    "3. Mostrar debajo de cada respuesta las tarjetas con las medidas oficiales: si pulsas en cualquiera se abre el texto completo desde PostgreSQL y el enlace directo a la página exacta del PDF.\n"
+    "Nota: No genero predicciones ni probabilidades de victoria electoral porque este asistente se limita estrictamente a las propuestas oficiales publicadas."
+)
+
+ALL_PARTY_IDS = ["pp", "psoe", "vox", "frente-amplio", "podemos", "salf"]
+
+_PARTY_TEXT_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+    ("pp", re.compile(r"\b(?:pp|partido\s+popular|populares)\b")),
+    ("psoe", re.compile(r"\b(?:psoe|socialista|socialistas)\b")),
+    ("vox", re.compile(r"\bvox\b")),
+    ("frente-amplio", re.compile(r"\b(?:frente\s+amplio|sumar)\b")),
+    ("podemos", re.compile(r"\bpodemos\b")),
+    ("salf", re.compile(r"\b(?:salf|se\s+acabo\s+la\s+fiesta|alvise)\b")),
+]
+
+_HELP_QUERY_RE = re.compile(
+    r"^(?:hola|buenas|ayuda|help|menu|menú|"
+    r"(?:que|qué)\s+(?:puedes|sabes|haces|eres|partidos\s+tienes)|"
+    r"(?:como|cómo)\s+(?:funciona|funcionas|te\s+uso|buscar)|"
+    r"para\s+qu[eé]\s+sirves|"
+    r"qu[eé]\s+es\s+esto)[?!.\s]*$"
+)
+
+
+def _strip_accents(text: str) -> str:
+    return "".join(
+        c for c in unicodedata.normalize("NFD", text.lower())
+        if unicodedata.category(c) != "Mn"
+    )
+
+
+def _detect_parties_in_query(query: str) -> list[str]:
+    norm = _strip_accents(query)
+    found: list[str] = []
+    for pid, pat in _PARTY_TEXT_PATTERNS:
+        if pat.search(norm) and pid not in found:
+            found.append(pid)
+    return found
+
+
+def _is_help_query(query: str) -> bool:
+    norm = _strip_accents(query).strip()
+    return bool(_HELP_QUERY_RE.match(norm))
 
 
 class RAGService:
@@ -69,7 +119,16 @@ class RAGService:
         topic: str | None = None,
     ) -> AsyncIterator[dict[str, Any]]:
         parties = parties or []
-        key = self._cache_key(query, parties, topic)
+        if _is_help_query(query):
+            yield {"type": "token", "content": HELP_RESPONSE_MSG}
+            yield {"type": "sources", "sources": []}
+            yield {"type": "done"}
+            return
+
+        detected_parties = _detect_parties_in_query(query) if not parties else []
+        effective_parties = parties if parties else detected_parties
+
+        key = self._cache_key(query, effective_parties, topic)
 
         if self.settings.CACHE_TTL_SECONDS > 0 and key in self.cache:
             cached = self.cache[key]
@@ -96,23 +155,24 @@ class RAGService:
         if not semantic_query:
             semantic_query = f"{query} {' '.join(merged_terms[:6])}".strip()
 
-        target_parties = parties if parties else ["pp", "psoe", "vox", "frente-amplio", "podemos", "salf"]
+        target_parties = effective_parties if effective_parties else ALL_PARTY_IDS
+        per_party_limit = 3 if (effective_parties and len(effective_parties) <= 2) else 2
         lexical_hits = await self.postgres.search_proposals_lexical(
             terms=merged_terms,
-            parties=target_parties if parties else None,
+            parties=target_parties if effective_parties else None,
             topic=topic,
-            per_party=2,
+            per_party=per_party_limit,
         )
 
-        if not parties:
+        if not effective_parties or len(effective_parties) > 1:
             hits = await self.qdrant.search_balanced(
                 query=semantic_query,
                 party_ids=target_parties,
-                per_party=2,
+                per_party=per_party_limit,
                 topic=topic,
             )
         else:
-            hits = await self.qdrant.search(query=semantic_query, parties=parties, topic=topic)
+            hits = await self.qdrant.search(query=semantic_query, parties=effective_parties, topic=topic)
 
         # Hidratar registros completos desde PostgreSQL usando los IDs devueltos por Qdrant
         hit_ids = [h["id"] for h in hits]
@@ -135,7 +195,7 @@ class RAGService:
             if not row:
                 continue
             pid = row["party_id"]
-            if not parties and per_party_count.get(pid, 0) >= 2:
+            if (not effective_parties or len(effective_parties) > 1) and per_party_count.get(pid, 0) >= per_party_limit:
                 continue
 
             haystack = f"{row.get('title', '')} {row.get('quote', '')} {row.get('explanation', '')} {row.get('subtopic', '')}".lower()
