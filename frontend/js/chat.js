@@ -17,7 +17,7 @@
   let isStreaming = false;
 
   function updateScopeBadge() {
-    const pText = selectedParties.length === 0 ? "TODOS (PP · PSOE · VOX · FA · SALF)" : selectedParties.join(" · ").toUpperCase();
+    const pText = selectedParties.length === 0 ? "TODOS (PP · PSOE · VOX · FA · PODEMOS · SALF)" : selectedParties.join(" · ").toUpperCase();
     const tText = selectedTopic ? ` // TEMA: ${selectedTopic.toUpperCase()}` : "";
     scopeBadge.textContent = `FILTRO: ${pText}${tText}`;
   }
@@ -53,6 +53,119 @@
     return { card, body };
   }
 
+  async function openSourceModal(src) {
+    const existing = document.getElementById("proposal-detail-modal");
+    if (existing) existing.remove();
+
+    const partyId = (src.party_id || "").toLowerCase();
+    const backdrop = document.createElement("div");
+    backdrop.id = "proposal-detail-modal";
+    backdrop.className = "proposal-modal-backdrop";
+    backdrop.setAttribute("role", "dialog");
+    backdrop.setAttribute("aria-modal", "true");
+
+    const modalCard = document.createElement("div");
+    modalCard.className = `proposal-modal-card party-${partyId}`;
+
+    const topBar = document.createElement("div");
+    topBar.className = "proposal-modal-header";
+
+    const meta = document.createElement("div");
+    meta.className = "proposal-modal-meta";
+    meta.textContent = `${src.party_name || partyId.toUpperCase()} · ${src.subtopic || src.topic || ""}`;
+
+    const closeBtn = document.createElement("button");
+    closeBtn.type = "button";
+    closeBtn.className = "proposal-modal-close";
+    closeBtn.setAttribute("aria-label", "Cerrar");
+    closeBtn.textContent = "✕";
+
+    function closeModal() {
+      document.removeEventListener("keydown", onEsc);
+      backdrop.remove();
+    }
+    function onEsc(e) {
+      if (e.key === "Escape") closeModal();
+    }
+
+    closeBtn.addEventListener("click", closeModal);
+    backdrop.addEventListener("click", (e) => {
+      if (e.target === backdrop) closeModal();
+    });
+    document.addEventListener("keydown", onEsc);
+
+    topBar.append(meta, closeBtn);
+
+    const body = document.createElement("div");
+    body.className = "proposal-modal-body";
+
+    const footer = document.createElement("div");
+    footer.className = "proposal-modal-footer";
+
+    function renderModalContent(p) {
+      body.textContent = "";
+      footer.textContent = "";
+
+      meta.textContent = `${p.party_name || partyId.toUpperCase()} · ${p.subtopic || p.topic || ""}`;
+
+      if (p.title) {
+        const title = document.createElement("h3");
+        title.className = "proposal-modal-title";
+        title.textContent = p.title;
+        body.appendChild(title);
+      }
+
+      if (p.quote) {
+        const q = document.createElement("blockquote");
+        q.className = "proposal-modal-quote";
+        q.textContent = `«${p.quote}»`;
+        body.appendChild(q);
+      }
+
+      if (p.explanation) {
+        const exp = document.createElement("p");
+        exp.className = "proposal-modal-explanation";
+        exp.textContent = p.explanation;
+        body.appendChild(exp);
+      }
+
+      if (p.source_url && p.source_url.startsWith("https://")) {
+        const pdfBtn = document.createElement("a");
+        pdfBtn.className = "proposal-direct-btn";
+        pdfBtn.href = p.source_url;
+        pdfBtn.target = "_blank";
+        pdfBtn.rel = "noopener noreferrer";
+        pdfBtn.textContent = `Abrir en programa oficial (${p.source_ref || "PDF"}) ↗`;
+        footer.appendChild(pdfBtn);
+      } else if (p.source_ref) {
+        const ref = document.createElement("span");
+        ref.className = "proposal-link";
+        ref.textContent = p.source_ref;
+        footer.appendChild(ref);
+      }
+    }
+
+    renderModalContent(src);
+
+    modalCard.append(topBar, body, footer);
+    backdrop.appendChild(modalCard);
+    document.body.appendChild(backdrop);
+
+    if (src.id) {
+      try {
+        const res = await fetch(`/api/proposals/${encodeURIComponent(src.id)}`);
+        if (res.ok) {
+          const fullRecord = await res.json();
+          if (document.body.contains(backdrop)) {
+            renderModalContent(fullRecord);
+          }
+        }
+      } catch {
+        // Mantiene el contenido inicial de respaldo si falla la red
+      }
+    }
+  }
+
   function appendSources(card, sources) {
     if (!Array.isArray(sources) || sources.length === 0) return;
     const grid = document.createElement("div");
@@ -61,7 +174,17 @@
     sources.forEach((src) => {
       const partyId = (src.party_id || "").toLowerCase();
       const block = document.createElement("article");
-      block.className = `proposal-block party-${partyId}`;
+      block.className = `proposal-block comparator-clickable party-${partyId}`;
+      block.tabIndex = 0;
+      block.setAttribute("role", "button");
+      block.setAttribute("aria-label", `Abrir medida completa: ${src.title || src.party_name || ""}`);
+      block.addEventListener("click", () => openSourceModal(src));
+      block.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openSourceModal(src);
+        }
+      });
 
       const header = document.createElement("div");
       header.className = "proposal-header";
@@ -88,6 +211,11 @@
         block.appendChild(quote);
       }
 
+      const hint = document.createElement("span");
+      hint.className = "proposal-readmore-hint";
+      hint.textContent = "Pulsa para leer completa (PostgreSQL) ⤢";
+      block.appendChild(hint);
+
       if (src.source_url && src.source_url.startsWith("https://")) {
         const link = document.createElement("a");
         link.className = "proposal-link";
@@ -95,6 +223,7 @@
         link.target = "_blank";
         link.rel = "noopener noreferrer";
         link.textContent = `${src.source_ref || "Ver en programa oficial"} ↗`;
+        link.addEventListener("click", (e) => e.stopPropagation());
         block.appendChild(link);
       } else if (src.source_ref) {
         const ref = document.createElement("span");
@@ -444,7 +573,7 @@
     messagesEl.textContent = "";
     createMessageCard(
       "assistant",
-      "Sesión reiniciada. Pregunta sobre cualquier tema de los programas electorales del 29N (PP, PSOE, VOX, Frente Amplio)."
+      "Sesión reiniciada. Pregunta sobre cualquier tema de los programas electorales del 29N (PP, PSOE, VOX, Frente Amplio, Podemos y SALF)."
     );
   });
 

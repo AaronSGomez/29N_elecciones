@@ -20,10 +20,42 @@ ELECTORAL_SYNONYMS: dict[str, list[str]] = {
     "frontera": ["frontera", "fronteras", "ceuta", "melilla", "inmigración", "asilo", "rechazo en frontera"],
     "asilo": ["asilo", "refugio", "protección internacional", "frontera", "inmigración"],
     "menas": ["menores extranjeros", "infancia migrante", "repatriación", "centros de menores"],
-    "vivienda": ["vivienda", "alquiler", "zonas tensionadas", "desahucio", "okupación", "ocupación", "suelo", "hipoteca", "itp"],
+    "vivienda": ["vivienda", "alquiler", "zonas tensionadas", "desahucio", "okupación", "ocupación", "desalojo", "suelo", "hipoteca", "itp"],
     "alquiler": ["alquiler", "arrendamiento", "zonas tensionadas", "índice de precios", "topar", "caseros", "inquilinos"],
-    "okupacion": ["okupación", "ocupación", "inquiocupación", "desalojo", "desahucio", "narcopisos"],
-    "desahucio": ["desahucio", "desahucios", "lanzamiento", "vulnerabilidad", "okupación"],
+    "okupacion": [
+        "okupación", "ocupación", "okupas", "ocupas", "inquiocupación", "inquiokupación",
+        "desalojo", "desalojos", "desahucio", "desahucios", "alternativa habitacional",
+        "allanamiento", "usurpación", "desokupación", "narcopisos",
+    ],
+    "ocupacion": [
+        "ocupación", "okupación", "ocupas", "okupas", "inquiocupación", "inquiokupación",
+        "desalojo", "desalojos", "desahucio", "desahucios", "alternativa habitacional",
+        "allanamiento", "usurpación", "desokupación", "narcopisos",
+    ],
+    "okupa": [
+        "okupación", "ocupación", "okupas", "ocupas", "inquiocupación", "desalojo",
+        "desahucio", "alternativa habitacional", "desokupación",
+    ],
+    "ocupa": [
+        "ocupación", "okupación", "ocupas", "okupas", "inquiocupación", "desalojo",
+        "desahucio", "alternativa habitacional", "desokupación",
+    ],
+    "okupas": [
+        "okupación", "ocupación", "okupas", "ocupas", "inquiocupación", "desalojo",
+        "desahucio", "alternativa habitacional", "desokupación",
+    ],
+    "ocupas": [
+        "ocupación", "okupación", "ocupas", "okupas", "inquiocupación", "desalojo",
+        "desahucio", "alternativa habitacional", "desokupación",
+    ],
+    "desalojo": [
+        "desalojo", "desalojos", "okupación", "ocupación", "inquiocupación",
+        "desahucio", "desahucios", "alternativa habitacional", "narcopisos",
+    ],
+    "desahucio": [
+        "desahucio", "desahucios", "lanzamiento", "vulnerabilidad", "alternativa habitacional",
+        "okupación", "ocupación", "desalojo",
+    ],
     "impuestos": ["impuesto", "impuestos", "irpf", "iva", "sociedades", "itp", "sucesiones", "fiscal", "tributación"],
     "irpf": ["irpf", "renta", "mínimo exento", "deducción", "tramos"],
     "iva": ["iva", "igic", "alimentos básicos", "luz", "agua", "rehabilitación"],
@@ -56,6 +88,10 @@ STOPWORDS_QUERY = {
     "por", "los", "las", "del", "una", "uno", "unos", "unas", "proponen", "propone", "dice",
     "dicen", "partidos", "programa", "programas", "tema", "acerca", "respecto", "hay", "tiene",
     "tienen", "espana", "españa", "frente", "entre", "esta", "este", "esto", "esa", "ese",
+    "medida", "medidas", "contra", "favor", "propuesta", "propuestas", "plan", "planes",
+    "ley", "leyes", "reforma", "reformas", "gobierno", "estado", "quiero", "saber", "dime",
+    "explica", "resumen", "hacen", "hace", "hacer", "poner", "quitar", "eliminar", "mejorar",
+    "apoyar", "impulsar", "lucha", "luchar", "frenar", "acabar",
 }
 
 
@@ -66,13 +102,14 @@ def _strip_accents(text: str) -> str:
     )
 
 
-def expand_with_dictionary(query: str) -> list[str]:
-    """Devuelve lista ordenada de términos de búsqueda (sinónimos + palabras significativas)."""
+def expand_query_with_meta(query: str) -> tuple[list[str], bool]:
+    """Devuelve (términos de búsqueda, hubo_match_en_diccionario)."""
     norm_q = _strip_accents(query)
     tokens = re.findall(r"[a-z0-9]{2,}", norm_q)
 
     terms: list[str] = []
     seen: set[str] = set()
+    matched_dict = False
 
     def _add(term: str) -> None:
         t = term.strip()
@@ -85,6 +122,7 @@ def expand_with_dictionary(query: str) -> list[str]:
         if tok in STOPWORDS_QUERY:
             continue
         if tok in ELECTORAL_SYNONYMS:
+            matched_dict = True
             for syn in ELECTORAL_SYNONYMS[tok]:
                 _add(syn)
             continue
@@ -92,6 +130,7 @@ def expand_with_dictionary(query: str) -> list[str]:
         if len(tok) >= 4:
             for key, syns in ELECTORAL_SYNONYMS.items():
                 if key.startswith(tok[:5]) or tok.startswith(key[:5]):
+                    matched_dict = True
                     for syn in syns:
                         _add(syn)
 
@@ -100,4 +139,10 @@ def expand_with_dictionary(query: str) -> list[str]:
         if tok not in STOPWORDS_QUERY and len(tok) >= 3:
             _add(tok)
 
-    return terms[:18]
+    return terms[:18], matched_dict
+
+
+def expand_with_dictionary(query: str) -> list[str]:
+    """Devuelve lista ordenada de términos de búsqueda (sinónimos + palabras significativas)."""
+    terms, _ = expand_query_with_meta(query)
+    return terms

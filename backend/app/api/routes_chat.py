@@ -17,6 +17,7 @@ PARTIES_CATALOG = [
     {"id": "psoe", "name": "PSOE"},
     {"id": "vox", "name": "VOX"},
     {"id": "frente-amplio", "name": "Frente Amplio"},
+    {"id": "podemos", "name": "Podemos"},
     {"id": "salf", "name": "Se Acabó La Fiesta"},
 ]
 

@@ -279,7 +279,8 @@
 .party-match-logo.pp { color: #1D4ED8; }
 .party-match-logo.psoe { background: #D92B2B; color: #FFFFFF; }
 .party-match-logo.vox { color: #16A34A; }
-.party-match-logo.frente-amplio { color: #7C3AED; font-size: 0.72rem; }
+.party-match-logo.frente-amplio { color: #FF7090; font-size: 0.72rem; }
+.party-match-logo.podemos { background: #581C87; color: #FFFFFF; font-size: 0.68rem; }
 .party-match-logo.salf { background: #17161C; color: #FFFFFF; }
 
 .party-match-mid {
@@ -315,7 +316,8 @@
 .party-match-fill.pp { background: #1D4ED8; }
 .party-match-fill.psoe { background: #D92B2B; }
 .party-match-fill.vox { background: #16A34A; }
-.party-match-fill.frente-amplio { background: #7C3AED; }
+.party-match-fill.frente-amplio { background: #FF7090; }
+.party-match-fill.podemos { background: #581C87; }
 .party-match-fill.salf { background: #17161C; }
 
 .party-match-score {
@@ -333,6 +335,49 @@
   font-size: 0.72rem;
   font-weight: 700;
   color: var(--ink-secondary);
+}
+
+/* Subrayado rotulador naranja para el número de brindis */
+.brindis-highlight {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+  padding: 0 0.22rem;
+  font-weight: 800;
+  color: var(--ink-primary);
+}
+
+.brindis-highlight::before {
+  content: "";
+  position: absolute;
+  left: -0.06em;
+  right: -0.06em;
+  top: 0.48em;
+  bottom: -0.05em;
+  background: var(--accent-yellow);
+  z-index: -1;
+  transform: skewX(-8deg) rotate(-1.2deg);
+  border-radius: 4px;
+}
+
+.veracity-sort-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.55rem;
+  padding: 0.45rem 0.65rem;
+  background: var(--bg-primary);
+  border: 2px solid var(--border-strong);
+  border-radius: 10px;
+}
+
+.veracity-sort-label {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
 }
 
 /* --- CHECKLIST DE PROGRESO CON CHECK VERDE --- */

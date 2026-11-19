@@ -26,6 +26,7 @@ PDF_SOURCES = [
     ("pp", "Partido Popular", "https://www.pp.es/wp-content/uploads/2026/11/LA-RECONSTRUCCION-NACIONAL.pdf"),
     ("psoe", "Partido Socialista Obrero Español", "https://www.democrata.es/uploads/s1/35/40/05/6/programapsoe29n26.pdf"),
     ("frente-amplio", "Frente Amplio", "https://frenteamplio.info/pdf/ProgramaFrenteAmplio.pdf"),
+    ("podemos", "Podemos", "https://podemos.info/wp-content/uploads/2026/11/29N-programa-Podemos.-Paz-casa-y-trabajo.pdf"),
     ("vox", "Vox", "https://www.democrata.es/uploads/s1/35/26/90/2/programa-elecct-vox.pdf"),
     ("salf", "Se Acabó La Fiesta", "https://theobjective.com/wp-content/uploads/2026/11/salf.pdf"),
 ]
@@ -39,8 +40,20 @@ def require_env(key: str) -> str:
     return val
 
 
+def clean_pdf_text(text: str) -> str:
+    for k, v in (
+        ("\ufb01", "fi"), ("\ufb02", "fl"), ("\ufb00", "ff"),
+        ("\ue03c", "fi"), ("\ue03b", "fl"), ("\u2010", "-"),
+        ("\u2011", "-"), ("\u00ad", ""), ("\ufffd", " "), ("\u200b", ""),
+    ):
+        text = text.replace(k, v)
+    text = re.sub(r"[\ue000-\uf8ff]", " ", text)
+    text = re.sub(r"([a-záéíóúüñA-ZÁÉÍÓÚÜÑ])-\s+([a-záéíóúüñ])", r"\1\2", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
 def chunk_text(text: str, chunk_size: int = 900, overlap: int = 150) -> list[str]:
-    clean = re.sub(r"\s+", " ", text).strip()
+    clean = clean_pdf_text(text)
     if len(clean) < 60:
         return []
     chunks: list[str] = []

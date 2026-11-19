@@ -28,6 +28,7 @@ PDF_SOURCES = [
     ("pp", "Partido Popular", "https://www.pp.es/wp-content/uploads/2026/11/LA-RECONSTRUCCION-NACIONAL.pdf"),
     ("psoe", "Partido Socialista Obrero Español", "https://www.democrata.es/uploads/s1/35/40/05/6/programapsoe29n26.pdf"),
     ("frente-amplio", "Frente Amplio", "https://frenteamplio.info/pdf/ProgramaFrenteAmplio.pdf"),
+    ("podemos", "Podemos", "https://podemos.info/wp-content/uploads/2026/11/29N-programa-Podemos.-Paz-casa-y-trabajo.pdf"),
     ("vox", "Vox", "https://www.democrata.es/uploads/s1/35/26/90/2/programa-elecct-vox.pdf"),
     ("salf", "Se Acabó La Fiesta", "https://theobjective.com/wp-content/uploads/2026/11/salf.pdf"),
 ]
@@ -64,8 +65,20 @@ def make_uuid(raw: str) -> str:
     return f"{d[:8]}-{d[8:12]}-{d[12:16]}-{d[16:20]}-{d[20:32]}"
 
 
+def clean_pdf_text(text: str) -> str:
+    for k, v in (
+        ("\ufb01", "fi"), ("\ufb02", "fl"), ("\ufb00", "ff"),
+        ("\ue03c", "fi"), ("\ue03b", "fl"), ("\u2010", "-"),
+        ("\u2011", "-"), ("\u00ad", ""), ("\ufffd", " "), ("\u200b", ""),
+    ):
+        text = text.replace(k, v)
+    text = re.sub(r"[\ue000-\uf8ff]", " ", text)
+    text = re.sub(r"([a-záéíóúüñA-ZÁÉÍÓÚÜÑ])-\s+([a-záéíóúüñ])", r"\1\2", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
 def chunk_text(text: str, chunk_size: int = 900, overlap: int = 150) -> list[str]:
-    clean = re.sub(r"\s+", " ", text).strip()
+    clean = clean_pdf_text(text)
     if len(clean) < 60:
         return []
     chunks: list[str] = []
@@ -207,11 +220,30 @@ def main() -> None:
         qclient.create_payload_index(collection, "topic", models.PayloadSchemaType.KEYWORD)
 
     batch_size = 64
+    new_points_count = 0
+    skipped_count = 0
     for i in range(0, len(records), batch_size):
         batch = records[i : i + batch_size]
+        batch_ids = [r["id"] for r in batch]
+        try:
+            existing = qclient.retrieve(
+                collection_name=collection,
+                ids=batch_ids,
+                with_payload=False,
+                with_vectors=False,
+            )
+            existing_ids = {str(pt.id) for pt in existing}
+        except Exception:
+            existing_ids = set()
+
+        to_embed = [r for r in batch if r["id"] not in existing_ids]
+        skipped_count += len(batch) - len(to_embed)
+        if not to_embed:
+            continue
+
         passages = [
             f"passage: Partido: {r['party_name']} | {r['topic']} | {r['title']}\n{r['quote']}"
-            for r in batch
+            for r in to_embed
         ]
         vectors = [v.tolist() for v in embedder.embed(passages)]
         points = [
@@ -224,13 +256,19 @@ def main() -> None:
                     "topic": r["topic"],
                 },
             )
-            for r, v in zip(batch, vectors)
+            for r, v in zip(to_embed, vectors)
         ]
         qclient.upsert(collection_name=collection, points=points)
-        if (i // batch_size) % 5 == 0 or i + batch_size >= len(records):
-            print(f"  Qdrant indexados {min(i + batch_size, len(records))}/{len(records)}")
+        new_points_count += len(points)
+        print(
+            f"  Qdrant progreso {min(i + batch_size, len(records))}/{len(records)} "
+            f"(nuevos indexados: {new_points_count}, ya existentes omitidos: {skipped_count})"
+        )
 
-    print("[OK] Sincronización PostgreSQL + Qdrant completada.")
+    print(
+        f"[OK] Sincronización PostgreSQL + Qdrant completada "
+        f"(nuevos vectores: {new_points_count}, omitidos por existir: {skipped_count})."
+    )
 
 
 if __name__ == "__main__":

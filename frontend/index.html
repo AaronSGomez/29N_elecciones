@@ -51,10 +51,10 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Space+Grotesk:wght@600;700;800&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/Style/base.css">
-  <link rel="stylesheet" href="/Style/navbar.css?v=20261118t">
-  <link rel="stylesheet" href="/Style/chat.css?v=20261118c">
-  <link rel="stylesheet" href="/Style/wizard.css?v=20261117p">
-  <link rel="stylesheet" href="/Style/home.css?v=20261117p">
+  <link rel="stylesheet" href="/Style/navbar.css?v=20261119p">
+  <link rel="stylesheet" href="/Style/chat.css?v=20261119h">
+  <link rel="stylesheet" href="/Style/wizard.css?v=20261119h">
+  <link rel="stylesheet" href="/Style/home.css?v=20261119h">
 </head>
 <body>
 
@@ -169,7 +169,7 @@
             <span class="path-badge free">ACCESO DIRECTO SIN TEST</span>
             <h3>B. Quiero consultar qué proponen los partidos</h3>
             <ul class="path-list">
-              <li>Compara propuestas oficiales por <strong>materias y subtemas</strong> lado a lado entre los cinco partidos.</li>
+              <li>Compara propuestas oficiales por <strong>materias y subtemas</strong> lado a lado entre los seis partidos estatales (PP, PSOE, VOX, Frente Amplio, Podemos y SALF).</li>
               <li>Consulta los programas oficiales completos con cita textual y número de página.</li>
               <li>Pregunta al asistente sobre cualquier duda concreta para localizar medidas en segundos.</li>
               <li>Consulta por separado el apartado de <strong>Veracidad y viabilidad jurídica</strong> (medidas aplicables, brindis al sol, reformas CE e ilegalidades UE).</li>
@@ -182,6 +182,23 @@
 
         <div class="security-notice" style="margin-top:1.5rem; padding:1.15rem 1.35rem; font-size:1.08rem; line-height:1.55; border-left:4px solid var(--accent-primary, #111);">
           <strong>Aviso sobre cumplimiento electoral:</strong> Ningún partido informa del cumplimiento de sus programas anteriores. No existen fuentes de control que regulen la obligación de cumplir el programa electoral: esto es lo que votamos, pero no lo que cumplen. No es posible obtener un porcentaje exacto dado que las fuentes son alteradas continuamente, y no pretendemos mostrar un sesgo o inclinación partidista.
+        </div>
+
+        <!-- SECCIÓN EXPLICATIVA: ¿POR QUÉ EL TEST CALCULA LA AFINIDAD CON 5 PARTIDOS? -->
+        <div class="wizard-card" style="margin-top:1.5rem; padding:1.45rem 1.65rem; background:var(--bg-primary);">
+          <div class="panel-header-tag">CRITERIO METODOLÓGICO DEL TEST DE 12 EJES</div>
+          <h3 class="hero-title" style="font-size:1.35rem; margin-bottom:0.55rem;">¿Por qué el test calcula la afinidad con 5 partidos?</h3>
+          <p style="font-size:0.96rem; color:var(--ink-secondary); margin-bottom:0.9rem;">
+            El test de 12 ejes compara tus respuestas exclusivamente con las candidaturas principales de ámbito estatal (<strong>PP, PSOE, Vox, Frente Amplio y SALF</strong>).
+          </p>
+          <ul class="path-list" style="margin-bottom:0.85rem; flex:none;">
+            <li><strong>Ámbito territorial:</strong> Partidos como ERC, Junts, PNV, EH Bildu, BNG o Coalición Canaria solo presentan papeleta en sus respectivas comunidades autónomas. Incluirlos en el cálculo general daría resultados que la mayoría de votantes no pueden elegir en su urna.</li>
+            <li><strong>Solapamiento programático:</strong> No se ha incluido a Podemos en el algoritmo del test porque su programa comparte casi el 100 % de las propuestas y ejes ideológicos con el de Frente Amplio, lo que duplicaría el mismo perfil en los resultados.</li>
+            <li><strong>Calibración homogénea:</strong> Los 12 ejes están diseñados para medir proyectos de alcance nacional en igualdad de condiciones, evitando distorsiones entre programas estatales y agendas autonómicas.</li>
+          </ul>
+          <p style="font-family:var(--font-mono); font-size:0.84rem; color:var(--ink-primary); background:var(--bg-surface); border:2px solid var(--border-strong); border-radius:10px; padding:0.65rem 0.85rem; margin:0;">
+            <em>(Nota: Aunque no entran en el cálculo del test, puedes consultar y preguntar por las propuestas oficiales de todas estas formaciones en el Comparador y en el Chat, y acceder a todos los programas oficiales en PDF en el pie de página).</em>
+          </p>
         </div>
       </div>
     </div>
@@ -280,10 +297,10 @@
           <div class="band-eyebrow">FUENTES Y TRANSPARENCIA</div>
           <h3 class="band-heading">De dónde sale la información</h3>
           <p style="font-size:0.94rem; color:#E5E0D0; max-width:60ch;">
-            Trabajamos sobre los documentos de cinco formaciones (<strong>PP, PSOE, VOX, Frente Amplio y SALF</strong>), diferenciando claramente el origen de cada dato:
+            Trabajamos sobre los documentos de seis formaciones de ámbito estatal (<strong>PP, PSOE, VOX, Frente Amplio, Podemos y SALF</strong>), diferenciando claramente el origen de cada dato:
           </p>
           <ul class="source-type-list">
-            <li><strong>Programas y propuestas oficiales (2026):</strong> Documentos completos de cada partido (PP 82 págs., PSOE 114 págs., VOX 55 págs., Frente Amplio 151 págs., SALF 42 págs.) con enlace a la página exacta.</li>
+            <li><strong>Programas y propuestas oficiales (2026):</strong> Documentos completos de cada partido (PP 82 págs., PSOE 114 págs., VOX 55 págs., Frente Amplio 151 págs., Podemos 141 págs., SALF 42 págs.) con enlace a la página exacta, más acceso directo en el pie de página a los programas autonómicos (ERC, PNV, EH Bildu, BNG, Coalición Canaria y Compromís).</li>
             <li><strong>Bloques temáticos complementarios:</strong> Estructuración por 21 materias y subtemas para facilitar la comparación lado a lado.</li>
             <li><strong>Promesas y cumplimiento (sección independiente):</strong> Marco metodológico separado para evaluar gestión ejecutada frente a promesas futuras, sin mezclar un fragmento programático con una medida ya cumplida.</li>
           </ul>
@@ -321,14 +338,14 @@
       <aside class="sidebar-panel">
         <div>
           <div class="panel-header-tag" id="status-text">CARGANDO ÍNDICE QDRANT...</div>
-          <p class="hero-subtitle">Consulta sobre los programas oficiales de <strong>PP, PSOE, VOX, Frente Amplio y SALF</strong>.</p>
+          <p class="hero-subtitle">Consulta sobre los programas oficiales de <strong>PP, PSOE, VOX, Frente Amplio, Podemos y SALF</strong>.</p>
         </div>
 
         <div>
           <div class="filter-group-title">01. Filtrar Partidos</div>
           <div class="party-grid">
             <button type="button" class="party-chip full-width active" data-party="all">
-              <span>TODOS (COMPARATIVA)</span><span>[5]</span>
+              <span>TODOS (COMPARATIVA)</span><span>[6]</span>
             </button>
             <button type="button" class="party-chip" data-party="pp">
               <span>PP</span><span class="party-logo-badge logo-pp">PP</span>
@@ -342,8 +359,11 @@
             <button type="button" class="party-chip" data-party="frente-amplio">
               <span>F. AMPLIO</span><span class="party-logo-badge logo-fa">FA</span>
             </button>
-            <button type="button" class="party-chip full-width" data-party="salf">
-              <span>SALF (SE ACABÓ LA FIESTA)</span><span class="party-logo-badge logo-salf">SF</span>
+            <button type="button" class="party-chip" data-party="podemos">
+              <span>PODEMOS</span><span class="party-logo-badge logo-podemos">PD</span>
+            </button>
+            <button type="button" class="party-chip" data-party="salf">
+              <span>SALF</span><span class="party-logo-badge logo-salf">SF</span>
             </button>
           </div>
         </div>
@@ -420,13 +440,26 @@
   <footer class="site-footer">
     <div class="footer-grid">
       <div>
-        <h4 class="footer-col-title">Programas Electorales Oficiales (PDF)</h4>
+        <h4 class="footer-col-title">Programas Estatales (PDF)</h4>
         <div class="footer-programs-wrap">
-          <a class="footer-prog-link pp" href="https://www.pp.es/wp-content/uploads/2026/11/LA-RECONSTRUCCION-NACIONAL.pdf" target="_blank" rel="noopener noreferrer">PP (82 págs.) &nearr;</a>
           <a class="footer-prog-link psoe" href="https://www.democrata.es/uploads/s1/35/40/05/6/programapsoe29n26.pdf" target="_blank" rel="noopener noreferrer">PSOE (114 págs.) &nearr;</a>
-          <a class="footer-prog-link vox" href="https://www.democrata.es/uploads/s1/35/26/90/2/programa-elecct-vox.pdf" target="_blank" rel="noopener noreferrer">VOX (55 págs.) &nearr;</a>
           <a class="footer-prog-link fa" href="https://frenteamplio.info/pdf/ProgramaFrenteAmplio.pdf" target="_blank" rel="noopener noreferrer">Frente Amplio (151 págs.) &nearr;</a>
+          <a class="footer-prog-link podemos" href="https://podemos.info/wp-content/uploads/2026/11/29N-programa-Podemos.-Paz-casa-y-trabajo.pdf" target="_blank" rel="noopener noreferrer">Podemos (141 págs.) &nearr;</a>
+          <a class="footer-prog-link pp" href="https://www.pp.es/wp-content/uploads/2026/11/LA-RECONSTRUCCION-NACIONAL.pdf" target="_blank" rel="noopener noreferrer">PP (82 págs.) &nearr;</a>
+          <a class="footer-prog-link vox" href="https://www.democrata.es/uploads/s1/35/26/90/2/programa-elecct-vox.pdf" target="_blank" rel="noopener noreferrer">VOX (55 págs.) &nearr;</a>
           <a class="footer-prog-link salf" href="https://theobjective.com/wp-content/uploads/2026/11/salf.pdf" target="_blank" rel="noopener noreferrer">SALF (42 págs.) &nearr;</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Programas Autonómicos (PDF)</h4>
+        <div class="footer-programs-wrap">
+          <a class="footer-prog-link erc" href="https://esquerrarepublicana.cat/documents/e2026-programa.pdf" target="_blank" rel="noopener noreferrer">ERC (48 págs.) &nearr;</a>
+          <a class="footer-prog-link pnv" href="https://www.eaj-pnv.eus/es/adjuntos-documentos/21765/pdf/programa-electoral-29n" target="_blank" rel="noopener noreferrer">PNV (43 págs.) &nearr;</a>
+          <a class="footer-prog-link bildu" href="https://ehbildu.eus/media/dokumentuak/posibleegin-programa-cas.pdf" target="_blank" rel="noopener noreferrer">EH Bildu (30 págs.) &nearr;</a>
+          <a class="footer-prog-link bng" href="https://www.bng.gal/media/bnggaliza/files/2026/11/03/26_bng_xerais_documentos_programa_electoral.pdf" target="_blank" rel="noopener noreferrer">BNG (91 págs.) &nearr;</a>
+          <a class="footer-prog-link cc" href="https://coalicioncanaria.org/wp-content/uploads/2026/11/CCA-26-Programa_Electoral-29NOV.pdf" target="_blank" rel="noopener noreferrer">C. Canaria (23 págs.) &nearr;</a>
+          <a class="footer-prog-link compromis" href="https://frontvalencia.org/programa-compromis-front-valencia.pdf" target="_blank" rel="noopener noreferrer">Compromís (57 págs.) &nearr;</a>
         </div>
       </div>
 
@@ -454,19 +487,19 @@
         <ul class="footer-link-list">
           <li>
             <a href="https://aaronsgomez.es" target="_blank" rel="noopener noreferrer">
-              <span>🏴‍☠️</span>
+              <img src="/aaron-favicon.png" alt="aaronsgomez.es" class="footer-social-icon">
               <span>aaronsgomez.es &rarr;</span>
             </a>
           </li>
           <li>
             <a href="https://www.linkedin.com/in/aaronsgomez/" target="_blank" rel="noopener noreferrer">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9h2.79v8.37H6.46v-8.37M7.86 6.54a1.63 1.63 0 1 0 0 3.26 1.63 1.63 0 0 0 0-3.26z"/></svg>
+              <svg class="footer-social-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9h2.79v8.37H6.46v-8.37M7.86 6.54a1.63 1.63 0 1 0 0 3.26 1.63 1.63 0 0 0 0-3.26z"/></svg>
               <span>LinkedIn · Aaron S. Gómez &rarr;</span>
             </a>
           </li>
           <li>
             <a href="https://github.com/AaronSGomez" target="_blank" rel="noopener noreferrer">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              <svg class="footer-social-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
               <span>GitHub @AaronSGomez &rarr;</span>
             </a>
           </li>
@@ -497,9 +530,9 @@
   <script src="/js/profile_wizard.js?v=20261117r"></script>
   <script src="/js/ideology_test.js?v=20261117r"></script>
   <script src="/js/results_view.js?v=20261117r"></script>
-  <script src="/js/comparator_view.js?v=20261118c"></script>
-  <script src="/js/promises_view.js?v=20261118d"></script>
-  <script src="/js/chat.js?v=20261117q"></script>
+  <script src="/js/comparator_view.js?v=20261119p"></script>
+  <script src="/js/promises_view.js?v=20261119p2"></script>
+  <script src="/js/chat.js?v=20261119v2"></script>
   <script src="/js/visitors_counter.js?v=20261118t"></script>
 </body>
 </html>

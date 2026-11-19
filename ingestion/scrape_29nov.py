@@ -15,7 +15,10 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 BASE_URL = "https://29nov.es"
-DEFAULT_PARTIES = ("pp", "psoe", "vox", "frente-amplio", "salf")
+DEFAULT_PARTIES = ("pp", "psoe", "vox", "frente-amplio", "podemos", "salf")
+
+PODEMOS_OFFICIAL_PDF = "https://podemos.info/wp-content/uploads/2026/11/29N-programa-Podemos.-Paz-casa-y-trabajo.pdf"
+PODEMOS_MIRROR_PDF = "https://www.democrata.es/uploads/s1/35/51/60/4/29n-programa-podemos-paz-casa-y-trabajo.pdf"
 
 # Mapeo explícito de alias HTML en 29nov.es hacia la identidad interna canónica.
 # En 29nov.es el programa de Frente Amplio se etiqueta con data-party="sumar".
@@ -161,6 +164,7 @@ class TemaParser(HTMLParser):
                 fuente = re.sub(r"\s+", " ", "".join(self._fuente_buf)).strip()
                 explica = re.sub(r"\s+", " ", "".join(self._explica_buf)).strip()
                 if title or quote:
+                    src_url = self._fuente_href.replace(PODEMOS_MIRROR_PDF, PODEMOS_OFFICIAL_PDF)
                     self.records.append({
                         "party_id": self._current_party_id,
                         "party_name": self._current_party_name,
@@ -170,7 +174,7 @@ class TemaParser(HTMLParser):
                         "quote": quote,
                         "explanation": explica,
                         "source_ref": fuente,
-                        "source_url": self._fuente_href,
+                        "source_url": src_url,
                     })
 
     def handle_data(self, data: str) -> None:

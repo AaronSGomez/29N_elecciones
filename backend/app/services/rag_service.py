@@ -11,7 +11,7 @@ from app.core.config import Settings
 from app.services.llm_service import LLMService
 from app.services.postgres_service import PostgresService
 from app.services.qdrant_service import QdrantRAGService
-from app.services.query_dictionary import expand_with_dictionary
+from app.services.query_dictionary import expand_query_with_meta
 
 STRICT_SYSTEM_PROMPT = """Eres un asistente informativo neutral especializado EXCLUSIVAMENTE en los programas electorales de las elecciones del 29 de noviembre (29N).
 
@@ -78,8 +78,12 @@ class RAGService:
             yield {"type": "done"}
             return
 
-        dict_terms = expand_with_dictionary(query)
-        llm_exp = await self.llm.expand_query(query) if len(dict_terms) < 3 else {"search_query": "", "keywords": []}
+        dict_terms, matched_dict = expand_query_with_meta(query)
+        llm_exp = (
+            await self.llm.expand_query(query)
+            if (not matched_dict or len(dict_terms) < 3)
+            else {"search_query": "", "keywords": []}
+        )
         merged_terms: list[str] = []
         seen_t: set[str] = set()
         for t in [*dict_terms, *llm_exp.get("keywords", [])]:
@@ -92,7 +96,7 @@ class RAGService:
         if not semantic_query:
             semantic_query = f"{query} {' '.join(merged_terms[:6])}".strip()
 
-        target_parties = parties if parties else ["pp", "psoe", "vox", "frente-amplio", "salf"]
+        target_parties = parties if parties else ["pp", "psoe", "vox", "frente-amplio", "podemos", "salf"]
         lexical_hits = await self.postgres.search_proposals_lexical(
             terms=merged_terms,
             parties=target_parties if parties else None,
@@ -149,6 +153,8 @@ class RAGService:
             yield {"type": "done"}
             return
 
+        # Mostrar solo los artículos/bloques estructurados en tarjetas;
+        # los fragmentos PDF completos se mantienen en <program_context> para la síntesis del LLM.
         sources = [
             {
                 "id": h["id"],
@@ -163,6 +169,7 @@ class RAGService:
                 "score": h["score"],
             }
             for h in enriched_hits
+            if h.get("source_type", "block") != "pdf" and h.get("topic") != "Programa Completo"
         ]
 
         user_prompt = self._build_user_prompt(query, enriched_hits)

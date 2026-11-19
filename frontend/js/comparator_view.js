@@ -9,6 +9,7 @@
     { id: "psoe", label: "PSOE" },
     { id: "vox", label: "VOX" },
     { id: "frente-amplio", label: "Frente Amplio" },
+    { id: "podemos", label: "Podemos" },
     { id: "salf", label: "SALF" },
   ];
 
@@ -366,7 +367,7 @@
       const activeList = getActiveParties();
       const summaryText =
         selectedParties.length === 0 || selectedParties.length === PARTIES.length
-          ? "Todos los partidos (5)"
+          ? "Todos los partidos (6)"
           : `${activeList.length} seleccionados: ${activeList.map((p) => p.label).join(", ")}`;
       const btnSpan = document.createElement("span");
       btnSpan.textContent = summaryText;
@@ -397,7 +398,7 @@
           renderUI(false);
         });
         const allTxt = document.createElement("span");
-        allTxt.textContent = "Todos los partidos (5)";
+        allTxt.textContent = "Todos los partidos (6)";
         allRow.append(allCb, allTxt);
         dropdown.appendChild(allRow);
 
@@ -435,7 +436,7 @@
       allChip.type = "button";
       const allActive = selectedParties.length === 0;
       allChip.className = `step-pill ${allActive ? "active" : ""}`;
-      allChip.textContent = "TODOS (5)";
+      allChip.textContent = "TODOS (6)";
       allChip.addEventListener("click", () => {
         selectedParties = [];
         comboboxOpen = false;

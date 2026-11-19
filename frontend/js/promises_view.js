@@ -73,13 +73,13 @@
       const intro = document.createElement("p");
       intro.className = "hero-subtitle";
       intro.textContent =
-        "Auditoría completa de las 831 medidas únicas de los cinco programas oficiales de 2026: cada porcentaje corresponde exactamente al recuento de medidas concretas frente a declaraciones genéricas («brindis al sol»), reformas constitucionales (CE 1978) y conflictos con el Derecho de la UE.";
+        "Auditoría completa de las 2.327 medidas extraídas directamente de los seis PDFs oficiales de 2026 (PP 242, PSOE 500, VOX 115, Frente Amplio 909, Podemos 442 y SALF 119): cada porcentaje corresponde exactamente al recuento de medidas concretas frente a declaraciones genéricas («brindis al sol»), reformas constitucionales (CE 1978) y conflictos con el Derecho de la UE.";
 
       card.append(tag, h2, intro);
 
       if (!cachedVeracityData) {
         try {
-          const vRes = await fetch("/data/veracidad_2026.json?v=20261117j");
+          const vRes = await fetch("/data/veracidad_2026.json?v=20261119v13");
           cachedVeracityData = await vRes.json();
         } catch {
           cachedVeracityData = [];
@@ -112,6 +112,12 @@
 
       // Filtros globales sin recargar ni mover el scroll
       let globalMode = "by_party"; // "by_party" | "brindis" | "const" | "eu"
+      let partySortMode = "veracity"; // "veracity" | "conflicts"
+      let globalPage = 1;
+      let globalQuery = "";
+      let drawerPage = 1;
+      let drawerQuery = "";
+      const CARDS_PER_PAGE = 9; // 3 filas x 3 columnas por hoja
       const globalFilterRow = document.createElement("div");
       globalFilterRow.className = "w-btn-group";
       globalFilterRow.style.margin = "0.75rem 0 0.5rem";
@@ -265,6 +271,68 @@
         return blk;
       }
 
+      function buildVeracityPagination(currentPage, totalPages, onPageChange) {
+        const pagBar = document.createElement("div");
+        pagBar.className = "comparator-pagination";
+
+        const prevBtn = document.createElement("button");
+        prevBtn.type = "button";
+        prevBtn.className = "w-btn";
+        prevBtn.textContent = "← Anterior";
+        prevBtn.disabled = currentPage <= 1;
+        prevBtn.addEventListener("click", () => {
+          if (currentPage > 1) onPageChange(currentPage - 1);
+        });
+        pagBar.appendChild(prevBtn);
+
+        const pagesGroup = document.createElement("div");
+        pagesGroup.className = "comparator-page-numbers";
+
+        const pagesToShow = [];
+        for (let i = 1; i <= totalPages; i += 1) {
+          if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 2) {
+            pagesToShow.push(i);
+          } else if (pagesToShow[pagesToShow.length - 1] !== "...") {
+            pagesToShow.push("...");
+          }
+        }
+        pagesToShow.forEach((pItem) => {
+          if (pItem === "...") {
+            const dots = document.createElement("span");
+            dots.className = "comparator-page-info";
+            dots.textContent = "…";
+            pagesGroup.appendChild(dots);
+            return;
+          }
+          const pBtn = document.createElement("button");
+          pBtn.type = "button";
+          pBtn.className = `step-pill ${pItem === currentPage ? "active" : ""}`;
+          pBtn.textContent = String(pItem);
+          pBtn.addEventListener("click", () => {
+            if (currentPage !== pItem) onPageChange(pItem);
+          });
+          pagesGroup.appendChild(pBtn);
+        });
+        pagBar.appendChild(pagesGroup);
+
+        const nextBtn = document.createElement("button");
+        nextBtn.type = "button";
+        nextBtn.className = "w-btn primary";
+        nextBtn.textContent = "Siguiente →";
+        nextBtn.disabled = currentPage >= totalPages;
+        nextBtn.addEventListener("click", () => {
+          if (currentPage < totalPages) onPageChange(currentPage + 1);
+        });
+        pagBar.appendChild(nextBtn);
+
+        const pageInfo = document.createElement("span");
+        pageInfo.className = "comparator-page-info";
+        pageInfo.textContent = `Hoja ${currentPage} de ${totalPages}`;
+        pagBar.appendChild(pageInfo);
+
+        return pagBar;
+      }
+
       function renderVeracityBody() {
         veracityBody.textContent = "";
 
@@ -273,24 +341,108 @@
           PROGRAM_VERACITY.forEach((p) => {
             (p.items?.[globalMode] || []).forEach((ex) => allMatched.push({ party: p, ex }));
           });
+
+          const filterInput = document.createElement("input");
+          filterInput.type = "search";
+          filterInput.className = "chat-input";
+          filterInput.style.width = "100%";
+          filterInput.style.marginTop = "0.5rem";
+          filterInput.style.padding = "0.45rem 0.7rem";
+          filterInput.placeholder = "Filtrar medidas por palabra clave o partido (ej. vivienda, alquiler, CE)...";
+          filterInput.value = globalQuery;
+
           const countInfo = document.createElement("div");
-          countInfo.className = "w-field-desc";
+          countInfo.className = "security-notice";
           countInfo.style.marginTop = "0.5rem";
-          countInfo.textContent = `Mostrando ${allMatched.length} medidas verificadas en total entre los 5 programas.`;
+
           const exGrid = document.createElement("div");
-          exGrid.className = "sources-blocks";
-          exGrid.style.marginTop = "0.5rem";
-          exGrid.style.gridTemplateColumns = "repeat(auto-fill, minmax(min(100%, 320px), 1fr))";
-          allMatched.forEach(({ party, ex }) => exGrid.appendChild(buildExampleCard(party, ex)));
-          veracityBody.append(countInfo, exGrid);
+          exGrid.className = "sources-blocks comparator-cards-grid";
+          exGrid.style.marginTop = "0.65rem";
+
+          const pagHolder = document.createElement("div");
+
+          function paintGlobalPage() {
+            const q = globalQuery.trim().toLowerCase();
+            const filtered = q
+              ? allMatched.filter(({ party, ex }) =>
+                  `${party.name} ${ex.title} ${ex.quote} ${ex.detail || ""}`.toLowerCase().includes(q)
+                )
+              : allMatched;
+
+            const totalPages = Math.max(1, Math.ceil(filtered.length / CARDS_PER_PAGE));
+            if (globalPage > totalPages) globalPage = totalPages;
+            const start = (globalPage - 1) * CARDS_PER_PAGE;
+            const slice = filtered.slice(start, start + CARDS_PER_PAGE);
+
+            countInfo.textContent =
+              filtered.length > CARDS_PER_PAGE
+                ? `Mostrando ${start + 1}–${start + slice.length} de ${filtered.length} medidas (máx. 3 filas por hoja). Cambia de hoja abajo o filtra por palabra clave.`
+                : `Mostrando ${filtered.length} medidas verificadas en total.`;
+
+            exGrid.textContent = "";
+            slice.forEach(({ party, ex }) => exGrid.appendChild(buildExampleCard(party, ex)));
+
+            pagHolder.textContent = "";
+            if (totalPages > 1) {
+              pagHolder.appendChild(
+                buildVeracityPagination(globalPage, totalPages, (nextP) => {
+                  globalPage = nextP;
+                  paintGlobalPage();
+                })
+              );
+            }
+          }
+
+          filterInput.addEventListener("input", () => {
+            globalQuery = filterInput.value;
+            globalPage = 1;
+            paintGlobalPage();
+          });
+
+          paintGlobalPage();
+          veracityBody.append(filterInput, countInfo, exGrid, pagHolder);
           return;
         }
+
+        const sortBar = document.createElement("div");
+        sortBar.className = "veracity-sort-bar";
+        const sortLabel = document.createElement("span");
+        sortLabel.className = "veracity-sort-label";
+        sortLabel.textContent = "Ordenar lista:";
+        sortBar.appendChild(sortLabel);
+
+        [
+          ["veracity", "Mayor a menor veracidad (% concretas)"],
+          ["conflicts", "Más conflictivos primero (CE + UE)"],
+        ].forEach(([sKey, sText]) => {
+          const sBtn = document.createElement("button");
+          sBtn.type = "button";
+          sBtn.className = `step-pill ${partySortMode === sKey ? "active" : ""}`;
+          sBtn.textContent = sText;
+          sBtn.addEventListener("click", () => {
+            partySortMode = sKey;
+            renderVeracityBody();
+          });
+          sortBar.appendChild(sBtn);
+        });
+        veracityBody.appendChild(sortBar);
+
+        const sortedParties = [...PROGRAM_VERACITY].sort((a, b) => {
+          if (partySortMode === "conflicts") {
+            const diff = (b.constCount + b.euCount) - (a.constCount + a.euCount);
+            if (diff !== 0) return diff;
+            return b.euCount - a.euCount;
+          }
+          const pctDiff = b.concretePct - a.concretePct;
+          if (pctDiff !== 0) return pctDiff;
+          return b.concreteCount - a.concreteCount;
+        });
 
         const partyList = document.createElement("div");
         partyList.className = "uno-a-uno-list";
         partyList.style.marginTop = "0.65rem";
 
-        PROGRAM_VERACITY.forEach((p) => {
+        sortedParties.forEach((p) => {
           const isOpen = selectedPartyId === p.id;
           const wrap = document.createElement("div");
 
@@ -307,7 +459,14 @@
           mid.className = "party-match-mid";
           const name = document.createElement("div");
           name.className = "party-match-name";
-          name.textContent = `${p.name} (${p.concreteCount}/${p.uniqueCount} concretas · ${p.vagueCount} brindis) ${isOpen ? "▾" : "▸"}`;
+          name.appendChild(
+            document.createTextNode(`${p.name} (${p.concreteCount}/${p.uniqueCount} concretas · `)
+          );
+          const brindisSpan = document.createElement("span");
+          brindisSpan.className = "brindis-highlight";
+          brindisSpan.textContent = `${p.vagueCount} brindis`;
+          name.appendChild(brindisSpan);
+          name.appendChild(document.createTextNode(`) ${isOpen ? "▾" : "▸"}`));
 
           const track = document.createElement("div");
           track.className = "party-match-track";
@@ -327,7 +486,8 @@
           const meta = document.createElement("div");
           meta.className = "w-field-desc";
           meta.style.marginTop = "0.25rem";
-          meta.textContent = `Reforma CE: ${p.constCount} · Ilegal / conflicto UE: ${p.euCount}`;
+          const totalConflicts = p.constCount + p.euCount;
+          meta.textContent = `Conflictos totales: ${totalConflicts} (Reforma CE: ${p.constCount} · Ilegal / UE: ${p.euCount})`;
 
           mid.append(name, track, meta);
 
@@ -341,6 +501,8 @@
           row.append(logo, mid, score);
           row.addEventListener("click", () => {
             selectedPartyId = isOpen ? null : p.id;
+            drawerPage = 1;
+            drawerQuery = "";
             renderVeracityBody();
           });
           wrap.appendChild(row);
@@ -361,10 +523,7 @@
             const filterRow = document.createElement("div");
             filterRow.className = "w-btn-group";
             filterRow.style.margin = "0.65rem 0";
-
-            const exGrid = document.createElement("div");
-            exGrid.className = "sources-blocks";
-            exGrid.style.gridTemplateColumns = "repeat(auto-fill, minmax(min(100%, 320px), 1fr))";
+            filterRow.style.alignItems = "center";
 
             const catDefs = [
               ["brindis", `BRINDIS AL SOL (${p.vagueCount})`],
@@ -374,10 +533,75 @@
             ];
             if (selectedCategory === "all") selectedCategory = "brindis";
 
+            // Selector desplegable de categoría + buscador dentro del acordeón
+            const catSelect = document.createElement("select");
+            catSelect.className = "profile-select";
+            catSelect.style.width = "auto";
+            catSelect.style.minWidth = "195px";
+            catDefs.forEach(([catKey, catText]) => {
+              const opt = document.createElement("option");
+              opt.value = catKey;
+              opt.textContent = catText;
+              if (selectedCategory === catKey) opt.selected = true;
+              catSelect.appendChild(opt);
+            });
+
+            const drawerSearch = document.createElement("input");
+            drawerSearch.type = "search";
+            drawerSearch.className = "chat-input";
+            drawerSearch.style.padding = "0.35rem 0.65rem";
+            drawerSearch.style.minWidth = "210px";
+            drawerSearch.placeholder = "Filtrar por palabra clave...";
+            drawerSearch.value = drawerQuery;
+
+            const drawerNotice = document.createElement("div");
+            drawerNotice.className = "w-field-desc";
+            drawerNotice.style.margin = "0.25rem 0 0.5rem";
+
+            const exGrid = document.createElement("div");
+            exGrid.className = "sources-blocks comparator-cards-grid";
+
+            const drawerPagHolder = document.createElement("div");
+
+            function syncCategoryButtons() {
+              Array.from(filterRow.querySelectorAll("button.step-pill")).forEach((btn, idx) => {
+                btn.classList.toggle("active", catDefs[idx][0] === selectedCategory);
+              });
+              catSelect.value = selectedCategory;
+            }
+
             function renderDrawerExamples() {
+              const rawList = p.items?.[selectedCategory] || [];
+              const q = drawerQuery.trim().toLowerCase();
+              const list = q
+                ? rawList.filter((ex) =>
+                    `${ex.title} ${ex.quote} ${ex.detail || ""}`.toLowerCase().includes(q)
+                  )
+                : rawList;
+
+              const totalPages = Math.max(1, Math.ceil(list.length / CARDS_PER_PAGE));
+              if (drawerPage > totalPages) drawerPage = totalPages;
+              const start = (drawerPage - 1) * CARDS_PER_PAGE;
+              const slice = list.slice(start, start + CARDS_PER_PAGE);
+
+              if (list.length > CARDS_PER_PAGE) {
+                drawerNotice.textContent = `Mostrando ${start + 1}–${start + slice.length} de ${list.length} medidas (máx. 3 filas por hoja). Cambia de categoría, filtra o navega por las ${totalPages} hojas.`;
+              } else {
+                drawerNotice.textContent = `Mostrando ${list.length} medidas en esta categoría.`;
+              }
+
               exGrid.textContent = "";
-              const list = p.items?.[selectedCategory] || [];
-              list.forEach((ex) => exGrid.appendChild(buildExampleCard(p, ex)));
+              slice.forEach((ex) => exGrid.appendChild(buildExampleCard(p, ex)));
+
+              drawerPagHolder.textContent = "";
+              if (totalPages > 1) {
+                drawerPagHolder.appendChild(
+                  buildVeracityPagination(drawerPage, totalPages, (nextP) => {
+                    drawerPage = nextP;
+                    renderDrawerExamples();
+                  })
+                );
+              }
             }
 
             catDefs.forEach(([catKey, catText]) => {
@@ -387,16 +611,33 @@
               b.textContent = catText;
               b.addEventListener("click", () => {
                 selectedCategory = catKey;
-                Array.from(filterRow.children).forEach((btn, idx) => {
-                  btn.classList.toggle("active", catDefs[idx][0] === selectedCategory);
-                });
+                drawerPage = 1;
+                syncCategoryButtons();
                 renderDrawerExamples();
               });
               filterRow.appendChild(b);
             });
 
+            catSelect.addEventListener("change", () => {
+              selectedCategory = catSelect.value;
+              drawerPage = 1;
+              syncCategoryButtons();
+              renderDrawerExamples();
+            });
+
+            drawerSearch.addEventListener("input", () => {
+              drawerQuery = drawerSearch.value;
+              drawerPage = 1;
+              renderDrawerExamples();
+            });
+
+            const toolsRow = document.createElement("div");
+            toolsRow.className = "w-btn-group";
+            toolsRow.style.marginBottom = "0.45rem";
+            toolsRow.append(catSelect, drawerSearch);
+
             renderDrawerExamples();
-            drawer.append(filterRow, exGrid);
+            drawer.append(filterRow, toolsRow, drawerNotice, exGrid, drawerPagHolder);
             wrap.appendChild(drawer);
           }
 
@@ -419,6 +660,8 @@
         gb.textContent = gLabel;
         gb.addEventListener("click", () => {
           globalMode = gKey;
+          globalPage = 1;
+          globalQuery = "";
           Array.from(globalFilterRow.children).forEach((btn, idx) => {
             btn.classList.toggle("active", globalFilters[idx][0] === globalMode);
           });
