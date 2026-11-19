@@ -53,7 +53,7 @@ _PARTY_TEXT_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
 
 _HELP_QUERY_RE = re.compile(
     r"^(?:hola|buenas|ayuda|help|menu|menú|"
-    r"(?:que|qué)\s+(?:puedes|sabes|haces|eres|partidos\s+tienes)|"
+    r"(?:que|qué)\s+(?:puedes(?:\s+hacer)?|sabes(?:\s+hacer)?|haces|eres|partidos(?:\s+tienes|\s+hay)?)|"
     r"(?:como|cómo)\s+(?:funciona|funcionas|te\s+uso|buscar)|"
     r"para\s+qu[eé]\s+sirves|"
     r"qu[eé]\s+es\s+esto)[?!.\s]*$"
